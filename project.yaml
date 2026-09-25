@@ -1,0 +1,17 @@
+# Card metadata consumed by https://designmolecule.com
+name: CityTwin
+slug: citytwin
+area: Smart Cities
+status: concept          # concept | design | prototype | tested | released
+shortlisted: false
+pitch: >-
+  A city dashboard built on TwinKit that brings the smart city nodes together on a map and in a public kiosk, with open data export and privacy rules built in.
+problem: >-
+  City data sits in separate vendor dashboards, and residents rarely see the data collected on their streets.
+budget_usd: 600
+difficulty: 3  # 1 easiest, 5 hardest
+hero_image: media/hero.png
+licenses:
+  hardware: CERN-OHL-S-2.0
+  software: MIT
+tags: [smart-cities, open-hardware, cern-ohl-s]
