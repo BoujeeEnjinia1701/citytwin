@@ -1,4 +1,4 @@
-"""CityTwin sizing calculations for CTW-CAL-001 (TRL 3).
+"""CityTwin sizing calculations for CTW-CAL-001 v0.2 (TRL 3, decisions of CTW-DDR-002 applied).
 
 Run from the repo root:  python docs/04-calcs/sizing.py
 Imports the kiosk model's PARAMS and part volumes from cad/src/model.py, reads bom/bom.csv
@@ -124,19 +124,23 @@ lost = worst + 15
 tag("C1", f"worst data age on the kiosk, 15 min nodes: {worst:.1f} min (15 min interval + {REDRAW_MIN:.0f} min redraw + "
           f"{NET_S} s network + {RENDER_S:.0f} s render + {fetch_s:.2f} s transfer + {REFRESH_S:.0f} s refresh); "
           f"{lost:.1f} min if one uplink is lost ({loss_day * 100:.2f} % chance); web map {15 + (NET_S + RENDER_S) / 60:.1f} min")
+ACK_POLL_S, ACK_DEBOUNCE_S = 0.010, 0.020   # firmware rule: LED ring lit on press until the new image is drawn
+ack_s = ACK_POLL_S + ACK_DEBOUNCE_S
 tag("C2", f"button to new layer: {fetch_s:.2f} s transfer ({img_b / 1e3:.0f} kB frame over SPI at {SPI_HZ / 1e6:.0f} MHz) + "
-          f"{REFRESH_S:.0f} s refresh = {press_s:.1f} s against 5 s")
+          f"{REFRESH_S:.0f} s refresh = {press_s:.1f} s against 25 s (R10 restated, CTW-DDR-002; TRL 2 target 5 s); "
+          f"LED ring acknowledgment {ack_s * 1000:.0f} ms ({ACK_POLL_S * 1000:.0f} ms poll + {ACK_DEBOUNCE_S * 1000:.0f} ms debounce) against 0.5 s")
 
 # ---------------------------------------------------------------- D. legibility, lighting, shading (R9)
 CAP_MM, VIEW_M, PPI = 7.0, 1.5, EPD_W / (P["epd_active"][1] / 25.4)
 arcmin = math.degrees(math.atan(CAP_MM / 1000 / VIEW_M)) * 60
 px = CAP_MM / 25.4 * PPI
-LM_W, UTIL, LED_W = 100.0, 0.4, 2.0
-lux = LED_W * LM_W * UTIL / D["epd_active_area_m2"]
+LM_W, UTIL, LED_W, LED_DIM_W = 100.0, 0.4, 2.0, 0.3   # 2 W strip dimmed to 0.3 W by the controller (CTW-DDR-002)
+lux_full = LED_W * LM_W * UTIL / D["epd_active_area_m2"]
+lux = LED_DIM_W * LM_W * UTIL / D["epd_active_area_m2"]
 tag("D1", f"{PPI:.0f} px per inch; 7 mm cap height = {px:.0f} px; subtends {arcmin:.1f} arcmin at {VIEW_M} m, "
           f"{arcmin / 5:.1f} x a 20/20 letter (5 arcmin) and {arcmin / 10:.1f} x 20/40 (10 arcmin)")
-tag("D2", f"night: {LED_W:.0f} W LED at {LM_W:.0f} lm/W with {UTIL:.0%} reaching the screen gives about {lux:,.0f} lx on "
-          f"{D['epd_active_area_m2']:.4f} m2; 200 lx needs {200 / lux * LED_W:.2f} W")
+tag("D2", f"night: {LED_W:.0f} W LED at {LM_W:.0f} lm/W with {UTIL:.0%} reaching the screen gives about {lux_full:,.0f} lx on "
+          f"{D['epd_active_area_m2']:.4f} m2; 200 lx needs {200 / lux_full * LED_W:.2f} W; dimmed to {LED_DIM_W} W it gives {lux:,.0f} lx")
 ov = D["hood_overhang"]
 lip_z = P["head_z1"] - P["hood_lip"]
 wz0, wz1 = P["screen_cz"] - P["win_h"] / 2, P["screen_cz"] + P["win_h"] / 2
@@ -150,20 +154,22 @@ ADA_LO, ADA_HI, PROTRUDE_LO, PROTRUDE_HI, POST_OVERHANG = 380, 1220, 685, 2030, 
 tag("E1", f"buttons at {P['btn_z']:.0f} mm (reach range {ADA_LO} to {ADA_HI}); head leading edge {P['head_z0']:.0f} to "
           f"{P['head_z1'] + 14:.0f} mm, in the {PROTRUDE_LO} to {PROTRUDE_HI} mm zone; overhang beyond the post "
           f"{D['head_side_overhang']:.0f} mm (head) and {D['hood_side_overhang']:.0f} mm (hood) sideways, "
-          f"{P['hood_reach'] - P['post'] / 2:.0f} mm (hood) forward, against {POST_OVERHANG} mm; cabinet bottom {P['cab_z0']:.0f} mm "
-          f"(below {PROTRUDE_LO}, cane-detectable)")
+          f"{P['hood_reach'] - P['post'] / 2:.0f} mm (hood) forward, against {POST_OVERHANG} mm; cabinet with sun shield "
+          f"{D['shield_y1'] - P['post'] / 2:.1f} mm behind the post, bottom {P['cab_z0']:.0f} mm (below {PROTRUDE_LO}, cane-detectable)")
 
 # ---------------------------------------------------------------- F. thermal (R12, R20)
 H_OUT, H_IN, ALPHA, G_V, G_H = 10.0, 5.0, 0.5, 600.0, 1000.0
 TAU_WIN, ALPHA_EPD = 0.85, 0.7
 EPD_MAX, PACK_CHG_MAX, CPU_RISE, CPU_THROTTLE = 40.0, 45.0, 29.1, 85.0   # TWK-CAL-001 F2: 69.1 C at 40 C
 # head internal heat
-P_CTRL, P_LEDS, P_EPD_AVG, P_HOOD_AVG = 1.0, 0.1, 0.5 * REFRESH_S / (REDRAW_MIN * 60), LED_W * 12 / 24
+P_CTRL, P_LEDS, P_EPD_AVG, P_HOOD_AVG = 1.0, 0.1, 0.5 * REFRESH_S / (REDRAW_MIN * 60), LED_DIM_W * 12 / 24
+PILOT_AIR = 35.0            # R12 pilot air range 0 to 35 C (CTW-DDR-002; was 0 to 40 C)
 q_head = P_CTRL + P_LEDS + P_EPD_AVG
 a_head = D["head_area_m2"] - P["post"] * (P["head_z1"] - P["head_z0"]) / 1e6
 dt_head_shade = q_head / (H_OUT * a_head)
-tag("F1", f"head: {q_head:.2f} W inside, {a_head:.3f} m2 exposed; shaded rise {dt_head_shade:.2f} K; at 40 C air the panel is "
-          f"at {40 + dt_head_shade:.1f} C against its {EPD_MAX:.0f} C rating; pilot limit for air {EPD_MAX - dt_head_shade:.1f} C")
+tag("F1", f"head: {q_head:.2f} W inside, {a_head:.3f} m2 exposed; shaded rise {dt_head_shade:.2f} K; at {PILOT_AIR:.0f} C air the panel is "
+          f"at {PILOT_AIR + dt_head_shade:.1f} C against its {EPD_MAX:.0f} C rating ({EPD_MAX - PILOT_AIR - dt_head_shade:.1f} K margin); "
+          f"at 40 C air {40 + dt_head_shade:.1f} C; limit for air {EPD_MAX - dt_head_shade:.1f} C")
 # sunlit street case: front face in low sun, air node and panel node
 a_front_opaque = D["head_front_area_m2"] - D["win_area_m2"]
 q_sol_head = ALPHA * G_V * a_front_opaque
@@ -192,10 +198,18 @@ a_cab = D["cab_area_m2"] - P["post"] * P["cab_h"] / 1e6
 dt_cab_shade = q_cab / (H_OUT * a_cab) + q_cab / (H_IN * a_cab)
 q_sol_cab = ALPHA * (G_V * P["cab_w"] * P["cab_h"] / 1e6 + G_H * P["cab_w"] * P["cab_d"] / 1e6)
 dt_cab_sun = (q_cab + q_sol_cab) / (H_OUT * a_cab) + q_cab / (H_IN * a_cab)
+SHIELD_RES = 0.2           # share of the sun still reaching the cabinet behind the ventilated shield (assumed)
+q_sol_sh = SHIELD_RES * q_sol_cab
+dt_cab_sh = (q_cab + q_sol_sh) / (H_OUT * a_cab) + q_cab / (H_IN * a_cab)
+sh_air_max = PACK_CHG_MAX - dt_cab_sh
 tag("F4", f"cabinet: {q_cab:.2f} W inside (TwinKit {TWK_W} W, supply loss {psu_loss:.2f} W, protection 0.2 W), "
-          f"{a_cab:.3f} m2; air rise {dt_cab_shade:.1f} K shaded, {dt_cab_sun:.1f} K in sun ({q_sol_cab:.0f} W absorbed)")
-for amb, rise, case in ((40, dt_cab_shade, "pilot 40 C shaded"), (45, dt_cab_shade, "street 45 C shaded"),
-                        (45, dt_cab_sun, "street 45 C in sun")):
+          f"{a_cab:.3f} m2; air rise {dt_cab_shade:.1f} K shaded, {dt_cab_sun:.1f} K in sun ({q_sol_cab:.0f} W absorbed), "
+          f"{dt_cab_sh:.1f} K in sun behind the sun shield ({q_sol_sh:.0f} W, {SHIELD_RES:.0%} residual); with the shield the pack "
+          f"stays under {PACK_CHG_MAX:.0f} C in full sun up to {sh_air_max:.1f} C air")
+for amb, rise, case in ((PILOT_AIR, dt_cab_shade, f"pilot {PILOT_AIR:.0f} C shaded"), (40, dt_cab_shade, "40 C shaded"),
+                        (45, dt_cab_shade, "street 45 C shaded"), (45, dt_cab_sun, "street 45 C in sun, no shield"),
+                        (PILOT_AIR, dt_cab_sh, f"outdoor {PILOT_AIR:.0f} C in sun with shield"),
+                        (45, dt_cab_sh, "street 45 C in sun with shield")):
     air = amb + rise
     tag("F5", f"{case}: cabinet air {air:.1f} C; processor {air + CPU_RISE:.1f} C (throttle {CPU_THROTTLE:.0f}); "
               f"pack {air:.1f} C against {PACK_CHG_MAX:.0f} C charge limit ({PACK_CHG_MAX - air:+.1f} K)")
@@ -217,7 +231,7 @@ RHO_AIR, V_GUST, LF = 1.25, 35.0, 1.5
 q = 0.5 * RHO_AIR * V_GUST ** 2
 hood_a = P["hood_w"] * (P["hood_lip"] + 14) / 1e6
 loads = [("head and hood", 1.3, D["head_front_area_m2"] + hood_a, D["head_cz"] / 1000),
-         ("cabinet", 1.3, P["cab_w"] * P["cab_h"] / 1e6, (P["cab_z0"] + P["cab_h"] / 2) / 1000),
+         ("cabinet and sun shield", 1.3, D["shield_w"] * D["shield_h"] / 1e6, (P["cab_z0"] + D["shield_h"] / 2) / 1000),
          ("post", 2.0, P["post"] * (P["post_top"] - P["base"][2]) / 1e6, P["post_top"] / 2000),
          ("antenna", 1.2, P["ant_d"] * P["ant_len"] / 1e6, (D["antenna_tip_z"] - P["ant_len"] / 2) / 1000)]
 F_tot, M_tot = 0.0, 0.0
@@ -235,7 +249,7 @@ throat = 0.707 * 4
 Zw = throat * (b * b + b * b / 3)
 tag("H3", f"4 mm fillet weld all round: Zw {Zw:,.0f} mm3, {M_tot * LF * 1000 / Zw:.1f} MPa")
 mass = {}
-dens = {1: 7850, 2: 7850, 3: 2700, 4: 1200, 10: 7850}
+dens = {1: 7850, 2: 7850, 3: 2700, 4: 1200, 10: 7850, 19: 2700}
 fixed = {5: 1.2, 6: 0.15, 7: 0.15, 11: 0.5, 12: 0.3, 13: 1.2, 14: 0.5, 15: 1.0}
 for n, name, s in build_parts():
     if n in dens:
@@ -253,7 +267,7 @@ W = m_tot * 9.81
 pitch = P["anchor_pitch"] / 1000
 T = M_tot * LF / (2 * pitch) - W / 4
 tag("H4", f"mass {m_tot:.1f} kg (post {mass[2]:.1f}, base {mass[1]:.1f}, cabinet with rails {mass[10]:.1f}, head {mass[3]:.1f}, "
-          f"hood {mass[9]:.2f}, window {mass[4]:.2f}; bought-in items assumed)")
+          f"hood {mass[9]:.2f}, window {mass[4]:.2f}, sun shield {mass[19]:.2f}; bought-in items assumed)")
 tag("H5", f"anchor tension {T / 1000:.2f} kN per anchor (two in tension, {pitch * 1000:.0f} mm apart, less self-weight); "
           f"against an assumed 10 kN design resistance for an M16 anchor, factor {10000 / T:.1f}")
 lever = (P["anchor_pitch"] - P["post"]) / 2 / 1000
@@ -264,20 +278,22 @@ defl = Fh * (D["head_cz"]) ** 3 / (3 * 200000 * I)
 tag("H7", f"head deflection at {D['head_cz'] / 1000:.2f} m under the unfactored gust: {defl:.2f} mm")
 
 # ---------------------------------------------------------------- I. backup (R18)
-tag("I1", "TwinKit backup (TWK-CAL-001 E1): 2.40 h new, 1.63 h aged at 0 C, against 2 h; head not on backup, e-paper keeps "
-          "its last image and time stamp")
+PACK_AH, T_NEW, T_WORST, T_REQ = 1.5, 2.40, 1.63, 2.0
+tag("I1", f"TwinKit backup (TWK-CAL-001 E1): {T_NEW:.2f} h new, {T_WORST:.2f} h aged at 0 C, against {T_REQ:.0f} h; head not on backup, "
+          f"e-paper keeps its last image and time stamp; a pack of at least {PACK_AH * T_REQ / T_WORST:.2f} Ah (now {PACK_AH} Ah) "
+          f"would meet 2 h in the worst case, to be requested from TwinKit (CTW-DDR-002)")
 
 # ---------------------------------------------------------------- J. cost (R16, R17)
 pm = yaml.safe_load((ROOT / "project.yaml").read_text())
-budget, REC = float(pm["budget_usd"]), 750.0
+budget = float(pm["budget_usd"])
 rows = list(csv.DictReader((ROOT / "bom" / "bom.csv").open()))
 cost = {int(r["item"].split()[0]): float(r["qty"]) * float(r["unit_cost_usd"]) for r in rows}
-kiosk = sum(v for k, v in cost.items() if k not in (13, 16, 17, 18))
+kiosk = sum(v for k, v in cost.items() if k not in (13, 16, 17, 18, 19))
+outdoor = kiosk + cost[19]
 priced = all((r["unit_cost_usd"] or "").strip() for r in rows)
-tag("J1", f"{len(rows)} BOM lines, all priced: {priced}; kiosk (1 to 12, 14, 15) ${kiosk:,.2f}; TwinKit ${cost[13]:,.2f}; "
-          f"with gateway ${kiosk + cost[13]:,.2f}")
-tag("J2", f"kiosk against budget_usd ${budget:,.0f}: {kiosk - budget:+,.2f}; against the recommended ${REC:,.0f} (awaiting Amish): "
-          f"{kiosk - REC:+,.2f}")
+tag("J1", f"{len(rows)} BOM lines, all priced: {priced}; pilot kiosk (1 to 12, 14, 15) ${kiosk:,.2f}; TwinKit ${cost[13]:,.2f}; "
+          f"with gateway ${kiosk + cost[13]:,.2f}; outdoor kiosk with sun shield (19) ${outdoor:,.2f}")
+tag("J2", f"pilot kiosk against budget_usd ${budget:,.0f} (was $600): {kiosk - budget:+,.2f}; outdoor kiosk {outdoor - budget:+,.2f}")
 
 # ---------------------------------------------------------------- K. requirement status
 STATUS = [
@@ -289,18 +305,18 @@ STATUS = [
     ("R6", "Open data export", f"{exp_rows:,} rows/day, {exp_rows * CSV_ROW / 1e6:.2f} MB CSV", "Hourly CSV and GeoJSON, CC BY 4.0", "Met by design"),
     ("R7", "One map", "Layer per type, health, as-of time", "As stated", "Met by design"),
     ("R8", "Data freshness", f"{worst:.1f} min worst on the kiosk", "30 min", "Met on paper (thin margin)"),
-    ("R9", "Readable day and night", f"7 mm = {px:.0f} px, {arcmin:.1f} arcmin; {lux:,.0f} lx at night", "Sun and night at 1.5 m", "Met on paper"),
-    ("R10", "Button response", f"{press_s:.1f} s", "5 s", "Not met"),
+    ("R9", "Readable day and night", f"7 mm = {px:.0f} px, {arcmin:.1f} arcmin; {lux:,.0f} lx at night (light dimmed to {LED_DIM_W} W)", "Sun and night at 1.5 m", "Met on paper"),
+    ("R10", "Button response (restated)", f"LED ring {ack_s * 1000:.0f} ms; layer {press_s:.1f} s", "Acknowledged within 0.5 s; layer within 25 s", "Met on paper"),
     ("R11", "Accessible kiosk", f"Buttons {P['btn_z']:.0f} mm; overhang {D['hood_side_overhang']:.0f} mm", "380 to 1,220 mm; 305 mm; WCAG page", "Met on paper (web page not verifiable at TRL 3)"),
-    ("R12", "Pilot climate (redefined, D3)", f"Panel {40 + dt_head_shade:.1f} C at 40 C air; pack {40 + dt_cab_shade:.1f} C", "Sheltered site, air 0 to 40 C", "At risk"),
+    ("R12", "Pilot climate (redefined)", f"Panel {PILOT_AIR + dt_head_shade:.1f} C and pack {PILOT_AIR + dt_cab_shade:.1f} C at {PILOT_AIR:.0f} C air", f"Sheltered site, air 0 to {PILOT_AIR:.0f} C", "Met on paper"),
     ("R13", "Wind", f"{sig:.1f} MPa with factor 1.5; anchors {T / 1000:.2f} kN", "35 m/s gust x 1.5, no yield", "Met on paper"),
     ("R14", "Electrical safety", f"Mains only in the cabinet; 12 V SELV; peak {peak:.1f} W of 60 W", "As stated", "Met by design"),
     ("R15", "Running power", f"{p_mains:.1f} W", "15 W", "Met on paper"),
-    ("R16", "Kiosk parts cost", f"${kiosk:,.2f}", f"${budget:,.0f} (${REC:,.0f} recommended)", "Not met"),
+    ("R16", "Pilot kiosk parts cost", f"${kiosk:,.2f} (outdoor with shield ${outdoor:,.2f})", f"${budget:,.0f} (budget_usd)", "Met on paper"),
     ("R17", "Cost with gateway (redefined, D1)", f"${kiosk + cost[13]:,.2f}", "Reported; gateway costed in TwinKit", "Met on paper (reported)"),
-    ("R18", "Honest in an outage", "2.40 h new, 1.63 h worst", "2 h ride-through", "Not met (worst case)"),
+    ("R18", "Honest in an outage", f"{T_NEW:.2f} h new, {T_WORST:.2f} h worst; {PACK_AH * T_REQ / T_WORST:.2f} Ah pack needed", "2 h ride-through", "Not met (worst case)"),
     ("R19", "Secure by default", "Outbound push and pull only", "No inbound connections", "Met by design"),
-    ("R20", "Street climate (target after the pilot)", f"Panel {45 + dt_panel:.0f} C in sun at 45 C; heater {heater:.1f} W at -20 C", "-20 to +45 C air", "Not met"),
+    ("R20", "Street climate (target after the pilot)", f"Panel {45 + dt_panel:.0f} C in sun, {45 + dt_head_shade:.1f} C shaded at 45 C; pack {45 + dt_cab_sh:.1f} C behind the shield; heater {heater:.1f} W at -20 C", "-20 to +45 C air", "Not met"),
 ]
 counts = {}
 for r in STATUS:

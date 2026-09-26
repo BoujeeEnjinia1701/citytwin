@@ -2,7 +2,7 @@
 
 ![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
 
-**Area:** Smart Cities · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** $600 USD for the kiosk ($750 recommended, awaiting Amish) · **Difficulty:** 3 of 5
+**Area:** Smart Cities · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** $750 USD for the kiosk · **Difficulty:** 3 of 5
 
 A city dashboard built on TwinKit that brings the smart city nodes together on a map and in a public kiosk, with open data export and privacy rules built in.
 
@@ -48,7 +48,7 @@ Where the rules are unclear, projects stall. In Toronto, the former Ontario priv
 
 ## What sparked the idea
 
-It came out of a September 2026 review of Design Molecule's applied research areas against the open projects already in the lab. It ties the smart city set together on TwinKit. The real-world trigger was the gap between open sensing and public trust: open platforms such as Barcelona's [Sentilo](https://www.sentilo.io/) and signage standards such as [DTPR](https://dtpr.io/) exist, but there was no small, open kit that combines a gateway, privacy rules, open data and a street display.
+The starting point was Amsterdam's sensor register. From December 2021 the city required companies, research institutions and government bodies to report sensors they place in public space, new or existing and mobile ones included, on a public online map that shows the type of sensor, its owner and whether it processes personal data, with June 1, 2022 as the deadline before the city could remove unregistered sensors at the owner's expense ([Cities Today](https://cities-today.com/amsterdam-introduces-mandatory-register-for-sensors/); [Sensorenregister Amsterdam](https://sensorenregister.amsterdam.nl/)). The register answers "who owns this and what does it collect?" on a website. CityTwin carries the same answer to the pavement: a notice plate with a QR code to the sensor register, the live counts and levels beside it, and open data files behind it, on hardware a city or neighborhood group can own.
 
 ## Problem
 
@@ -60,7 +60,7 @@ A city dashboard built on TwinKit that brings the smart city nodes together on a
 
 CityTwin software on a TwinKit gateway receives counts and levels from the nine smart city node types, rejects anything outside each node's schema, stores the rest, suppresses small counts and movement traces, and publishes hourly CSV and GeoJSON files one way to a public host. The kiosk is a steel post with a 13.3 in color e-paper screen at about 1.46 m, three buttons at about 1.12 m, a data notice plate with a QR code, a lit sun hood, and a locked cabinet holding the mains protection, a 12 V supply and the gateway.
 
-TRL 3 calculations ([CTW-CAL-001](docs/04-calcs/01-sizing.md)): a 46-node reference neighborhood sends 5,616 uplinks a day and loses 0.61 %, well within one gateway; data on the kiosk is at most 25.9 min old; kiosk and gateway draw 10.2 W from the mains; the kiosk weighs about 58 kg and its post is stressed to 26.2 MPa in a 35 m/s gust with a 1.5 factor. Not met: button response (19.8 s against 5 s), kiosk cost ($739.00 against the $600 budget, within the $750 recommended), backup time with an aged, cold pack (1.63 h against 2 h), and the street climate range, so the pilot kiosk stands on a sheltered site. Ingest of every node type is at risk until PotholeLog, DockHub and CrossSafe agree their interfaces. See the [requirements](docs/03-requirements.md) and the [decision record](docs/decisions/0001-trl2-review-decisions.md).
+TRL 3 calculations ([CTW-CAL-001](docs/04-calcs/01-sizing.md)): a 46-node reference neighborhood sends 5,616 uplinks a day and loses 0.61 %, well within one gateway; data on the kiosk is at most 25.9 min old; kiosk and gateway draw 9.2 W from the mains with the hood light dimmed; the kiosk weighs about 60 kg with its outdoor sun shield and its post is stressed to 26.9 MPa in a 35 m/s gust with a 1.5 factor. A button's LED ring answers a press at once and the new layer follows in 19.8 s, within the 25 s target; the pilot kiosk costs $739.00 against the $750 budget; and a sheltered pilot site at 0 to 35 °C air leaves about 5 K of margin for the screen and the backup pack. Not met: backup time with an aged, cold pack (1.63 h against 2 h, until TwinKit fits a pack of at least 1.84 Ah) and the street climate range, so the pilot kiosk stands on a sheltered site and any outdoor site gets a cabinet sun shield and a shaded screen. Ingest of every node type is at risk until PotholeLog, DockHub and CrossSafe agree their interfaces. See the [requirements](docs/03-requirements.md) and the decision records [CTW-DDR-001](docs/decisions/0001-trl2-review-decisions.md) and [CTW-DDR-002](docs/decisions/0002-recommendations-accepted.md).
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
@@ -74,7 +74,7 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md)
 6. Kiosk controller (Raspberry Pi Zero 2 W class, wired to the gateway)
 7. Three stainless push buttons with LED rings
 8. Data notice plate with QR code to the sensor register
-9. Sun and rain hood with night light
+9. Sun and rain hood with night light (dimmed to about 0.3 W)
 10. Lockable services cabinet
 11. Mains protection (30 mA RCBO and surge protector)
 12. 12 V DIN power supply
@@ -82,14 +82,15 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md)
 14. LoRaWAN antenna on the post top (TwinKit BOM)
 15. Conduit and cabling
 16. Map dashboard, open data export and data governance templates (software and documents)
+17. Cabinet sun shield for outdoor sites (BOM item 19)
 
-The priced bill of materials is in [bom/bom.csv](bom/bom.csv): $739.00 for the kiosk, $1,029.00 with the TwinKit gateway.
+The priced bill of materials is in [bom/bom.csv](bom/bom.csv): $739.00 for the pilot kiosk, $769.00 with the outdoor sun shield, $1,029.00 for the pilot kiosk with the TwinKit gateway.
 
 ## Safety
 
 > Privacy by design: no images, audio recordings or personal identifiers leave the device; only aggregate counts or levels are stored. Check local data protection law before any deployment. Mains wiring must be done or checked by a qualified electrician and follow local electrical code.
 >
-> The kiosk is a roughly 58 kg steel post: install it only with the asset owner's permission, on a footing designed for local wind loads, with no sharp edges at head height. The TwinKit gateway contains a LiFePO4 backup pack: use a pack with a built-in BMS and fuse, and keep the cabinet out of direct sun, because in sun it can run far above the pack's 45 °C charge limit. CityTwin is not a public warning system.
+> The kiosk is a roughly 60 kg steel post: install it only with the asset owner's permission, on a footing designed for local wind loads, with no sharp edges at head height. The TwinKit gateway contains a LiFePO4 backup pack: use a pack with a built-in BMS and fuse, and keep the cabinet out of direct sun or under its sun shield, because in sun it can run far above the pack's 45 °C charge limit. CityTwin is not a public warning system.
 
 ## Repository layout
 
@@ -114,4 +115,4 @@ Controlled documents follow the portfolio [documentation standard](.kit/STANDARD
 - **Hardware** (CAD, drawings, BOM, electronics): [CERN-OHL-S v2](LICENSE)
 - **Software** (firmware, scripts, notebooks): [MIT](LICENSE-SOFTWARE)
 
-A project of the [Design Molecule](https://designmolecule.com) lab. Smart cities set.
+A project of the [Design Molecule](https://designmolecule.com) lab.

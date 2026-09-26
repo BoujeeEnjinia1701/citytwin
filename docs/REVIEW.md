@@ -1,5 +1,56 @@
 # Review note: CityTwin
 
+## Session 2026-09-25: recommendations accepted
+
+On 2026-09-25 Amish wrote, in chat: "i accept all your recommendations, go with them across all repos." Every item in this note and in CTW-DDR-001 that carried a recommendation is now **decided by Amish, 2026-09-25: go with recommendation**, recorded in `docs/decisions/0002-recommendations-accepted.md` (CTW-DDR-002 v0.1). Items with no recommendation stay "Proposed, awaiting Amish". Nothing past TRL 3 was done.
+
+### Decisions applied and what changed
+
+| Item | Decision | Before | After |
+| --- | --- | --- | --- |
+| D1 to D11 (CTW-DDR-001) | Budget scope, color e-paper, sheltered pilot, gateway in the cabinet, mains power, privacy settings, CC BY 4.0, buttons, reference neighborhood, one-way publishing, outbound pulls | Adopted for TRL 3, open for review | Decided; status wording in CTW-DDR-001 v0.2, CTW-PRB-001 v0.4, CTW-PRC-001 v0.4, CTW-REQ-001 v0.4 |
+| N1 budget figure | Recommended $750 | `budget_usd` $600; R16 not met ($139.00 over) | `budget_usd` $750; R16 met on paper ($11.00 under) |
+| N2 R10 | Option (a) street, (b) indoor LCD | Layer within 5 s; 19.8 s, not met | LED ring within 0.5 s (about 30 ms) and layer within 25 s (19.8 s), met on paper; the indoor LCD variant keeps 5 s (not modeled) |
+| N3 R18 | Option (b), larger TwinKit pack | Pack not sized | At least 1.84 Ah needed against 1.5 Ah; requested from TwinKit; R18 still not met |
+| N4 R20 and cabinet | Cabinet sun shield and shaded screen as site rules; heater only for a frost city | Cabinet 18.8 K over ambient in sun; no shield | New BOM item 19 (1.5 mm aluminum, 25 mm air gap, $30.00) in the model, STEP, STL, CTW-DWG-001 Rev P2 and media; cabinet 7.2 K over ambient in sun behind the shield, pack under 45 °C up to 37.8 °C air; R20 still not met |
+| N5 R12 margin | Pilot range 0 to 35 °C air | 0 to 40 °C; panel 40.1 °C, pack 0.6 K margin; at risk | Panel 35.1 °C (4.9 K margin), pack 39.4 °C (5.6 K margin); met on paper |
+| N6 hood light | Dim to about 0.3 W | 2 W, 1,459 lx; mains 10.2 W, 90 kWh a year | 0.3 W, 219 lx; mains 9.2 W, 81 kWh a year |
+
+Knock-on figures: the sun shield adds 1.86 kg and 35 N of gust load, so post stress rises from 26.2 to 26.9 MPa, anchor tension from 1.92 to 1.97 kN and mass from 58.2 to 60.1 kg; all still met. The outdoor kiosk with the shield costs $769.00, $19.00 over `budget_usd`; R16 is set on the sheltered pilot kiosk. The pitch and problem lines were not reworded because no rewording was recommended.
+
+Files changed: `project.yaml` (`budget_usd`), `README.md` (budget line, concept numbers, components, BOM line, safety, "What sparked the idea"), `docs/01-problem.md` (v0.4), `docs/02-concept.md` (v0.4), `docs/03-requirements.md` (v0.4), `docs/04-calcs/01-sizing.md` (CTW-CAL-001 v0.2), `docs/04-calcs/sizing.py` and `results.csv`, `docs/decisions/0001-trl2-review-decisions.md` (v0.2), new `docs/decisions/0002-recommendations-accepted.md`, `bom/bom.csv` (19 lines) and `bom/bom-notes.md`, `cad/src/model.py`, `cad/step/`, `cad/stl/`, `cad/src/sheets.py` and `cad/drawings/CTW-DWG-001` (Rev P2), `cad/src/concept_media.py` and all of `media/`, and the PDFs in `docs/pdf/`. All generated files were rebuilt, so none still shows the old site address.
+
+"What sparked the idea" in `README.md` no longer describes how the portfolio was assembled. It now traces the idea to Amsterdam's mandatory register of sensors in public space (in force December 2021), cited to Cities Today and the city's register.
+
+### Requirement status (CTW-CAL-001 v0.2)
+
+2 not met, 1 at risk, 10 met on paper, 7 met by design (before: 4 not met, 2 at risk, 7 met on paper, 7 met by design).
+
+| ID | Status | Key number |
+| --- | --- | --- |
+| R18 Outage ride-through | **Not met** (worst case) | 1.63 h aged at 0 °C against 2 h; needs a pack of at least 1.84 Ah from TwinKit |
+| R20 Street climate | **Not met** | Panel about 79 °C in low sun and 45.1 °C shaded at 45 °C air; pack 52.2 °C at 45 °C behind the sun shield; heater 13.5 W at -20 °C |
+| R1 Ingest every type | At risk | PotholeLog and DockHub pull formats not agreed; CrossSafe has no LoRaWAN uplink |
+| R2, R8 to R13, R15 to R17 | Met on paper | 0.61 % lost; 25.9 min data age; 219 lx; LED ring 30 ms and layer 19.8 s; panel 35.1 °C at 35 °C; 26.9 MPa; 9.2 W; $739.00 against $750 |
+| R3 to R7, R14, R19 | Met by design | |
+
+### Still awaiting Amish
+
+1. **O1, first partner city or neighborhood** for co-design and a pilot site. No recommendation was made. Proposed, awaiting Amish. This also decides whether the frost heater is fitted (N4).
+2. Open questions without a recommendation, kept in CTW-PRC-001: antenna height for the reference neighborhood with the gateway in the cabinet, and the kiosk's languages and fault reporting (for co-design with the O1 partner).
+
+### Cross-repo actions
+
+- **TwinKit:** fit a backup pack of at least 1.84 Ah (now 1.5 Ah) for cabinet installs, so R18 is met with an aged pack at 0 °C (N3). TwinKit's review also asked for a street cabinet thermal check: this note gives 4.4 K rise in shade, 18.7 K in sun, 7.2 K in sun behind CityTwin's sun shield. TwinKit not edited.
+- **PotholeLog:** agree the published daily segment file format and host that the CityTwin gateway pulls by outbound HTTPS (D11). Not edited.
+- **DockHub:** agree per-dock hourly aggregates published by its back end for the CityTwin pull (D11). Not edited.
+- **CrossSafe:** define a LoRaWAN uplink (hourly summary assumed here) so CityTwin's CrossSafe layer has an interface (R1). Not edited.
+- **LoadZone and TwinKit:** class C downlink support on TwinKit's network server for LoadZone's sign, as noted in the TRL 3 session. Not edited.
+
+### TRL 4
+
+TRL 4 remains on hold by Amish's instruction. `trl: 3` and `trl_target: 3` are unchanged. Decided but on hold because they are TRL 4 work: fitting and testing the frost heater, building the indoor LCD and solar variants, and every bench build, button timing, climate chamber, backup and outage test. No build, test, purchasing, PCB or firmware material was created.
+
 ## Session 2026-09-25: TRL 3
 
 On 2026-09-25 Amish asked for this batch of repos to be taken through the usual process with the instruction "you know the drill, nothing gets past TRL 3". He has not reviewed this repo's TRL 2 items one by one, so every item that carried a recommendation is adopted as recommended for TRL 3 under Amish's 2026-09-25 instruction, open for his review. Nothing here is recorded as decided or approved by Amish. This session ran `/advance-trl3` on that basis and stopped at TRL 3.
@@ -33,19 +84,21 @@ Corrections to TRL 2 figures: 5,616 uplinks a day, not 4,896 (LoadZone sends 124
 
 ### Decisions recorded (CTW-DDR-001)
 
-Adopted as recommended for TRL 3 under Amish's 2026-09-25 instruction, open for his review: D1 budget option (b), the budget covers the kiosk and the gateway is costed in TwinKit (R17 redefined; `budget_usd` unchanged at $600, $750 recorded as awaiting Amish); D2 color e-paper with an indoor LCD variant; D3 sheltered or indoor pilot and a heater study at TRL 3 (R12 redefined to the pilot, R20 added); D4 gateway in the kiosk cabinet; D5 mains power with a solar head-only variant; D6 small-count threshold 5 per hour and two years of raw data; D7 CC BY 4.0; D8 buttons; D9 the 46-node reference neighborhood with the sibling TRL 3 rates; D10 one-way publishing and privacy rules at the gateway. No reworded pitch or problem line was recommended, so `project.yaml` and `README.md` keep the existing wording.
+Adopted as recommended for TRL 3 under Amish's 2026-09-25 instruction, open for his review (now **decided by Amish, 2026-09-25: go with recommendation**, see CTW-DDR-002): D1 budget option (b), the budget covers the kiosk and the gateway is costed in TwinKit (R17 redefined; `budget_usd` unchanged at $600, $750 recorded as awaiting Amish); D2 color e-paper with an indoor LCD variant; D3 sheltered or indoor pilot and a heater study at TRL 3 (R12 redefined to the pilot, R20 added); D4 gateway in the kiosk cabinet; D5 mains power with a solar head-only variant; D6 small-count threshold 5 per hour and two years of raw data; D7 CC BY 4.0; D8 buttons; D9 the 46-node reference neighborhood with the sibling TRL 3 rates; D10 one-way publishing and privacy rules at the gateway. No reworded pitch or problem line was recommended, so `project.yaml` and `README.md` keep the existing wording.
 
 ### Still awaiting Amish
 
-1. **O1, first partner city or neighborhood** for co-design and a pilot site. No recommendation was made.
-2. **Budget figure.** `budget_usd` stays $600; $750 is recommended (D1). The kiosk at $739.00 fits $750.
-3. **New, D11 pull paths.** The gateway fetches PotholeLog's published segment files and DockHub's hourly aggregates by outbound HTTPS. Recommendation: adopt, and agree formats with both repos. Used for sizing; not agreed.
-4. **New, R10.** Options: (a) restate R10 as "press acknowledged within 0.5 s by the LED ring and a first on-screen cue; layer shown within 25 s"; (b) keep 5 s and fit an LCD in the indoor variant only; (c) a smaller monochrome status panel for instant feedback. Recommendation: (a) for the street kiosk and (b) indoors. Not applied.
-5. **New, R18.** Options: (a) restate R18 at 1.5 h; (b) ask TwinKit for a larger pack in cabinet installs; (c) keep 2 h and accept not met. Recommendation: (b), since winter cold in a street cabinet shortens the runtime further. Not applied.
-6. **New, R20 and the cabinet.** Options for a street kiosk: a heated, insulated panel bay (13.5 W at -20 °C, not costed), a north-facing or shaded screen, a ventilated sun shield on the cabinet, or a wider-range panel if one exists. Recommendation: a sun shield on the cabinet and a shaded screen orientation as site rules for any outdoor pilot; a heater only if the partner city has frost. Not applied.
-7. **New, R12 margin.** At 40 °C air the panel and pack have no margin. Recommendation: define the pilot range as 0 to 35 °C air. Not applied.
+Status update: items 2 to 7 and the hood light suggestion below are now decided by Amish, 2026-09-25: go with recommendation (session "recommendations accepted" above). Item 1 stays Proposed, awaiting Amish.
 
-Suggestion only, not in the repo: dim the hood light to about 0.3 W (200 lx is enough), which would cut 0.9 W from the average.
+1. **O1, first partner city or neighborhood** for co-design and a pilot site. No recommendation was made.
+2. **Budget figure.** `budget_usd` stays $600; $750 is recommended (D1). The kiosk at $739.00 fits $750. **Decided by Amish, 2026-09-25: go with recommendation** (CTW-DDR-002).
+3. **New, D11 pull paths.** The gateway fetches PotholeLog's published segment files and DockHub's hourly aggregates by outbound HTTPS. Recommendation: adopt, and agree formats with both repos. Used for sizing; not agreed. **Decided by Amish, 2026-09-25: go with recommendation** (CTW-DDR-002).
+4. **New, R10.** Options: (a) restate R10 as "press acknowledged within 0.5 s by the LED ring and a first on-screen cue; layer shown within 25 s"; (b) keep 5 s and fit an LCD in the indoor variant only; (c) a smaller monochrome status panel for instant feedback. Recommendation: (a) for the street kiosk and (b) indoors. Not applied. **Decided by Amish, 2026-09-25: go with recommendation** (CTW-DDR-002).
+5. **New, R18.** Options: (a) restate R18 at 1.5 h; (b) ask TwinKit for a larger pack in cabinet installs; (c) keep 2 h and accept not met. Recommendation: (b), since winter cold in a street cabinet shortens the runtime further. Not applied. **Decided by Amish, 2026-09-25: go with recommendation** (CTW-DDR-002).
+6. **New, R20 and the cabinet.** Options for a street kiosk: a heated, insulated panel bay (13.5 W at -20 °C, not costed), a north-facing or shaded screen, a ventilated sun shield on the cabinet, or a wider-range panel if one exists. Recommendation: a sun shield on the cabinet and a shaded screen orientation as site rules for any outdoor pilot; a heater only if the partner city has frost. Not applied. **Decided by Amish, 2026-09-25: go with recommendation** (CTW-DDR-002).
+7. **New, R12 margin.** At 40 °C air the panel and pack have no margin. Recommendation: define the pilot range as 0 to 35 °C air. Not applied. **Decided by Amish, 2026-09-25: go with recommendation** (CTW-DDR-002).
+
+Suggestion only, not in the repo: dim the hood light to about 0.3 W (200 lx is enough), which would cut 0.9 W from the average. **Decided by Amish, 2026-09-25: go with recommendation** (CTW-DDR-002).
 
 ### Cross-repo consistency
 
@@ -115,6 +168,8 @@ Requirements not met or at risk:
 - **R1 at risk:** PotholeLog and DockHub upload paths into CityTwin are not defined in those repos.
 
 ### Proposed, awaiting Amish
+
+Status update: items 1 to 9 are decided by Amish, 2026-09-25: go with recommendation (CTW-DDR-001 v0.2 D1 to D9, CTW-DDR-002). Item 10 had no recommendation and stays Proposed, awaiting Amish. Item 6 carried proposed values (5 per hour, two years), which are the decision.
 
 1. **Budget.** Parts exceed `budget_usd` ($600). Options: (a) keep $600 and define it as the kiosk only, then cut about $140 (for example a steel head in place of aluminum, a cheaper cabinet, or a smaller 10 in class display); (b) raise `budget_usd` to about $750 for the kiosk, with the TwinKit gateway costed in TwinKit; (c) raise it to about $1,050 for kiosk and gateway. Recommendation: (b), because one gateway serves many nodes and is already budgeted in TwinKit. `project.yaml` is unchanged.
 2. **Display.** Color e-paper (sun-readable, low power, slow, 0 to 40 °C), monochrome e-paper (faster, no color layers), or an outdoor LCD (instant, touch possible, costly and power-hungry). Recommendation: color e-paper, plus an indoor LCD variant.

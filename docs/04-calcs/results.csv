@@ -7,15 +7,15 @@ R5,No movement traces,Segment per day; dock per hour,"No tracks, no card IDs",Me
 R6,Open data export,"7,128 rows/day, 0.86 MB CSV","Hourly CSV and GeoJSON, CC BY 4.0",Met by design
 R7,One map,"Layer per type, health, as-of time",As stated,Met by design
 R8,Data freshness,25.9 min worst on the kiosk,30 min,Met on paper (thin margin)
-R9,Readable day and night,"7 mm = 41 px, 16.0 arcmin; 1,459 lx at night",Sun and night at 1.5 m,Met on paper
-R10,Button response,19.8 s,5 s,Not met
+R9,Readable day and night,"7 mm = 41 px, 16.0 arcmin; 219 lx at night (light dimmed to 0.3 W)",Sun and night at 1.5 m,Met on paper
+R10,Button response (restated),LED ring 30 ms; layer 19.8 s,Acknowledged within 0.5 s; layer within 25 s,Met on paper
 R11,Accessible kiosk,Buttons 1120 mm; overhang 200 mm,"380 to 1,220 mm; 305 mm; WCAG page",Met on paper (web page not verifiable at TRL 3)
-R12,"Pilot climate (redefined, D3)",Panel 40.1 C at 40 C air; pack 44.4 C,"Sheltered site, air 0 to 40 C",At risk
-R13,Wind,26.2 MPa with factor 1.5; anchors 1.92 kN,"35 m/s gust x 1.5, no yield",Met on paper
+R12,Pilot climate (redefined),Panel 35.1 C and pack 39.4 C at 35 C air,"Sheltered site, air 0 to 35 C",Met on paper
+R13,Wind,26.9 MPa with factor 1.5; anchors 1.97 kN,"35 m/s gust x 1.5, no yield",Met on paper
 R14,Electrical safety,Mains only in the cabinet; 12 V SELV; peak 26.7 W of 60 W,As stated,Met by design
-R15,Running power,10.2 W,15 W,Met on paper
-R16,Kiosk parts cost,$739.00,$600 ($750 recommended),Not met
+R15,Running power,9.2 W,15 W,Met on paper
+R16,Pilot kiosk parts cost,$739.00 (outdoor with shield $769.00),$750 (budget_usd),Met on paper
 R17,"Cost with gateway (redefined, D1)","$1,029.00",Reported; gateway costed in TwinKit,Met on paper (reported)
-R18,Honest in an outage,"2.40 h new, 1.63 h worst",2 h ride-through,Not met (worst case)
+R18,Honest in an outage,"2.40 h new, 1.63 h worst; 1.84 Ah pack needed",2 h ride-through,Not met (worst case)
 R19,Secure by default,Outbound push and pull only,No inbound connections,Met by design
-R20,Street climate (target after the pilot),Panel 79 C in sun at 45 C; heater 13.5 W at -20 C,-20 to +45 C air,Not met
+R20,Street climate (target after the pilot),"Panel 79 C in sun, 45.1 C shaded at 45 C; pack 52.2 C behind the shield; heater 13.5 W at -20 C",-20 to +45 C air,Not met

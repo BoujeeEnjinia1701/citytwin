@@ -9,6 +9,7 @@ trl_evidence:
   - docs/02-concept.md
   - docs/03-requirements.md
   - docs/decisions/0001-trl2-review-decisions.md
+  - docs/decisions/0002-recommendations-accepted.md
   - docs/04-calcs/01-sizing.md
   - docs/04-calcs/sizing.py
   - cad/src/model.py
@@ -21,7 +22,7 @@ pitch: >-
   A city dashboard built on TwinKit that brings the smart city nodes together on a map and in a public kiosk, with open data export and privacy rules built in.
 problem: >-
   City data sits in separate vendor dashboards, and residents rarely see the data collected on their streets.
-budget_usd: 600
+budget_usd: 750
 difficulty: 3  # 1 easiest, 5 hardest
 hero_image: media/hero.png
 licenses:

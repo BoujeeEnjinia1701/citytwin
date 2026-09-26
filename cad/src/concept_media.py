@@ -40,6 +40,7 @@ STYLE = {
     13: ("TwinKit gateway with backup", "#C2410C", (-60, 440, 180)),
     14: ("LoRaWAN antenna (TwinKit)", "#111827", (0, 0, 380)),
     15: ("Conduit and cabling", "#0EA5E9", (0, 330, -200)),
+    19: ("Cabinet sun shield (outdoor sites)", "#CBD5E1", (0, 1500, 250)),
 }
 parts = [Part(STYLE[n][0], shape, STYLE[n][1], n, STYLE[n][2]) for n, _, shape in build_parts()]
 
@@ -68,9 +69,9 @@ render_all(
     parts, project="CityTwin", title="Public kiosk and data flow concept", dwg_no="CTW-DWG-010",
     key_figures=[f"Reference neighborhood: {nodes} LoRaWAN nodes, {sent:,} uplinks a day, 0.61 % lost",
                  "13.3 in color e-paper, 1600 x 1200 px, screen center 1.46 m",
-                 "Buttons at 1.12 m; 19.8 s to redraw a layer (R10 not met)",
-                 "10.2 W average from the mains with TwinKit; about 58 kg",
-                 "Kiosk parts $739; $1,029 with TwinKit gateway (indicative)"],
+                 "Buttons at 1.12 m; LED ring at once, layer in 19.8 s (R10: 25 s)",
+                 "9.2 W average from the mains with TwinKit; about 60 kg with sun shield",
+                 "Pilot kiosk $739 ($750 budget); $1,029 with TwinKit gateway (indicative)"],
     cut=False, scale_figure=False, context=context,
     flow={"title": f"LoRaWAN data flow, records per day (CTW-CAL-001 estimates, {nodes}-node reference neighborhood)",
           "unit": "records/day",
@@ -93,7 +94,7 @@ for p in parts:
         cut_parts.append(p)
 concept._render(cut_parts, concept.ROOT / "media" / "cutaway.png", azim=12, elev=14,
                 title="CityTwin: cutaway (section on the kiosk centerline, looking from the right)",
-                note="Head: window (4), e-paper (5), controller (6). Cabinet: gateway (13), supply (12), protection (11).")
+                note="Head: window (4), e-paper (5), controller (6). Cabinet: gateway (13), supply (12), protection (11); sun shield (19).")
 
 # Remove the renderer's temporary view folders
 import shutil

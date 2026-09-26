@@ -2,9 +2,9 @@
 
 Run from the repo root:  python cad/src/model.py
 Exports STEP and STL into cad/step and cad/stl:
-    citytwin-kiosk-assembly   the whole public kiosk, BOM items 1 to 15
+    citytwin-kiosk-assembly   the whole public kiosk, BOM items 1 to 15, with the outdoor sun shield (19)
     kiosk-head                display head, window, e-paper, controller, buttons, notice plate, hood
-    services-cabinet          cabinet with both DIN rails, mains protection, 12 V supply and TwinKit gateway
+    services-cabinet          cabinet with both DIN rails, mains protection, 12 V supply, TwinKit gateway and sun shield
     post-and-base             post, base plate and anchors
 
 CityTwin is mostly software. The physical part is the public kiosk: a steel post on a
@@ -14,7 +14,8 @@ the back of the post. The cabinet holds two TS35 DIN rails: the lower one carrie
 protection and the 12 V supply; the upper one carries the TwinKit gateway exactly as
 TwinKit lays it out (TWK-DWG-001: terminals and fuse, 9-module enclosure, 2-module DC-DC
 converter, 4-module UPS with the LiFePO4 pack inside). The TwinKit whip is replaced by a
-coax lead to the post-top antenna.
+coax lead to the post-top antenna. On outdoor sites a ventilated aluminum sun shield (item 19,
+CTW-DDR-002) hangs over the cabinet with a 25 mm air gap.
 
 Axes: X across the kiosk face, Y from the reading side (-Y) to the back (+Y), Z up.
 Units mm. Sidewalk surface at Z = 0. Main dimensions and interfaces only; not for fabrication.
@@ -56,6 +57,9 @@ PARAMS = {
     "ant_len": 600.0, "ant_d": 20.0,
     # 15 conduit
     "conduit_d": 32.0,
+    # 19 cabinet sun shield for outdoor sites (CTW-DDR-002): folded aluminum over the top, both
+    # sides and the door, air gap to the cabinet, open at the bottom, vent slots at the top
+    "shield_gap": 25.0, "shield_t": 1.5,
 }
 
 
@@ -84,6 +88,10 @@ def derived(p=PARAMS):
         "antenna_tip_z": p["post_top"] + 20 + p["ant_len"],
         "head_side_overhang": p["head_w"] / 2 - p["post"] / 2,
         "hood_side_overhang": p["hood_w"] / 2 - p["post"] / 2,
+        "shield_w": p["cab_w"] + 2 * (p["shield_gap"] + p["shield_t"]),
+        "shield_y1": p["post"] / 2 + p["cab_d"] + p["shield_gap"] + p["shield_t"],
+        "shield_z1": p["cab_z0"] + p["cab_h"] + p["shield_gap"] + p["shield_t"],
+        "shield_h": p["cab_h"] + p["shield_gap"] + p["shield_t"],
     }
 
 
@@ -115,7 +123,7 @@ def zcyl(x, y, z0, z1, r):
 
 
 def build_parts(p=PARAMS):
-    """Return [(bom, name, shape)] for BOM items 1 to 15."""
+    """Return [(bom, name, shape)] for BOM items 1 to 15 and 19 (sun shield, outdoor sites)."""
     D = derived(p)
     P2 = p["post"] / 2
     parts = []
@@ -237,13 +245,28 @@ def build_parts(p=PARAMS):
     cr = p["conduit_d"] / 2
     conduit = zcyl(0, (cy_0 + cy_1) / 2, bt, cz0 + p["cab_t"], cr) + box(-8, 8, P2 - t, cy_0 + p["cab_t"], 640, 700)
     parts.append((15, "Conduit and cabling", conduit))
+
+    # 19 Cabinet sun shield (outdoor sites, CTW-DDR-002): top, two sides and a lift-off back
+    # panel over the door, 25 mm air gap, open bottom, vent slots high on the back, two hook tabs
+    st, sw = p["shield_t"], D["shield_w"] / 2
+    sy1, sz1 = D["shield_y1"], D["shield_z1"]
+    shield = (box(-sw, sw, cy_0, sy1, sz1 - st, sz1)
+              + box(-sw, -sw + st, cy_0, sy1, cz0, sz1)
+              + box(sw - st, sw, cy_0, sy1, cz0, sz1)
+              + box(-sw, sw, sy1 - st, sy1, cz0, sz1))
+    for i in range(4):
+        xs = -150 + i * 80
+        shield = shield - box(xs, xs + 60, sy1 - st - 1, sy1 + 1, sz1 - 60, sz1 - 45)
+    for xs in (-120, 100):
+        shield = shield + box(xs, xs + 20, cy_0, cy_0 + 10, cz1 + 5, sz1 - st)
+    parts.append((19, "Cabinet sun shield (outdoor sites)", shield))
     return parts
 
 
 GROUPS = {
-    "citytwin-kiosk-assembly": list(range(1, 16)),
+    "citytwin-kiosk-assembly": list(range(1, 16)) + [19],
     "kiosk-head": [3, 4, 5, 6, 7, 8, 9],
-    "services-cabinet": [10, 11, 12, 13],
+    "services-cabinet": [10, 11, 12, 13, 19],
     "post-and-base": [1, 2, 14, 15],
 }
 
