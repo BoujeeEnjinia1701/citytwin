@@ -3,7 +3,7 @@ doc_id: CTW-PRC-001
 title: CityTwin design precis
 project: CityTwin
 doc_type: Design precis
-version: "0.2"
+version: "0.3"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -17,6 +17,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Populate to TRL 2 (architecture, privacy rules, kiosk massing model, first-order numbers, safety, open questions)
+- version: "0.3"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: TRL 3 update with adopted choices per CTW-DDR-001, numbers from CTW-CAL-001, parametric model and GA drawing CTW-DWG-001, TwinKit layout in the cabinet, pull paths for PotholeLog and DockHub
 ---
 
 # CityTwin design precis
@@ -25,32 +29,32 @@ revisions:
 
 CityTwin is open software that runs on a TwinKit gateway and brings the lab's smart city nodes onto one map, plus a public street kiosk that shows the same data to residents. Nodes send counts and levels over LoRaWAN; CityTwin checks every record against a schema, stores it, publishes hourly open data files and draws the map. The kiosk is a steel post with a 13.3 in color e-paper screen at eye height, three push buttons, a notice plate that says what is measured and by whom, and a locked cabinet that holds the mains protection and the gateway.
 
-First-order estimates, to be checked at TRL 3: a 46-node reference neighborhood sends about 4,900 records a day, well within one gateway; the kiosk and gateway draw about 9 W from the mains; the kiosk parts cost about $740, or about $1,025 with the TwinKit gateway, above the $600 budget. The color e-paper takes about 20 s to redraw and is rated only 0 to 40 °C, so button response and the climate range are not met.
+The TRL 3 calculations (CTW-CAL-001) show that the data side has wide margin: the 46-node reference neighborhood sends 5,616 uplinks a day and loses 0.61 % to collisions and downlink blanking, and the store and open export are small. The kiosk takes 10.2 W from the mains with the gateway, weighs about 58 kg and stands up to a 35 m/s gust with a large margin. Four requirements are not met: a button press takes 19.8 s to show a new layer (R10); the kiosk parts cost $739.00 against the $600 budget, though within the $750 recommended (R16); the TwinKit backup lasts only 1.63 h with an aged, cold pack (R18); and a street kiosk in sun or frost is outside the panel's 0 to 40 °C rating (R20), which is why the pilot is sited in shelter (R12, at risk). The general arrangement is drawing [CTW-DWG-001](../cad/drawings/CTW-DWG-001.pdf).
 
 ![Hero render](../media/hero.png)
 
-*Figure 1. CityTwin kiosk on a sidewalk, with a 1.75 m person for scale. Massing model.*
+*Figure 1. CityTwin kiosk on a sidewalk, with a 1.75 m person for scale. Rendered from the parametric model `cad/src/model.py`.*
 
 ## How it works
 
-1. **Collect.** The seven LoRaWAN node types (CurbCount, CrossSafe, LoadZone, HeatMap Node, FloodGauge, AirStreet, NoiseMap) send small uplinks to the TwinKit gateway's concentrator. PotholeLog uploads daily road summaries over depot Wi-Fi, and DockHub reports over LTE-M; both need an upload path agreed with those projects (open question).
+1. **Collect.** The seven LoRaWAN node types (CurbCount, CrossSafe, LoadZone, HeatMap Node, FloodGauge, AirStreet, NoiseMap) send small uplinks to the TwinKit gateway's concentrator. PotholeLog uploads daily road summaries over depot Wi-Fi to the fleet operator's server, and DockHub syncs over LTE-M to its own back end. Under CTW-DDR-001 D11 the gateway pulls their published aggregates (road segment files once a day, dock-hour rows every hour) by outbound HTTPS, so it still accepts no inbound connection; the path is to be agreed with those projects. CrossSafe has no LoRaWAN uplink yet (its radio links the two sides of a crossing point to point), so its layer waits for that interface.
 2. **Check.** A decoder for each node type turns the payload into named fields. Any field outside that type's schema is rejected and logged, so a changed or faulty node cannot push anything but counts and levels into the store.
-3. **Store.** Records go into the TwinKit time-series database with node ID, location and time. Raw records are kept for a limited period (proposed two years, awaiting Amish); hourly aggregates are kept indefinitely.
-4. **Apply the privacy rules.** Before anything is published, people and vehicle counts below a threshold (proposed 5 per hour) become "fewer than 5", PotholeLog data is published only per road segment and per day, and DockHub data only per dock per hour. No card IDs, vehicle tracks or node-level raw streams leave the gateway.
-5. **Publish.** Every hour the gateway writes CSV and GeoJSON files with a documented schema and pushes them one way to a public host under an open license. An OGC SensorThings API endpoint on the public host is proposed for TRL 3.
+3. **Store.** Records go into the TwinKit time-series database with node ID, location and time. Raw records are kept for two years and hourly aggregates indefinitely (D6); ten years of aggregates and two years of raw data take about 21 GB of the gateway's card.
+4. **Apply the privacy rules.** Before anything is published, people and vehicle counts below 5 per hour (D6) become "fewer than 5", PotholeLog data is published only per road segment and per day, and DockHub data only per dock per hour. No card IDs, vehicle tracks or node-level raw streams leave the gateway.
+5. **Publish.** Every hour the gateway writes CSV and GeoJSON files with a documented schema and pushes them one way to a public host under CC BY 4.0 (D7), about 0.86 MB of CSV a day. An OGC SensorThings API endpoint on the public host remains a suggestion for later work.
 6. **Show.** The web map has one layer per node type, a time slider, node health and an "as of" timestamp. The kiosk controller pulls a pre-rendered 1600 x 1200 image of the selected layer from the gateway every 10 min, or when a button is pressed, and writes it to the e-paper. Each image carries its timestamp, so a stale screen during an outage says so.
 
 ![Data flow](../media/flow.png)
 
-*Figure 2. Data flow for the reference neighborhood, in records per day. All values are estimates: about 3 % radio loss, and about 4,750 stored records rolled up to about 1,100 hourly records for the open export.*
+*Figure 2. LoRaWAN data flow for the reference neighborhood, in records per day (CTW-CAL-001): 0.61 % lost to collisions and downlink blanking, and 5,582 stored records rolled up to 1,104 hourly records for the open export. PotholeLog and DockHub rows, pulled from their operators, are not shown.*
 
 ## Main components
 
 Table 1. Main components. Numbers match `bom/bom.csv` and Figure 3.
 
-| # | Component | Proposed choice | Notes |
+| # | Component | Choice | Notes |
 | --- | --- | --- | --- |
-| 1 | Base plate and anchors | 400 x 400 x 12 mm galvanized plate, four M16 anchors | Into a footing or existing slab |
+| 1 | Base plate and anchors | 400 x 400 x 12 mm galvanized plate, four M16 anchors on a 300 mm square | Into a footing or existing slab; 1.92 kN per anchor at the design gust |
 | 2 | Post | 100 x 100 x 4 mm square hollow section, 1.75 m | Carries head, hood, cabinet and antenna |
 | 3 | Display head enclosure | Folded 2 mm aluminum, about 460 x 100 x 680 mm | IP54 target, vents underneath |
 | 4 | Front window | 6 mm UV-stabilized polycarbonate, anti-glare | Replaceable if scratched |
@@ -59,11 +63,11 @@ Table 1. Main components. Numbers match `bom/bom.csv` and Figure 3.
 | 7 | Push buttons | Three 19 mm stainless buttons with LED rings, at about 1.12 m | Layer, time range, "about this sensor" |
 | 8 | Data notice plate | 400 x 100 mm, icons in the style of the open [DTPR](https://dtpr.io/) standard, QR code and short URL | Says what is measured, who is responsible and for how long data is kept |
 | 9 | Sun and rain hood with light | Folded aluminum, 2 W LED strip with dusk sensor | Shades the screen by day, lights it at night |
-| 10 | Services cabinet | Lockable steel, IP55, DIN rail, door on the back | Only place with mains voltage |
+| 10 | Services cabinet | Lockable steel, 360 x 160 x 460 mm, IP55, two 320 mm DIN rails, door on the back | Only place with mains voltage |
 | 11 | Mains protection | 6 A 30 mA RCBO and Type 2 surge protector | Installed or checked by an electrician |
 | 12 | 12 V DIN power supply | 60 W, certified, SELV output | Feeds gateway and head |
-| 13 | TwinKit gateway | TwinKit DIN gateway with LoRaWAN concentrator and LiFePO4 backup | Separate BOM (TwinKit); runs CityTwin software |
-| 14 | LoRaWAN antenna | TwinKit antenna on a post-top bracket, top at about 2.4 m | Low for a gateway; see open questions |
+| 13 | TwinKit gateway | TwinKit DIN gateway on the upper rail as in TWK-DWG-001 (294 mm of rail), LiFePO4 pack inside its UPS module | Costed in TwinKit ($290.00); runs CityTwin software |
+| 14 | LoRaWAN antenna | TwinKit antenna on a post-top bracket, tip at 2.38 m, coax to the gateway's SMA bulkhead | Low for a gateway; see open questions |
 | 15 | Conduit and cabling | Mains conduit into the cabinet; 12 V and Ethernet up the post | |
 | 16 to 18 | Software and templates | Map dashboard, open data export, governance templates | MIT and CC licensed; no parts cost |
 
@@ -73,77 +77,81 @@ Table 1. Main components. Numbers match `bom/bom.csv` and Figure 3.
 
 ![Cutaway](../media/cutaway.png)
 
-*Figure 4. Section on the kiosk centerline, looking from the right: window (4), e-paper (5) and controller (6) in the head; gateway with backup pack (13), power supply (12) and mains protection (11) in the cabinet.*
+*Figure 4. Section on the kiosk centerline, looking from the right: window (4), e-paper (5) and controller (6) in the head; TwinKit gateway (13) on the upper rail, power supply (12) and mains protection (11) on the lower rail of the cabinet.*
 
-## First-order numbers
+## Key numbers
 
-All values are estimates for concept review and will be checked at TRL 3. Assumptions are stated in each row and in CTW-REQ-001.
+All values are from the TRL 3 calculation note CTW-CAL-001, which states every assumption; the tags refer to lines of its script.
 
-Table 2. Data load for the reference neighborhood (proposed).
+Table 2. Data load for the reference neighborhood (CTW-DDR-001 D9).
 
-| Node type | Nodes | Records per node per day | Records per day | Basis |
+| Node type | Nodes | Uplinks per node per day | Uplinks per day | Basis |
 | --- | --- | --- | --- | --- |
-| CurbCount | 8 | 96 | 768 | 15 min counts (CurbCount README) |
-| CrossSafe | 4 | 24 | 96 | Hourly activation summary (assumption) |
-| LoadZone | 12 | 64 | 768 | State changes and heartbeats (assumption) |
-| HeatMap Node | 6 | 96 | 576 | 15 min means (HeatMap Node README) |
-| FloodGauge | 4 | 96 | 384 | 15 min status plus alerts (assumption) |
-| AirStreet | 6 | 288 | 1,728 | 5 min records (AirStreet README) |
-| NoiseMap | 6 | 96 | 576 | 15 min records (NoiseMap README) |
-| **Total** | **46** | | **4,896** | Within TwinKit's roughly 50 nodes (R2 met) |
+| CurbCount | 8 | 96 | 768 | 14 B per 15 min bin (CBC-CAL-001) |
+| CrossSafe | 4 | 24 | 96 | Hourly summary (CityTwin assumption; no LoRaWAN uplink defined in CrossSafe) |
+| LoadZone | 12 | 124 | 1,488 | 100 state changes and 24 heartbeats, 12 B (LDZ-CAL-001) |
+| HeatMap Node | 6 | 96 | 576 | 20 B per 15 min (HMN-CAL-001) |
+| FloodGauge | 4 | 96 | 384 | 15 min normal mode; 1 min in events (FLG-CAL-001) |
+| AirStreet | 6 | 288 | 1,728 | 20 B per 5 min (AST-CAL-001) |
+| NoiseMap | 6 | 96 | 576 | 22 B per 15 min (NSM-CAL-001) |
+| **Total** | **46** | | **5,616** | R2 met on paper |
 
-Table 3. System and kiosk estimates.
+Table 3. System and kiosk numbers (CTW-CAL-001).
 
-| Quantity | Estimate | Basis | Requirement |
-| --- | --- | --- | --- |
-| Radio airtime | about 900 s per day, about 1 % of one channel, about 0.13 % over 8 channels | 4,896 uplinks of about 20 bytes at SF9, about 185 ms each | R2 met with wide margin |
-| Records stored | about 4,750 per day | 3 % radio loss | |
-| Storage | about 1 MB per day, about 350 MB per year | About 200 bytes per stored record with index | Fits the gateway's storage |
-| Open export | about 1,100 hourly records per day, about 0.2 MB per day as CSV | 46 nodes x 24 h | R6 |
-| Worst data age on screen | about 25 min | 15 min node interval plus 10 min kiosk redraw | R8 met, thin margin |
-| Button to new layer | about 20 s | About 1 s to fetch the image plus about 19 s full refresh | R10 **not met** (5 s) |
-| Screen resolution | about 150 px per inch; 7 mm cap height is about 41 px | 1,600 px over 270.4 mm | R9 by design |
-| Kiosk power (head only) | about 1.8 W from the mains | Controller about 1.0 W, hood light 2 W for about 6 h a day (0.5 W average), button LEDs 0.1 W, e-paper refresh under 0.5 W for 19 s every 10 min (about 0.02 W), 88 % supply | |
-| Kiosk and gateway | about 9 W, about 0.21 kWh per day, about 75 kWh per year | Adds TwinKit's about 6 W | R15 met |
-| Wind on head and hood | about 350 N at about 1.4 m | 0.35 m² at 35 m/s gust, air 1.25 kg/m³, drag coefficient 1.3 | |
-| Post base moment and stress | about 0.58 kN·m; about 12 MPa | Adds about 160 N on the cabinet; section modulus of 100 x 100 x 4 SHS about 47,000 mm³ | R13 met by a wide margin |
-| Anchor tension | about 1 kN per anchor | Moment over 0.3 m lever, two anchors in tension | Well within M16 anchors |
-| Mass | about 55 kg | Post 21, base plate 15, cabinet 7, head 4.6, contents 4, hood 1.5, display and window 2 kg | Two-person lift |
-| Kiosk parts cost | about $740 | Indicative, `bom/bom.csv` | R16 **not met** ($600) |
-| Kiosk and gateway | about $1,025 | Adds TwinKit's about $285 | R17 **not met** ($600) |
+| Quantity | Value | Requirement |
+| --- | --- | --- |
+| Radio airtime at SF9 | 1,309 s a day, 0.189 % of each of 8 channels | |
+| Radio loss | 0.38 % collisions plus 0.23 % while the gateway sends LoadZone sign downlinks; 0.94 % plus 0.23 % in a storm peak hour | R2 met on paper |
+| Gateway capacity | 14,075 records a day of 20 B at SF9 before loss reaches 1 % | R2 |
+| Storage | 2.89 GB a year raw; 20.9 GB for two years raw and ten years of hourly aggregates | Fits 56 GB with TwinKit's own data |
+| Open export | 7,128 rows a day, 0.86 MB CSV and 2.85 MB GeoJSON | R6 |
+| Worst data age | 25.9 min on the kiosk, 15.6 min on the web map | R8 met on paper, thin margin |
+| Button to new layer | 19.8 s (0.79 s transfer plus 19 s refresh) | R10 **not met** |
+| Text and night light | 7 mm capitals are 41 px and 16.0 arcmin at 1.5 m; about 1,459 lx from the 2 W hood light | R9 met on paper |
+| Hood shading | 13 %, 31 % and 63 % of the window shaded with the sun at 30°, 45° and 60° in front | |
+| Head and panel, pilot | Panel 40.1 °C at 40 °C air in shade | R12 at risk |
+| Head and panel, street | About 79 °C in low sun at 45 °C air; 13.5 W to keep an insulated panel bay at 0 °C in -20 °C air | R20 **not met** |
+| Cabinet | 8.11 W inside; air 4.4 K above ambient in shade, 18.8 K in sun; pack 0.6 K under its 45 °C charge limit at 40 °C air | R12 at risk |
+| Power | 10.2 W from the mains, 90 kWh a year; 12 V peak 26.7 W on a 60 W supply | R15 met on paper |
+| Wind at 35 m/s | 792 N, 826 N·m at the base; 26.2 MPa in the post with a 1.5 factor; 1.92 kN per anchor | R13 met on paper |
+| Mass | 58.2 kg | Two-person lift |
+| Backup | 2.40 h new, 1.63 h aged at 0 °C (TwinKit) | R18 **not met** in the worst case |
+| Kiosk parts cost | $739.00 | R16 **not met** against $600; within the $750 recommended |
+| Kiosk and gateway | $1,029.00 | R17 reported |
 
 ## Key design choices
 
-All are proposed, awaiting Amish.
+Items D1 to D10 in CTW-DDR-001 are adopted as recommended for TRL 3 under Amish's 2026-09-25 instruction, open for his review. D11 is a new proposal from this session.
 
-- **Color e-paper rather than an LCD.** E-paper is readable in direct sun, draws almost nothing between refreshes and keeps its image in an outage. A 1,000-nit outdoor LCD would respond instantly and allow touch, but costs more, draws tens of watts and needs cooling. A monochrome e-paper panel would refresh faster but lose the color layers. Recommendation: color e-paper for the first kiosk, with an indoor LCD variant for libraries and city hall lobbies.
-- **Buttons, not a touch screen.** Three stainless buttons survive vandalism and weather and suit e-paper's slow refresh; the QR code hands richer use over to the visitor's phone. Recommendation: buttons.
-- **Gateway inside the kiosk cabinet.** One site, one mains feed and one locked box for a pilot. The cost is a low antenna (about 2.4 m), which shortens LoRaWAN range. The alternative is a rooftop gateway with the kiosk on a network link. Recommendation: gateway in the cabinet for the pilot, rooftop gateway for a full neighborhood.
-- **Mains power.** Kiosk and gateway need about 0.21 kWh a day. A solar kiosk would need roughly a 75 W panel and a battery of about 0.6 kWh for three dark days (estimate), which does not fit the budget. The head alone (about 45 Wh a day) could run on a panel of about 30 W. Recommendation: mains, with a solar head-only variant for sites without power.
-- **One-way publishing.** The gateway pushes open data files out and accepts no inbound connections from the internet, which keeps TwinKit's advice to keep the gateway off public networks until it is hardened. Recommendation: one-way push.
-- **Privacy rules in the gateway, not only in the nodes.** Nodes already send counts and levels only; enforcing a schema and small-count suppression again at the gateway protects against a changed node or a future node type that is less careful. Recommendation: both layers.
-- **Open data license.** Options: CC BY 4.0 (attribution, widely used for government data), CC0 (no conditions) or ODbL (share-alike). Recommendation: CC BY 4.0.
-- **Budget.** See the review note for options.
+- **Color e-paper rather than an LCD (D2).** E-paper is readable in direct sun, draws almost nothing between refreshes and keeps its image in an outage. A 1,000-nit outdoor LCD would respond instantly and allow touch, but costs more, draws tens of watts and needs cooling. A monochrome panel would refresh faster but lose the color layers. Adopted: color e-paper for the street kiosk, with an indoor LCD variant for libraries and city hall lobbies (not modeled at TRL 3). The cost is R10, not met.
+- **Sheltered pilot (D3).** The panel is rated 0 to 40 °C. The pilot kiosk stands where the screen gets no direct sun; the heater and shading study for a street kiosk is CTW-CAL-001 section F.
+- **Buttons, not a touch screen (D8).** Three stainless buttons survive vandalism and weather and suit e-paper's slow refresh; the QR code hands richer use to the visitor's phone.
+- **Gateway inside the kiosk cabinet (D4).** One site, one mains feed and one locked box for a pilot. The TwinKit gateway sits on its own DIN rail exactly as TwinKit lays it out, with a coax lead to the post-top antenna in place of its whip. The cost is a low antenna (tip at 2.38 m), which shortens LoRaWAN range; a rooftop gateway is the choice for a full neighborhood.
+- **Mains power (D5).** Kiosk and gateway need 0.246 kWh a day. A solar head-only variant is kept for sites without power (not modeled at TRL 3).
+- **One-way publishing and outbound pulls (D10, D11).** The gateway pushes open data files out and fetches sibling aggregates out, and accepts no inbound connections from the internet, in line with TwinKit's advice to keep the gateway off public networks until it is hardened.
+- **Privacy rules in the gateway, not only in the nodes (D10).** Nodes already send counts and levels only; enforcing a schema and small-count suppression (5 per hour, D6) again at the gateway protects against a changed node or a future node type that is less careful.
+- **Open data license (D7).** CC BY 4.0.
+- **Budget (D1).** `budget_usd` ($600) covers the kiosk; the gateway is costed in TwinKit. The recommended new figure of $750 awaits Amish.
 
 ## Safety
 
 > **Safety:** The services cabinet contains mains voltage (230 V or 120 V). The mains feed, RCBO, surge protector and earthing must be installed or checked by a qualified electrician and follow local electrical code. Keep the cabinet locked, fit an earth bond to the post, head and hood, and carry only 12 V SELV up to the head.
 
-> **Safety:** The TwinKit gateway contains a LiFePO4 backup pack. Use a pack with a built-in BMS and fuse, charge it only through the TwinKit UPS module, and keep it within its temperature limits; a sealed cabinet in full sun can exceed them.
+> **Safety:** The TwinKit gateway contains a LiFePO4 backup pack. Use a pack with a built-in BMS and fuse, charge it only through the TwinKit UPS module, and keep it within its temperature limits. CTW-CAL-001 finds the sealed cabinet 18.8 K above the air in full sun: at 45 °C air the pack would be near 64 °C, and in frost it cannot charge. The UPS charger's 0 to 45 °C lockout must never be defeated; the pilot site must keep the cabinet out of direct sun.
 
-> **Safety:** The kiosk is a roughly 55 kg steel post beside a walkway. Install it only with the asset owner's permission and a permit, on a footing designed for local wind and impact loads, with no sharp edges or protruding corners at head height, and keep a clear walkway width around it as local rules require. Lift it with two people or a hoist.
+> **Safety:** The kiosk is a roughly 58 kg steel post beside a walkway. Install it only with the asset owner's permission and a permit, on a footing designed for local wind and impact loads, with no sharp edges or protruding corners at head height, and keep a clear walkway width around it as local rules require. Lift it with two people or a hoist.
 
 > **Safety:** Privacy by design: no images, audio recordings or personal identifiers are taken in, stored or published; only aggregate counts or levels. Check local data protection law, and carry out a privacy impact assessment before any deployment. CityTwin is not a public warning system: do not rely on it for flood or emergency alerts.
 
 ## Open questions
 
-- [ ] Upload paths for PotholeLog (depot Wi-Fi files) and DockHub (LTE-M): agree formats with those projects rather than change them here.
-- [ ] Reporting intervals and payload fields for CrossSafe, FloodGauge and LoadZone, which are assumed here.
-- [ ] Climate range: a thermostatic heater and sun shading for the head, a panel rated for a wider range, or indoor siting only (R12).
-- [ ] Button response: accept about 20 s with an LED acknowledgment, use a faster monochrome panel for part of the screen, or use an LCD (R10).
-- [ ] Small-count threshold, raw data retention and the open data license. Proposed, awaiting Amish.
-- [ ] Gateway in the kiosk cabinet or on a rooftop, and the antenna height needed for the reference neighborhood.
+- [ ] Pull paths for PotholeLog segment files and DockHub hourly aggregates (D11): agree formats and hosts with those projects.
+- [ ] A LoRaWAN uplink from CrossSafe, whose radio now runs point to point between the two sides (R1).
+- [ ] Button response (R10): accept about 20 s with an LED acknowledgment and restate R10, show a small "loading" cue first, or use an LCD in the indoor variant. Proposed, awaiting Amish.
+- [ ] Backup time (R18): restate R18 at 1.5 h, or ask TwinKit for a larger pack. Proposed, awaiting Amish.
+- [ ] Street climate (R20): a heated, insulated panel bay (13.5 W at -20 °C), a north-facing or shaded face, a sun shield and vents for the cabinet, or a wider-range panel.
+- [ ] Antenna height needed for the reference neighborhood with the gateway in the cabinet.
 - [ ] Which languages and scripts the kiosk shows, and how residents ask questions or report a fault.
-- [ ] First partner city or neighborhood, and co-design sessions with residents on what the kiosk should show.
+- [ ] First partner city or neighborhood, and co-design sessions with residents on what the kiosk should show (CTW-DDR-001 O1).
 
-Concept media: [blueprint sheet](../media/concept-blueprint.pdf), [interactive 3D model](../media/viewer.html).
+Concept media: [blueprint sheet](../media/concept-blueprint.pdf), [interactive 3D model](../media/viewer.html). General arrangement: [CTW-DWG-001](../cad/drawings/CTW-DWG-001.pdf). Calculations: [CTW-CAL-001](04-calcs/01-sizing.md).

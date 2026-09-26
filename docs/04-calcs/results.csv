@@ -1,0 +1,21 @@
+id,requirement,value,target,status
+R1,Ingest every node type,"6 LoRaWAN types on paper; PotholeLog and DockHub by outbound pull (D11), not agreed; CrossSafe has no LoRaWAN uplink",All 9 types,At risk
+R2,Capacity on one gateway,"46 nodes, 5,616/day, loss 0.38 %; 10,000/day gives 0.71 %","50 nodes, 10,000/day",Met on paper
+R3,Counts and levels only,Per-type schema at the decoder,Reject out-of-schema fields,Met by design
+R4,Small-count suppression,Threshold 5 per hour (D6),Fewer than 5 published as such,Met by design
+R5,No movement traces,Segment per day; dock per hour,"No tracks, no card IDs",Met by design
+R6,Open data export,"7,128 rows/day, 0.86 MB CSV","Hourly CSV and GeoJSON, CC BY 4.0",Met by design
+R7,One map,"Layer per type, health, as-of time",As stated,Met by design
+R8,Data freshness,25.9 min worst on the kiosk,30 min,Met on paper (thin margin)
+R9,Readable day and night,"7 mm = 41 px, 16.0 arcmin; 1,459 lx at night",Sun and night at 1.5 m,Met on paper
+R10,Button response,19.8 s,5 s,Not met
+R11,Accessible kiosk,Buttons 1120 mm; overhang 200 mm,"380 to 1,220 mm; 305 mm; WCAG page",Met on paper (web page not verifiable at TRL 3)
+R12,"Pilot climate (redefined, D3)",Panel 40.1 C at 40 C air; pack 44.4 C,"Sheltered site, air 0 to 40 C",At risk
+R13,Wind,26.2 MPa with factor 1.5; anchors 1.92 kN,"35 m/s gust x 1.5, no yield",Met on paper
+R14,Electrical safety,Mains only in the cabinet; 12 V SELV; peak 26.7 W of 60 W,As stated,Met by design
+R15,Running power,10.2 W,15 W,Met on paper
+R16,Kiosk parts cost,$739.00,$600 ($750 recommended),Not met
+R17,"Cost with gateway (redefined, D1)","$1,029.00",Reported; gateway costed in TwinKit,Met on paper (reported)
+R18,Honest in an outage,"2.40 h new, 1.63 h worst",2 h ride-through,Not met (worst case)
+R19,Secure by default,Outbound push and pull only,No inbound connections,Met by design
+R20,Street climate (target after the pilot),Panel 79 C in sun at 45 C; heater 13.5 W at -20 C,-20 to +45 C air,Not met

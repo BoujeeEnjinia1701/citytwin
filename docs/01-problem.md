@@ -3,7 +3,7 @@ doc_id: CTW-PRB-001
 title: CityTwin problem statement
 project: CityTwin
 doc_type: Problem statement
-version: "0.2"
+version: "0.3"
 status: Draft
 date: '2026-09-25'
 author: Amish Chadha
@@ -17,6 +17,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Populate to TRL 2 (problem, users, context, constraints, prior work, open questions)
+- version: "0.3"
+  date: '2026-09-25'
+  author: Amish Chadha
+  change: TRL 3 update per CTW-DDR-001 and CTW-CAL-001 (reference neighborhood rates, pilot siting, budget scope, adopted license and privacy settings, sibling upload paths)
 ---
 
 # CityTwin problem statement
@@ -54,15 +58,15 @@ Table 1. Users and needs.
 | Researcher or journalist | Documented, reusable open data under an open license | Download or API |
 | Maintenance crew | Node health and alerts (battery, last seen, flood alerts) | Depot or field |
 
-**Operating environment (kiosk).** Outdoors on a sidewalk or plaza, in rain, sun and dust, from about -20 °C to +45 °C air temperature depending on the city, with exposure to vandalism. Mains power from a street lighting circuit or an adjacent building. Indoor variants (library, city hall lobby) are simpler.
+**Operating environment (kiosk).** Outdoors on a sidewalk or plaza, in rain, sun and dust, from about -20 °C to +45 °C air temperature depending on the city, with exposure to vandalism. Mains power from a street lighting circuit or an adjacent building. Indoor variants (library, city hall lobby) are simpler. Under CTW-DDR-001 D3 (adopted as recommended for TRL 3 under Amish's 2026-09-25 instruction, open for his review) the pilot kiosk stands on a sheltered site with no direct sun on the screen and air at 0 to 40 °C, because the color e-paper is rated only 0 to 40 °C; the full street range is the target after the pilot (CTW-REQ-001 R20).
 
-**Reference neighborhood (proposed, for sizing).** 46 LoRaWAN nodes: 8 CurbCount, 4 CrossSafe, 12 LoadZone pucks, 6 HeatMap Node, 4 FloodGauge, 6 AirStreet and 6 NoiseMap, plus PotholeLog on 3 buses and one DockHub. This is within the roughly 50 nodes that TwinKit is sized for.
+**Reference neighborhood (for sizing, CTW-DDR-001 D9).** 46 LoRaWAN nodes: 8 CurbCount, 4 CrossSafe, 12 LoadZone pucks, 6 HeatMap Node, 4 FloodGauge, 6 AirStreet and 6 NoiseMap, plus PotholeLog on 3 buses and one DockHub. With the sibling repos' TRL 3 reporting rates they send 5,616 uplinks a day, within the 50 nodes and 10,000 records a day that one TwinKit gateway must carry (CTW-CAL-001). PotholeLog uploads its daily summaries to the fleet operator's server over depot Wi-Fi, and DockHub syncs over LTE-M to its own back end; CityTwin would pull their published aggregates by outbound connections (D11, awaiting agreement with those repos).
 
 ## Constraints
 
-- Garage-buildable prototype, about $600 USD (`project.yaml`). The first estimate is above this; see the precis and review note.
+- Garage-buildable prototype. `budget_usd` is $600 and, under D1, covers the kiosk only; the TwinKit gateway is costed in TwinKit. The kiosk parts cost $739.00, above $600 and within the $750 recommended in the TRL 2 review, which awaits Amish.
 - Privacy by design: only counts and levels are taken in, stored or published; no images, audio or personal identifiers.
-- Open software (MIT), open hardware (CERN-OHL-S-2.0) and open data under an open license (license awaiting Amish).
+- Open software (MIT), open hardware (CERN-OHL-S-2.0) and open data under CC BY 4.0 (D7).
 - Runs offline on one TwinKit gateway; no dependency on a vendor cloud.
 - Mains work by a qualified electrician; street furniture installed only with the asset owner's permission.
 
@@ -75,9 +79,10 @@ Table 1. Users and needs.
 
 ## Open questions
 
-- Which city or neighborhood partner hosts the first kiosk? Proposed, awaiting Amish.
-- Open data license (CC BY 4.0, CC0 or ODbL)? Proposed, awaiting Amish.
-- Small-count threshold and raw data retention period for published people counts? Proposed, awaiting Amish.
+- Which city or neighborhood partner hosts the first kiosk? Proposed, awaiting Amish (CTW-DDR-001 O1).
+- Open data license: CC BY 4.0 adopted as recommended for TRL 3 (D7), open for Amish's review.
+- Small-count threshold of 5 per hour and two years of raw data retention adopted as recommended for TRL 3 (D6), open for Amish's review.
+- Will PotholeLog's operators and DockHub publish aggregates that CityTwin can pull, and will CrossSafe add a LoRaWAN uplink? To agree with those projects.
 
 ## User research and co-design
 

@@ -1,14 +1,14 @@
 # CityTwin
 
-![TRL 2](https://img.shields.io/badge/TRL-2%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
+![TRL 3](https://img.shields.io/badge/TRL-3%20of%209-0F766E) ![Hardware: CERN-OHL-S-2.0](https://img.shields.io/badge/hardware-CERN--OHL--S--2.0-111827) ![Software: MIT](https://img.shields.io/badge/software-MIT-111827)
 
-**Area:** Smart Cities · **TRL:** 2 of 9 (concept formulated) · **Prototype budget:** about $600 USD · **Difficulty:** 3 of 5
+**Area:** Smart Cities · **TRL:** 3 of 9 (proof of concept on paper) · **Prototype budget:** $600 USD for the kiosk ($750 recommended, awaiting Amish) · **Difficulty:** 3 of 5
 
 A city dashboard built on TwinKit that brings the smart city nodes together on a map and in a public kiosk, with open data export and privacy rules built in.
 
 ![CityTwin concept](media/hero.png)
 
-[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [Review note](docs/REVIEW.md)
+[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement CTW-DWG-001 (PDF)](cad/drawings/CTW-DWG-001.pdf) · [Calculations CTW-CAL-001](docs/04-calcs/01-sizing.md) · [Review note](docs/REVIEW.md)
 
 ## Concept rationale
 
@@ -60,7 +60,7 @@ A city dashboard built on TwinKit that brings the smart city nodes together on a
 
 CityTwin software on a TwinKit gateway receives counts and levels from the nine smart city node types, rejects anything outside each node's schema, stores the rest, suppresses small counts and movement traces, and publishes hourly CSV and GeoJSON files one way to a public host. The kiosk is a steel post with a 13.3 in color e-paper screen at about 1.46 m, three buttons at about 1.12 m, a data notice plate with a QR code, a lit sun hood, and a locked cabinet holding the mains protection, a 12 V supply and the gateway.
 
-First-order estimates (to be checked at TRL 3): a 46-node reference neighborhood sends about 4,900 records a day, well within one gateway; data on screen is at most about 25 min old; kiosk and gateway draw about 9 W; the kiosk weighs about 55 kg. Not met: button response (about 20 s against 5 s), the display's 0 to 40 °C rating against a -20 to +45 °C target, and cost (kiosk about $740 and about $1,025 with the gateway, against the $600 budget). See the [requirements](docs/03-requirements.md).
+TRL 3 calculations ([CTW-CAL-001](docs/04-calcs/01-sizing.md)): a 46-node reference neighborhood sends 5,616 uplinks a day and loses 0.61 %, well within one gateway; data on the kiosk is at most 25.9 min old; kiosk and gateway draw 10.2 W from the mains; the kiosk weighs about 58 kg and its post is stressed to 26.2 MPa in a 35 m/s gust with a 1.5 factor. Not met: button response (19.8 s against 5 s), kiosk cost ($739.00 against the $600 budget, within the $750 recommended), backup time with an aged, cold pack (1.63 h against 2 h), and the street climate range, so the pilot kiosk stands on a sheltered site. Ingest of every node type is at risk until PotholeLog, DockHub and CrossSafe agree their interfaces. See the [requirements](docs/03-requirements.md) and the [decision record](docs/decisions/0001-trl2-review-decisions.md).
 
 Full design precis: [docs/02-concept.md](docs/02-concept.md)
 
@@ -78,18 +78,18 @@ Full design precis: [docs/02-concept.md](docs/02-concept.md)
 10. Lockable services cabinet
 11. Mains protection (30 mA RCBO and surge protector)
 12. 12 V DIN power supply
-13. TwinKit gateway with LiFePO4 backup (TwinKit BOM)
+13. TwinKit gateway with LiFePO4 backup, on its own DIN rail (costed in TwinKit)
 14. LoRaWAN antenna on the post top (TwinKit BOM)
 15. Conduit and cabling
 16. Map dashboard, open data export and data governance templates (software and documents)
 
-The working bill of materials is in [bom/bom.csv](bom/bom.csv).
+The priced bill of materials is in [bom/bom.csv](bom/bom.csv): $739.00 for the kiosk, $1,029.00 with the TwinKit gateway.
 
 ## Safety
 
 > Privacy by design: no images, audio recordings or personal identifiers leave the device; only aggregate counts or levels are stored. Check local data protection law before any deployment. Mains wiring must be done or checked by a qualified electrician and follow local electrical code.
 >
-> The kiosk is a roughly 55 kg steel post: install it only with the asset owner's permission, on a footing designed for local wind loads, with no sharp edges at head height. The TwinKit gateway contains a LiFePO4 backup pack: use a pack with a built-in BMS and fuse. CityTwin is not a public warning system.
+> The kiosk is a roughly 58 kg steel post: install it only with the asset owner's permission, on a footing designed for local wind loads, with no sharp edges at head height. The TwinKit gateway contains a LiFePO4 backup pack: use a pack with a built-in BMS and fuse, and keep the cabinet out of direct sun, because in sun it can run far above the pack's 45 °C charge limit. CityTwin is not a public warning system.
 
 ## Repository layout
 
