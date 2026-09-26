@@ -1,5 +1,15 @@
 # Review note: CityTwin
 
+## Session 2026-09-26: sources strengthened
+
+Amish asked on 2026-09-26 to "Fix the weaker sources." README.md sections Concept rationale, Burning platform, Where it could be used and What sparked the idea were checked; every kept link was fetched and confirmed against its claim.
+
+| Where | Old source | New source |
+| --- | --- | --- |
+| What sparked the idea (Amsterdam sensor register) | Cities Today (trade press) with the Sensorenregister site | The regulation itself, Verordening meldingsplicht sensoren ([Gemeenteblad 2021, 368183](https://zoek.officielebekendmakingen.nl/gmb-2021-368183.html)), with the Sensorenregister site |
+
+The paragraph now states only what the regulation supports: in force December 1, 2021, advance reporting of what data a sensor collects, exemptions for private individuals and police or public order use, six months for sensors already in place, and a city register of the reports. The claims that the register map shows owner and personal data processing and that the city could remove unregistered sensors at the owner's expense rested on Cities Today alone and were removed. The inspiration event is unchanged; its line in INSPIRATIONS.md now names the Gemeenteblad source. docs/01-problem.md did not cite Cities Today and was not changed. No budget change.
+
 ## Session 2026-09-25: recommendations accepted
 
 On 2026-09-25 Amish wrote, in chat: "i accept all your recommendations, go with them across all repos." Every item in this note and in CTW-DDR-001 that carried a recommendation is now **decided by Amish, 2026-09-25: go with recommendation**, recorded in `docs/decisions/0002-recommendations-accepted.md` (CTW-DDR-002 v0.1). Items with no recommendation stay "Proposed, awaiting Amish". Nothing past TRL 3 was done.

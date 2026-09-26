@@ -48,7 +48,7 @@ Where the rules are unclear, projects stall. In Toronto, the former Ontario priv
 
 ## What sparked the idea
 
-The starting point was Amsterdam's sensor register. From December 2021 the city required companies, research institutions and government bodies to report sensors they place in public space, new or existing and mobile ones included, on a public online map that shows the type of sensor, its owner and whether it processes personal data, with June 1, 2022 as the deadline before the city could remove unregistered sensors at the owner's expense ([Cities Today](https://cities-today.com/amsterdam-introduces-mandatory-register-for-sensors/); [Sensorenregister Amsterdam](https://sensorenregister.amsterdam.nl/)). The register answers "who owns this and what does it collect?" on a website. CityTwin carries the same answer to the pavement: a notice plate with a QR code to the sensor register, the live counts and levels beside it, and open data files behind it, on hardware a city or neighborhood group can own.
+The starting point was Amsterdam's sensor register. A city regulation in force from December 1, 2021 requires anyone who places a sensor on or beside a street, on a vehicle or vessel, or in a publicly accessible building to report it in advance and state what data it collects, with exemptions for private individuals and for police and public order use; sensors already in place had six months to comply, and the city keeps a register of the reports so that people in public space can see what data is being gathered ([Gemeenteblad 2021, 368183](https://zoek.officielebekendmakingen.nl/gmb-2021-368183.html); [Sensorenregister Amsterdam](https://sensorenregister.amsterdam.nl/)). The register answers "who owns this and what does it collect?" on a website. CityTwin carries the same answer to the pavement: a notice plate with a QR code to the sensor register, the live counts and levels beside it, and open data files behind it, on hardware a city or neighborhood group can own.
 
 ## Problem
 
@@ -109,6 +109,12 @@ The priced bill of materials is in [bom/bom.csv](bom/bom.csv): $739.00 for the p
 ## Documentation
 
 Controlled documents follow the portfolio [documentation standard](.kit/STANDARDS.md). Each carries a document ID (CTW-PRC-001 for the precis), a version and a revision history. Branded PDFs are built with `python .kit/render.py` and attached to GitHub Releases when a document is tagged, for example `CTW-PRC-001/v1.0`.
+
+## Credits
+
+Designed by Amish Chadha. See [CONTRIBUTORS.md](CONTRIBUTORS.md) for roles. To cite this design, use [CITATION.cff](CITATION.cff) (GitHub shows it as "Cite this repository").
+
+AI assistance (Claude) was used to accelerate concept renders, prototype documentation and first-pass sizing calculations. Design direction and all decisions are Amish Chadha's, recorded in this repository's decision records (`docs/decisions/`).
 
 ## Licenses
 
