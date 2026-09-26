@@ -1,6 +1,19 @@
 item,qty,spec,supplier,unit_cost_usd,make_buy,notes
-TwinKit gateway and software,,,,,,
-Map dashboard,,,,,,
-Public kiosk enclosure with screen,,,,,,
-Open data export,,,,,,
-Data governance templates,,,,,,
+1 Base plate and anchors,1,"400 x 400 x 12 mm galvanized steel plate, four M16 anchors into a concrete footing or existing slab",Local steel fabricator,35.00,make,Indicative price; footing is site work and not included
+2 Post,1,"100 x 100 x 4 mm square hollow section, 1.75 m, hot-dip galvanized and powder coated, welded to the base plate, cap on top",Local steel fabricator,60.00,make,Indicative price
+3 Display head enclosure,1,"Folded 2 mm aluminum, about 460 x 100 x 680 mm, gasketed front frame, vent slots underneath, tamper-resistant screws, IP54 target",Local sheet metal shop,85.00,make,Indicative price
+4 Front window,1,"6 mm UV-stabilized polycarbonate, anti-glare, about 256 x 336 mm",Plastics supplier,25.00,buy,Indicative price
+5 E-paper display,1,"13.3 in E Ink Spectra 6 color panel, 1600 x 1200 px, 270.4 x 202.8 mm active area, with driver HAT; full refresh about 19 s; rated 0 to 40 degC",Waveshare (13.3inch e-Paper HAT+ (E)),255.00,buy,List price $249.99 to $259.99 on the maker's site (checked 2026-09-25); temperature range is a known gap
+6 Kiosk controller,1,"Raspberry Pi Zero 2 W class board, 32 GB industrial microSD, USB Ethernet adapter, real-time clock",Electronics distributor,42.00,buy,Indicative price; pulls the rendered layer image from the gateway over a wired link
+7 Push buttons,3,"19 mm stainless vandal-resistant momentary buttons with LED ring, IP65",Electronics distributor,8.00,buy,Indicative price; LED ring confirms a press while the screen redraws
+8 Data notice plate,1,"Printed or engraved aluminum plate, 400 x 100 mm: what is measured, who is responsible, retention, QR code and URL to the sensor register",Local sign maker,15.00,make,Indicative price; icons in the style of the open DTPR standard (proposed)
+9 Sun and rain hood with light,1,"Folded 1.5 mm aluminum hood with front lip and side cheeks; 12 V warm white LED strip, about 2 W, dusk sensor",Local sheet metal shop plus electronics distributor,35.00,make,Indicative price; lights the e-paper at night
+10 Services cabinet,1,"Lockable steel cabinet, about 360 x 160 x 460 mm, IP55, DIN rail, earth stud, door on the back of the post",Electrical wholesaler,55.00,buy,Indicative price
+11 Mains protection,1,"RCBO 6 A 30 mA and Type 2 surge protective device on the DIN rail",Electrical wholesaler,45.00,buy,Indicative price; installed or checked by a qualified electrician
+12 12 V DIN power supply,1,"230 V or 120 V AC in, 12 V 60 W out, certified (SELV output)",Electrical wholesaler,25.00,buy,Indicative price; feeds the TwinKit gateway and the kiosk head
+13 TwinKit gateway,1,"TwinKit DIN rail gateway with LoRaWAN concentrator, LiFePO4 backup pack and CityTwin software, per the TwinKit README",TwinKit project,285.00,make,Not in kiosk cost; parts cost from the TwinKit README; a city with a gateway already only needs the kiosk
+14 LoRaWAN antenna and bracket,1,"Antenna and coax from the TwinKit BOM; post-top bracket",TwinKit project; local fabricator,8.00,make,Bracket only; antenna cost is in item 13
+15 Conduit and cabling,1,"Mains feed conduit into the cabinet, 12 V and Ethernet cable up the post, cable glands, hardware",Electrical wholesaler,30.00,buy,Indicative price
+16 Map dashboard,1,"Open-source web map on the gateway: one layer per node type, time slider, as-of timestamp, accessible web version",CityTwin project,0.00,make,Software (MIT); no parts cost; no exploded-view callout
+17 Open data export,1,"Hourly CSV and GeoJSON files with a documented schema, pushed one way to a public host; OGC SensorThings API proposed",CityTwin project,0.00,make,Software (MIT); no parts cost; no exploded-view callout
+18 Data governance templates,1,"Sensor register entry, data sharing policy, privacy impact assessment outline, community agreement",CityTwin project,0.00,make,Documents; no parts cost; no exploded-view callout
