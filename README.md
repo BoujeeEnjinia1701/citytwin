@@ -6,9 +6,9 @@
 
 A city dashboard built on TwinKit that brings the smart city nodes together on a map and in a public kiosk, with open data export and privacy rules built in.
 
-![CityTwin concept](media/hero.png)
+![CityTwin: public kiosk for the city dashboard, photoreal render](media/render-hero.png)
 
-[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement CTW-DWG-001 (PDF)](cad/drawings/CTW-DWG-001.pdf) · [Calculations CTW-CAL-001](docs/04-calcs/01-sizing.md) · [Review note](docs/REVIEW.md)
+[Detail render](media/render-detail.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement CTW-DWG-001 (PDF)](cad/drawings/CTW-DWG-001.pdf) · [Calculations CTW-CAL-001](docs/04-calcs/01-sizing.md) · [Review note](docs/REVIEW.md)
 
 ## Concept rationale
 
