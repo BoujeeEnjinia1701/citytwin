@@ -1,4 +1,4 @@
-"""CityTwin general arrangement sheet CTW-DWG-001, Rev P2 (TRL 3, cabinet sun shield per CTW-DDR-002).
+"""CityTwin general arrangement sheet CTW-DWG-001, Rev P3 (TRL 3, cabinet sun shield per CTW-DDR-002).
 
 Run from the repo root:  python cad/src/sheets.py
 Writes cad/drawings/CTW-DWG-001.svg, .pdf and .png from the parametric model in
@@ -68,13 +68,33 @@ def dim_h(x1, x2, y, text):
             _t((x1 + x2) / 2, y - 1.0, text, 2.1, 400, INK, "middle", mono=True)]
 
 
-def dim_v(x, y1, y2, text, side=-1):
+def dim_h_out(x1, x2, y, text, side="right"):
+    """Narrow horizontal dimension with the value set beside it instead of on top of it."""
+    out = dim_h(x1, x2, y, "")[:3]
+    if side == "right":
+        out.append(_t(max(x1, x2) + 1.8, y + 0.8, text, 2.1, 400, INK, "start", mono=True))
+    else:
+        out.append(_t(min(x1, x2) - 1.8, y + 0.8, text, 2.1, 400, INK, "end", mono=True))
+    return out
+
+
+def dim_v(x, y1, y2, text, side=-1, cy=None):
     a = 1.4
-    cx, cy = x + side * 1.0, (y1 + y2) / 2
+    cx, cy = x + side * 1.0, ((y1 + y2) / 2 if cy is None else cy)
     return [f'<line x1="{x:.2f}" y1="{y1:.2f}" x2="{x:.2f}" y2="{y2:.2f}" stroke="{INK}" stroke-width="0.18"/>',
             f'<path d="M{x:.2f} {y1:.2f} l-0.5 {a} l1 0 Z" fill="{INK}"/>',
             f'<path d="M{x:.2f} {y2:.2f} l-0.5 {-a} l1 0 Z" fill="{INK}"/>',
             f'<g transform="rotate(-90 {cx:.2f} {cy:.2f})">{_t(cx, cy, text, 2.1, 400, INK, "middle", mono=True)}</g>']
+
+
+def dim_v_top(x, y1, y2, text, side=-1):
+    """Vertical dimension with the value set above its upper end, clear of other levels' extension lines."""
+    a = 1.4
+    cx = x + side * 1.0
+    return [f'<line x1="{x:.2f}" y1="{y1:.2f}" x2="{x:.2f}" y2="{y2:.2f}" stroke="{INK}" stroke-width="0.18"/>',
+            f'<path d="M{x:.2f} {y1:.2f} l-0.5 {a} l1 0 Z" fill="{INK}"/>',
+            f'<path d="M{x:.2f} {y2:.2f} l-0.5 {-a} l1 0 Z" fill="{INK}"/>',
+            f'<g transform="rotate(-90 {cx:.2f} {y1 - 2.0:.2f})">{_t(cx, y1 - 2.0 + 0.7, text, 2.1, 400, INK, "start", mono=True)}</g>']
 
 
 def ext(x1, y1, x2, y2):
@@ -93,12 +113,13 @@ def main():
     asm = assembly()
     views = safe_project_views(asm, work)
     bb = asm.bounding_box()
-    s = Sheet(project="CityTwin", title="General arrangement, public kiosk", dwg_no="CTW-DWG-001", rev="P2",
-              author="Amish Chadha", date=DATE, scale=None, theme="technical",
+    s = Sheet(project="CityTwin", title="General arrangement, public kiosk", dwg_no="CTW-DWG-001", rev="P3",
+              author="Amish Chadha", date=DATE, scale=1 / 25, theme="technical",
               material="Steel post and plate, aluminum head; bought-in parts per bom/bom.csv. PRELIMINARY, NOT FOR FABRICATION",
               revisions=[("P1", "Preliminary GA for TRL 3 (from cad/src/model.py)", DATE, "AC"),
-                         ("P2", "Cabinet sun shield (19) added; wind figures updated (CTW-DDR-002)", DATE, "AC")])
-    s.add_ortho(views)
+                         ("P2", "Cabinet sun shield (19) added; wind figures updated (CTW-DDR-002)", DATE, "AC"),
+                         ("P3", "Layout and labels tidied", "2026-09-30", "AC")])
+    s.add_ortho(views, dims=False)
     k = s.scale
     c = ortho_cells(s, views)
     L = []
@@ -115,9 +136,12 @@ def main():
     for i, (zz, label) in enumerate(levels):
         xd = xl - 5.5 * i
         L.append(ext(X(-P["post"] / 2), Z(zz), xd - 1, Z(zz)))
-        L += dim_v(xd, Z(zz), Z(0), label, side=-1)
+        if i == 0:   # nearest column: set the value in the clear stretch above the next level
+            L += dim_v(xd, Z(zz), Z(0), label, side=-1, cy=(Z(zz) + Z(levels[1][0])) / 2)
+        else:
+            L += dim_v_top(xd, Z(zz), Z(0), label, side=-1)
     L.append(ext(X(bb.min.X), Z(0), xl - 5.5 * len(levels), Z(0)))
-    L.append(_t(X(bb.max.X) + 2, Z(0) + 4, "SIDEWALK Z = 0", 1.9, 400, MUTED))
+    L.append(_t(X(bb.max.X) + 2, Z(0) - 1.5, "SIDEWALK Z = 0", 1.9, 400, MUTED))
     L += leader(X(0), Z(P["notice_z0"] + 50), X(bb.max.X) + 4, Z(P["notice_z0"] + 40), "8")
     L += leader(X(P["win_w"] / 2 - 10), Z(P["screen_cz"] + 60), X(bb.max.X) + 4, Z(P["screen_cz"] + 80), "4, 5")
     L += leader(X(P["hood_w"] / 2 - 20), Z(P["head_z1"] + 7), X(bb.max.X) + 4, Z(P["head_z1"] + 160), "9")
@@ -133,6 +157,10 @@ def main():
         L += [ext(Xt(a), Yt(0), Xt(a), yy), ext(Xt(b_), Yt(0), Xt(b_), yy)]
         L += dim_h(Xt(a), Xt(b_), yy, lab)
 
+    xd = Xt(bb.min.X) - 4
+    L += [ext(Xt(bb.min.X), Yt(bb.max.Y), xd - 1, Yt(bb.max.Y)), ext(Xt(bb.min.X), Yt(bb.min.Y), xd - 1, Yt(bb.min.Y))]
+    L += dim_v(xd, Yt(bb.max.Y), Yt(bb.min.Y), f"{bb.size.Y:.0f}", side=-1)
+
     # right view (from +X): Y right, Z up
     x, y, w, h = c["right"]
     Yr = lambda my: x + (my - bb.min.Y) * k
@@ -142,16 +170,16 @@ def main():
     L += [ext(Yr(hf), Zr(P["head_z1"]), Yr(hf), Zr(zt) - 1), ext(Yr(-P["post"] / 2), Zr(P["head_z1"]), Yr(-P["post"] / 2), Zr(zt) - 1)]
     L += dim_h(Yr(hf), Yr(-P["post"] / 2), Zr(zt), f"{P['hood_reach']:.0f}")
     L += [ext(Yr(hy0), Zr(P["head_z0"]), Yr(hy0), Zr(P["head_z0"] - 80) + 1)]
-    L += dim_h(Yr(hy0), Yr(-P["post"] / 2), Zr(P["head_z0"] - 80), f"{P['head_d']:.0f}")
+    L += dim_h_out(Yr(hy0), Yr(-P["post"] / 2), Zr(P["head_z0"] - 80), f"{P['head_d']:.0f}", "left")
     zc = P["cab_z0"] - 70
     L += [ext(Yr(D["cab_y0"]), Zr(P["cab_z0"]), Yr(D["cab_y0"]), Zr(zc) + 1), ext(Yr(D["cab_y1"]), Zr(P["cab_z0"]), Yr(D["cab_y1"]), Zr(zc) + 1)]
-    L += dim_h(Yr(D["cab_y0"]), Yr(D["cab_y1"]), Zr(zc), f"{P['cab_d']:.0f}")
+    L += dim_h_out(Yr(D["cab_y0"]), Yr(D["cab_y1"]), Zr(zc), f"{P['cab_d']:.0f}", "right")
     L += leader(Yr(D["cab_y1"] - 20), Zr(P["rail_twk_z"]), Yr(D["cab_y1"]) + 5, Zr(P["rail_twk_z"] + 120), "13 TWINKIT RAIL")
     L += leader(Yr(D["cab_y1"] - 20), Zr(P["rail_mains_z"]), Yr(D["cab_y1"]) + 5, Zr(P["rail_mains_z"] - 60), "11, 12 MAINS RAIL")
     L += leader(Yr(D["shield_y1"]), Zr(P["cab_z0"] + P["cab_h"] - 40), Yr(D["shield_y1"]) + 5, Zr(P["cab_z0"] + P["cab_h"] + 60), "10 DOOR ON BACK, 19 SHIELD")
 
     s._layers += L
-    s.add_svg(views["iso"], 276, 32, 140, 88, label="Isometric view", sublabel="Not to scale")
+    s.add_svg(views["iso"], 276, 44, 140, 84, label="Isometric view", sublabel="Not to scale")
     s.add_notes("Main dimensions and interfaces (mm)", [
         f"2 post {P['post']:.0f} x {P['post']:.0f} x {P['post_t']:.0f} SHS; 1 base {P['base'][0]:.0f} x {P['base'][1]:.0f} x {P['base'][2]:.0f}, 4 x M{P['anchor_d']:.0f} on {P['anchor_pitch']:.0f} sq",
         f"3 head {P['head_w']:.0f} x {P['head_d']:.0f} x {P['head_z1'] - P['head_z0']:.0f}, {P['head_t']:.0f} mm aluminum, IP54 target",
@@ -165,7 +193,7 @@ def main():
         "14 coax from TwinKit SMA bulkhead to post-top antenna",
         "Wind 35 m/s x 1.5: post 26.9 MPa; 1.97 kN per anchor (CTW-CAL-001 v0.2)",
         "Third-angle; front view from -Y (reading side)",
-    ], x=276, y=142, width=146)
+    ], x=276, y=142, width=140)
     out = s.save(ROOT / "cad" / "drawings" / "CTW-DWG-001")
     shutil.rmtree(work, ignore_errors=True)
     print(f"wrote {out} and .pdf, .png at scale 1:{1 / k:g}")
