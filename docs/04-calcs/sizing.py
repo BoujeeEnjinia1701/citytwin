@@ -1,4 +1,4 @@
-"""CityTwin sizing calculations for CTW-CAL-001 v0.2 (TRL 3, decisions of CTW-DDR-002 applied).
+"""CityTwin sizing calculations for CTW-CAL-001 v0.3 (TRL 3, CTW-DDR-002 and the constructable design of CTW-DDR-003).
 
 Run from the repo root:  python docs/04-calcs/sizing.py
 Imports the kiosk model's PARAMS and part volumes from cad/src/model.py, reads bom/bom.csv
@@ -152,7 +152,7 @@ for el in (30, 45, 60):
 # ---------------------------------------------------------------- E. accessibility geometry (R11)
 ADA_LO, ADA_HI, PROTRUDE_LO, PROTRUDE_HI, POST_OVERHANG = 380, 1220, 685, 2030, 305
 tag("E1", f"buttons at {P['btn_z']:.0f} mm (reach range {ADA_LO} to {ADA_HI}); head leading edge {P['head_z0']:.0f} to "
-          f"{P['head_z1'] + 14:.0f} mm, in the {PROTRUDE_LO} to {PROTRUDE_HI} mm zone; overhang beyond the post "
+          f"{P['head_z1'] + P['hood_t']:.0f} mm, in the {PROTRUDE_LO} to {PROTRUDE_HI} mm zone; overhang beyond the post "
           f"{D['head_side_overhang']:.0f} mm (head) and {D['hood_side_overhang']:.0f} mm (hood) sideways, "
           f"{P['hood_reach'] - P['post'] / 2:.0f} mm (hood) forward, against {POST_OVERHANG} mm; cabinet with sun shield "
           f"{D['shield_y1'] - P['post'] / 2:.1f} mm behind the post, bottom {P['cab_z0']:.0f} mm (below {PROTRUDE_LO}, cane-detectable)")
@@ -229,7 +229,7 @@ tag("G3", f"12 V supply peak {peak:.1f} W (TwinKit 20.6, controller boot 2.5, e-
 # ---------------------------------------------------------------- H. structure and mass (R13)
 RHO_AIR, V_GUST, LF = 1.25, 35.0, 1.5
 q = 0.5 * RHO_AIR * V_GUST ** 2
-hood_a = P["hood_w"] * (P["hood_lip"] + 14) / 1e6
+hood_a = P["hood_w"] * (P["hood_lip"] + P["hood_t"]) / 1e6
 loads = [("head and hood", 1.3, D["head_front_area_m2"] + hood_a, D["head_cz"] / 1000),
          ("cabinet and sun shield", 1.3, D["shield_w"] * D["shield_h"] / 1e6, (P["cab_z0"] + D["shield_h"] / 2) / 1000),
          ("post", 2.0, P["post"] * (P["post_top"] - P["base"][2]) / 1e6, P["post_top"] / 2000),
@@ -249,8 +249,8 @@ throat = 0.707 * 4
 Zw = throat * (b * b + b * b / 3)
 tag("H3", f"4 mm fillet weld all round: Zw {Zw:,.0f} mm3, {M_tot * LF * 1000 / Zw:.1f} MPa")
 mass = {}
-dens = {1: 7850, 2: 7850, 3: 2700, 4: 1200, 10: 7850, 19: 2700}
-fixed = {5: 1.2, 6: 0.15, 7: 0.15, 11: 0.5, 12: 0.3, 13: 1.2, 14: 0.5, 15: 1.0}
+dens = {1: 7850, 2: 7850, 3: 2700, 4: 1200, 10: 7850, 19: 2700, 20: 2700}
+fixed = {5: 1.2, 6: 0.25, 7: 0.15, 11: 0.5, 12: 0.3, 13: 1.2, 14: 0.5, 15: 1.0, 21: 0.6}
 for n, name, s in build_parts():
     if n in dens:
         mass[n] = s.volume * 1e-9 * dens[n]
@@ -288,10 +288,10 @@ pm = yaml.safe_load((ROOT / "project.yaml").read_text())
 budget = float(pm["budget_usd"])
 rows = list(csv.DictReader((ROOT / "bom" / "bom.csv").open()))
 cost = {int(r["item"].split()[0]): float(r["qty"]) * float(r["unit_cost_usd"]) for r in rows}
-kiosk = sum(v for k, v in cost.items() if k not in (13, 16, 17, 18, 19))
+kiosk = sum(v for k, v in cost.items() if k not in (13, 16, 17, 18, 19))   # items 1 to 12, 14, 15, 20, 21
 outdoor = kiosk + cost[19]
 priced = all((r["unit_cost_usd"] or "").strip() for r in rows)
-tag("J1", f"{len(rows)} BOM lines, all priced: {priced}; pilot kiosk (1 to 12, 14, 15) ${kiosk:,.2f}; TwinKit ${cost[13]:,.2f}; "
+tag("J1", f"{len(rows)} BOM lines, all priced: {priced}; pilot kiosk (1 to 12, 14, 15, 20, 21) ${kiosk:,.2f}; TwinKit ${cost[13]:,.2f}; "
           f"with gateway ${kiosk + cost[13]:,.2f}; outdoor kiosk with sun shield (19) ${outdoor:,.2f}")
 tag("J2", f"pilot kiosk against budget_usd ${budget:,.0f} (was $600): {kiosk - budget:+,.2f}; outdoor kiosk {outdoor - budget:+,.2f}")
 
@@ -312,7 +312,7 @@ STATUS = [
     ("R13", "Wind", f"{sig:.1f} MPa with factor 1.5; anchors {T / 1000:.2f} kN", "35 m/s gust x 1.5, no yield", "Met on paper"),
     ("R14", "Electrical safety", f"Mains only in the cabinet; 12 V SELV; peak {peak:.1f} W of 60 W", "As stated", "Met by design"),
     ("R15", "Running power", f"{p_mains:.1f} W", "15 W", "Met on paper"),
-    ("R16", "Pilot kiosk parts cost", f"${kiosk:,.2f} (outdoor with shield ${outdoor:,.2f})", f"${budget:,.0f} (budget_usd)", "Met on paper"),
+    ("R16", "Pilot kiosk parts cost", f"${kiosk:,.2f} (outdoor with shield ${outdoor:,.2f})", f"${budget:,.0f} (budget_usd)", "Met on paper" if kiosk <= budget else f"Not met (${kiosk - budget:,.2f} over)"),
     ("R17", "Cost with gateway (redefined, D1)", f"${kiosk + cost[13]:,.2f}", "Reported; gateway costed in TwinKit", "Met on paper (reported)"),
     ("R18", "Honest in an outage", f"{T_NEW:.2f} h new, {T_WORST:.2f} h worst; {PACK_AH * T_REQ / T_WORST:.2f} Ah pack needed", "2 h ride-through", "Not met (worst case)"),
     ("R19", "Secure by default", "Outbound push and pull only", "No inbound connections", "Met by design"),

@@ -3,9 +3,9 @@ doc_id: CTW-PRB-001
 title: CityTwin problem statement
 project: CityTwin
 doc_type: Problem statement
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-01'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,6 +25,10 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002)
+- version: "0.5"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: Kiosk parts cost updated for the constructable design (CTW-DDR-003)
 ---
 
 # CityTwin problem statement
@@ -68,7 +72,7 @@ Table 1. Users and needs.
 
 ## Constraints
 
-- Garage-buildable prototype. `budget_usd` is $750 (raised from $600 under CTW-DDR-002) and, under D1, covers the pilot kiosk only; the TwinKit gateway is costed in TwinKit. The pilot kiosk parts cost $739.00; the outdoor sun shield adds $30.00.
+- Garage-buildable prototype. `budget_usd` is $750 (raised from $600 under CTW-DDR-002) and, under D1, covers the pilot kiosk only; the TwinKit gateway is costed in TwinKit. The pilot kiosk parts cost $778.00 after the parts added to make it buildable (CTW-DDR-003), $28.00 over `budget_usd`; the outdoor sun shield adds $30.00.
 - Privacy by design: only counts and levels are taken in, stored or published; no images, audio or personal identifiers.
 - Open software (MIT), open hardware (CERN-OHL-S-2.0) and open data under CC BY 4.0 (D7).
 - Runs offline on one TwinKit gateway; no dependency on a vendor cloud.

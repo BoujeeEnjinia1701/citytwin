@@ -3,9 +3,9 @@ doc_id: CTW-CAL-001
 title: CityTwin sizing calculations
 project: CityTwin
 doc_type: Calculation
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-01'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,17 +17,21 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002)
+- version: "0.3"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: Constructable design (CTW-DDR-003); wind, mass and cost re-run; R16 now not met
 ---
 
 # CityTwin sizing calculations
 
-On paper, CityTwin meets 17 of its 20 requirements (10 by calculation, 7 by design), has 1 at risk and misses 2. This v0.2 applies Amish's decisions of 2026-09-25 (CTW-DDR-002): `budget_usd` of $750, R10 restated, the pilot range narrowed to 0 to 35 °C air, a ventilated sun shield on the cabinet for outdoor sites, the hood light dimmed to 0.3 W, and a larger TwinKit pack requested. **R18 is not met in the worst case**: TwinKit's backup pack rides through 2.40 h when new but only 1.63 h when aged and at 0 °C, against 2 h; a pack of at least 1.84 Ah would meet it. **R20 is not met**: in a street kiosk the panel would reach about 79 °C in low sun at 45 °C air, 45.1 °C even in shade, and needs about 13.5 W of heat at -20 °C. R1 (ingest of every node type) is at risk. R10 (LED ring in about 30 ms, layer in 19.8 s against 0.5 s and 25 s), R12 (about 5 K of margin at 35 °C air) and R16 ($739.00 against $750) are now met on paper. The radio and data side has ample margin: the 46-node reference neighborhood sends 5,616 uplinks a day and loses 0.61 % to collisions and downlink blanking. Several TRL 2 figures were corrected, and v0.2 changes are listed in the last sections. Every number in this note is printed by `docs/04-calcs/sizing.py`; the tag in brackets, for example [A2], is the line of that script's output that carries it.
+On paper, CityTwin meets 16 of its 20 requirements (9 by calculation, 7 by design), has 1 at risk and misses 3. v0.3 re-runs the wind, mass and cost sections for the constructable design of CTW-DDR-003 (rivet nuts, front panel, display carrier, mounting plate, fixings and the parts added to the head); the parts added take the pilot kiosk to $778.00, so **R16 is not met**, $28.00 over `budget_usd` (an open decision, CTW-DEC-001). v0.2 applied Amish's decisions of 2026-09-25 (CTW-DDR-002): `budget_usd` of $750, R10 restated, the pilot range narrowed to 0 to 35 °C air, a ventilated sun shield on the cabinet for outdoor sites, the hood light dimmed to 0.3 W, and a larger TwinKit pack requested. **R18 is not met in the worst case**: TwinKit's backup pack rides through 2.40 h when new but only 1.63 h when aged and at 0 °C, against 2 h; a pack of at least 1.84 Ah would meet it. **R20 is not met**: in a street kiosk the panel would reach about 79 °C in low sun at 45 °C air, 45.1 °C even in shade, and needs about 13.5 W of heat at -20 °C. R1 (ingest of every node type) is at risk. R10 (LED ring in about 30 ms, layer in 19.8 s against 0.5 s and 25 s), and R12 (about 5 K of margin at 35 °C air) are met on paper. The radio and data side has ample margin: the 46-node reference neighborhood sends 5,616 uplinks a day and loses 0.61 % to collisions and downlink blanking. Several TRL 2 figures were corrected, and the v0.2 and v0.3 changes are listed in the last sections. Every number in this note is printed by `docs/04-calcs/sizing.py`; the tag in brackets, for example [A2], is the line of that script's output that carries it.
 
 > **Safety:** These are first-principles screening estimates for a paper proof of concept. They do not replace the electrician's check of the mains installation, a structural design of the footing and anchors to the local code, or a privacy impact assessment. See CTW-PRC-001, Safety.
 
 ## Scope and method
 
-The note checks every requirement in CTW-REQ-001 v0.4 against the design in CTW-PRC-001 v0.4, the decisions in CTW-DDR-001 and CTW-DDR-002 and the parametric model `cad/src/model.py`. The script imports the model's `PARAMS`, derived dimensions and part volumes, so the head, window, hood, cabinet, post and rail dimensions used here are the ones in the STEP files and in drawing CTW-DWG-001. It also reads `bom/bom.csv` and `budget_usd` in `project.yaml`, and writes the requirement table to `docs/04-calcs/results.csv`. Run it from the repo root with `python docs/04-calcs/sizing.py`.
+The note checks every requirement in CTW-REQ-001 v0.5 against the design in CTW-PRC-001 v0.5, the decisions in CTW-DDR-001 to CTW-DDR-003 and the parametric model `cad/src/model.py`. The script imports the model's `PARAMS`, derived dimensions and part volumes, so the head, window, hood, cabinet, post and rail dimensions used here are the ones in the STEP files and in drawing CTW-DWG-001. It also reads `bom/bom.csv` and `budget_usd` in `project.yaml`, and writes the requirement table to `docs/04-calcs/results.csv`. Run it from the repo root with `python docs/04-calcs/sizing.py`.
 
 The design case is the reference neighborhood of CTW-DDR-001 D9 on one TwinKit gateway in the kiosk cabinet (D4), a pilot kiosk on a sheltered site in air of 0 to 35 °C (D3, CTW-DDR-002 N5), and a street kiosk case with the cabinet sun shield for R20.
 
@@ -76,7 +80,7 @@ The design case is the reference neighborhood of CTW-DDR-001 D9 on one TwinKit g
 
 ## E. Accessibility geometry (R11)
 
-The buttons sit at 1,120 mm, inside the 380 to 1,220 mm reach range. The head's leading edge runs from 1,040 to 1,734 mm, inside the 685 to 2,030 mm zone (27 to 80 in) where objects on posts may overhang no more than 305 mm (12 in) ([U.S. Access Board, protruding objects](https://www.access-board.gov/ada/guides/chapter-3-protruding-objects/), checked 2026-09-25). The head overhangs the post by 180 mm sideways and the hood by 200 mm sideways and 190 mm forward. The cabinet with its sun shield projects 186.5 mm behind the post, and its bottom, at 300 mm, is below 685 mm and within cane reach [E1]. **R11 is met on paper** for the kiosk; the WCAG 2.1 AA web page is not verifiable at TRL 3. The screen center at 1.46 m is high for a seated reader; the web page and the QR code carry the same content.
+The buttons sit at 1,120 mm, inside the 380 to 1,220 mm reach range. The head's leading edge runs from 1,040 to 1,722 mm, inside the 685 to 2,030 mm zone (27 to 80 in) where objects on posts may overhang no more than 305 mm (12 in) ([U.S. Access Board, protruding objects](https://www.access-board.gov/ada/guides/chapter-3-protruding-objects/), checked 2026-09-25). The head overhangs the post by 180 mm sideways and the hood by 200 mm sideways and 190 mm forward. The cabinet with its sun shield projects 186.5 mm behind the post, and its bottom, at 300 mm, is below 685 mm and within cane reach [E1]. **R11 is met on paper** for the kiosk; the WCAG 2.1 AA web page is not verifiable at TRL 3. The screen center at 1.46 m is high for a seated reader; the web page and the QR code carry the same content.
 
 ## F. Thermal: head, heater study and cabinet (R12, R20)
 
@@ -93,10 +97,10 @@ The buttons sit at 1,120 mm, inside the 380 to 1,220 mm reach range. The head's 
 
 ## H. Wind, structure and mass (R13)
 
-- **Loads.** At 35 m/s the dynamic pressure is 766 Pa. The head and hood take 348 N at 1.38 m, the cabinet with its sun shield 200 N at 0.54 m, the post 268 N at 0.88 m and the antenna 11 N at 2.08 m [H1]: 827 N and a base moment of 848 N·m, or 1,271 N·m with the 1.5 load factor [H2].
-- **Post and weld.** The 100 x 100 x 4 mm section (47,268 mm³) is stressed to 26.9 MPa, a factor of 13.2 on yield [H2]. A 4 mm fillet weld all round the post base sees 33.7 MPa [H3].
-- **Anchors and plate.** Each anchor on the tension side carries 1.97 kN, a factor of 5.1 on the assumed 10 kN [H5]. The 12 mm base plate sees 41 MPa [H6]. The head moves 0.65 mm under the unfactored gust [H7].
-- **Mass.** The kiosk weighs 60.1 kg with the sun shield (post 21.4, base 15.5, cabinet with rails 10.7, head 4.1, sun shield 1.86 kg) [H4], 58.2 kg without it. The TRL 2 figure was about 55 kg.
+- **Loads.** At 35 m/s the dynamic pressure is 766 Pa. The head and hood take 342 N at 1.38 m, the cabinet with its sun shield 200 N at 0.54 m, the post 268 N at 0.88 m and the antenna 11 N at 2.08 m [H1]: 821 N and a base moment of 839 N·m, or 1,258 N·m with the 1.5 load factor [H2].
+- **Post and weld.** The 100 x 100 x 4 mm section (47,268 mm³) is stressed to 26.6 MPa, a factor of 13.3 on yield [H2]. A 4 mm fillet weld all round the post base sees 33.4 MPa [H3].
+- **Anchors and plate.** Each anchor on the tension side carries 1.94 kN, a factor of 5.1 on the assumed 10 kN [H5]. The 12 mm base plate sees 40 MPa [H6]. The head moves 0.63 mm under the unfactored gust [H7].
+- **Mass.** The kiosk weighs 63.5 kg with the sun shield (post 21.4, base 15.3, cabinet with mounting plate and rails 12.8, head tray and front panel 4.2, sun shield with its back panel and standoffs 1.94 kg) [H4], about 61.6 kg without it. The TRL 2 figure was about 55 kg; v0.2 had 60.1 kg before the mounting plate, front panel and fixings were modeled.
 - **R13 is met on paper.** The TRL 2 figure of 12 MPa left out the post's own drag and the load factor. Vehicle impact is not covered; the footing and anchors are site design.
 
 ## I. Outage behavior (R18)
@@ -105,7 +109,7 @@ TwinKit's backup runs the gateway for 2.40 h with a new pack and 1.63 h with an 
 
 ## J. Cost (R16, R17)
 
-All 19 BOM lines are priced. The pilot kiosk (items 1 to 12, 14 and 15) costs $739.00; the TwinKit gateway $290.00 from TwinKit's TRL 3 BOM; together $1,029.00. The outdoor sun shield (item 19) adds $30.00, for $769.00 [J1]. Against `budget_usd`, raised from $600 to $750 under CTW-DDR-002 N1, the pilot kiosk is $11.00 under and the outdoor kiosk $19.00 over [J2]. **R16 is met on paper** for the pilot kiosk. **R17**, redefined by D1 as a reported figure with the gateway costed in TwinKit, is met on paper.
+All 21 BOM lines are priced. The pilot kiosk (items 1 to 12, 14, 15, 20 and 21) costs $778.00; the TwinKit gateway $290.00 from TwinKit's TRL 3 BOM; together $1,068.00. The outdoor sun shield (item 19) adds $30.00, for $808.00 [J1]. Against `budget_usd`, raised from $600 to $750 under CTW-DDR-002 N1, the pilot kiosk is $28.00 over and the outdoor kiosk $58.00 over [J2]. **R16 is not met**: the display carrier (item 20, $8.00), the fixings (item 21, $22.00) and the head's converter, LED driver and terminal block (item 6, up $13.00), less $4.00 moved out of item 15, are needed to build the kiosk (CTW-DDR-003). Whether to raise `budget_usd` is an open decision for Amish (CTW-DEC-001). **R17**, redefined by D1 as a reported figure with the gateway costed in TwinKit, is met on paper.
 
 ## Results
 
@@ -125,16 +129,16 @@ All 19 BOM lines are priced. The pilot kiosk (items 1 to 12, 14 and 15) costs $7
 | R10 | Button response (restated) | LED ring 30 ms; layer 19.8 s | Acknowledged within 0.5 s; layer within 25 s | Met on paper |
 | R11 | Accessible kiosk | Buttons 1,120 mm; overhang 200 mm | 380 to 1,220 mm; 305 mm; WCAG page | Met on paper (web page not verifiable at TRL 3) |
 | R12 | Pilot climate (redefined) | Panel 35.1 °C and pack 39.4 °C at 35 °C air | Sheltered site, 0 to 35 °C air | Met on paper |
-| R13 | Wind | 26.9 MPa with the 1.5 factor; 1.97 kN per anchor | 35 m/s x 1.5, no yield | Met on paper |
+| R13 | Wind | 26.6 MPa with the 1.5 factor; 1.94 kN per anchor | 35 m/s x 1.5, no yield | Met on paper |
 | R14 | Electrical safety | Mains only in the cabinet; 12 V SELV; peak 26.7 W of 60 W | As stated | Met by design |
 | R15 | Running power | 9.2 W | 15 W | Met on paper |
-| R16 | Pilot kiosk parts cost | $739.00 (outdoor with sun shield $769.00) | $750 (`budget_usd`) | Met on paper |
-| R17 | Cost with gateway (redefined, D1) | $1,029.00 | Reported; gateway costed in TwinKit | Met on paper (reported) |
+| R16 | Pilot kiosk parts cost | $778.00 (outdoor with sun shield $808.00) | $750 (`budget_usd`) | **Not met** ($28.00 over) |
+| R17 | Cost with gateway (redefined, D1) | $1,068.00 | Reported; gateway costed in TwinKit | Met on paper (reported) |
 | R18 | Honest in an outage | 2.40 h new, 1.63 h worst; 1.84 Ah pack needed | 2 h ride-through | **Not met** (worst case) |
 | R19 | Secure by default | Outbound push and pull only | No inbound connections | Met by design |
 | R20 | Street climate (target after the pilot) | Panel about 79 °C in sun and 45.1 °C shaded at 45 °C; pack 52.2 °C behind the sun shield; heater 13.5 W at -20 °C | -20 to +45 °C air | **Not met** |
 
-Summary: 2 not met, 1 at risk, 10 met on paper, 7 met by design [K1]. The script counts R11 and R17 under "met on paper". Before v0.2: 4 not met, 2 at risk, 7 met on paper, 7 met by design.
+Summary: 3 not met, 1 at risk, 9 met on paper, 7 met by design [K1]. The script counts R11 and R17 under "met on paper". v0.2: 2 not met, 1 at risk, 10 met on paper, 7 met by design. Before v0.2: 4 not met, 2 at risk, 7 met on paper, 7 met by design.
 
 ## Changes from the TRL 2 estimates
 
@@ -173,3 +177,17 @@ Summary: 2 not met, 1 at risk, 10 met on paper, 7 met by design [K1]. The script
 | Mass | 58.2 kg | 60.1 kg with the sun shield | N4 |
 | Outdoor kiosk cost | Not costed | $769.00 | N4 |
 | TwinKit pack for R18 | Not sized | At least 1.84 Ah | N3 |
+
+## Changes in v0.3 (CTW-DDR-003)
+
+*Table 5. Figures changed by the constructable design of 2026-10-01.*
+
+| Quantity | v0.2 | v0.3 | Cause |
+| --- | --- | --- | --- |
+| Head leading edge | 1,040 to 1,734 mm | 1,040 to 1,722 mm | Hood modeled as 1.5 mm sheet, not a 14 mm block |
+| Wind at the base | 827 N, 848 N·m; 26.9 MPa; 1.97 kN per anchor | 821 N, 839 N·m; 26.6 MPa; 1.94 kN per anchor | Same; R13 still met on paper |
+| Mass | 60.1 kg with the sun shield | 63.5 kg with the sun shield | Cabinet mounting plate (2.1 kg), front panel, carrier and fixings modeled |
+| Pilot kiosk cost | $739.00 | $778.00 | Items 20 and 21 added, item 6 and item 15 repriced; R16 met on paper to **not met** |
+| Outdoor kiosk cost | $769.00 | $808.00 | As above |
+| Kiosk and gateway | $1,029.00 | $1,068.00 | As above |
+| Thermal, power, radio, timing, legibility | Unchanged | Unchanged | Window, screen gap, hood, cabinet and shield keep their sizes |

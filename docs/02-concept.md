@@ -3,28 +3,32 @@ doc_id: CTW-PRC-001
 title: CityTwin design precis
 project: CityTwin
 doc_type: Design precis
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-01'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
 - version: "0.1"
   date: '2026-09-25'
   author: Amish Chadha
-  change: Initial scaffold
+  change: "Initial scaffold"
 - version: "0.2"
   date: '2026-09-25'
   author: Amish Chadha
-  change: Populate to TRL 2 (architecture, privacy rules, kiosk massing model, first-order numbers, safety, open questions)
+  change: "Populate to TRL 2 (architecture, privacy rules, kiosk massing model, first-order numbers, safety, open questions)"
 - version: "0.3"
   date: '2026-09-25'
   author: Amish Chadha
-  change: TRL 3 update with adopted choices per CTW-DDR-001, numbers from CTW-CAL-001, parametric model and GA drawing CTW-DWG-001, TwinKit layout in the cabinet, pull paths for PotholeLog and DockHub
+  change: "TRL 3 update with adopted choices per CTW-DDR-001, numbers from CTW-CAL-001, parametric model and GA drawing CTW-DWG-001, TwinKit layout in the cabinet, pull paths for PotholeLog and DockHub"
 - version: "0.4"
   date: '2026-09-25'
   author: Amish Chadha
-  change: Recommendations accepted by Amish (DDR-002)
+  change: "Recommendations accepted by Amish (DDR-002)"
+- version: "0.5"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: "Constructable design (CTW-DDR-003): mass, wind and cost figures updated; build plan CTW-BLD-001 and register CTW-DEC-001 linked"
 ---
 
 # CityTwin design precis
@@ -33,7 +37,7 @@ revisions:
 
 CityTwin is open software that runs on a TwinKit gateway and brings the lab's smart city nodes onto one map, plus a public street kiosk that shows the same data to residents. Nodes send counts and levels over LoRaWAN; CityTwin checks every record against a schema, stores it, publishes hourly open data files and draws the map. The kiosk is a steel post with a 13.3 in color e-paper screen at eye height, three push buttons, a notice plate that says what is measured and by whom, and a locked cabinet that holds the mains protection and the gateway.
 
-The TRL 3 calculations (CTW-CAL-001) show that the data side has wide margin: the 46-node reference neighborhood sends 5,616 uplinks a day and loses 0.61 % to collisions and downlink blanking, and the store and open export are small. The kiosk takes 9.2 W from the mains with the gateway, weighs about 60 kg with its outdoor sun shield and stands up to a 35 m/s gust with a large margin. With Amish's decisions of 2026-09-25 (CTW-DDR-002), the button LED ring acknowledges a press at once and the new layer follows in 19.8 s (R10, restated to 25 s, met on paper), the pilot kiosk costs $739.00 against the $750 budget (R16, met on paper), and the pilot range of 0 to 35 °C air leaves about 5 K of margin for the panel and the backup pack (R12, met on paper). Two requirements are not met: the TwinKit backup lasts only 1.63 h with an aged, cold pack (R18), until TwinKit fits a larger pack; and a street kiosk in sun or frost is outside the panel's 0 to 40 °C rating (R20), which is why the pilot is sited in shelter. The general arrangement is drawing [CTW-DWG-001](../cad/drawings/CTW-DWG-001.pdf).
+The TRL 3 calculations (CTW-CAL-001) show that the data side has wide margin: the 46-node reference neighborhood sends 5,616 uplinks a day and loses 0.61 % to collisions and downlink blanking, and the store and open export are small. The kiosk takes 9.2 W from the mains with the gateway, weighs about 64 kg with its outdoor sun shield and stands up to a 35 m/s gust with a large margin. With Amish's decisions of 2026-09-25 (CTW-DDR-002), the button LED ring acknowledges a press at once and the new layer follows in 19.8 s (R10, restated to 25 s, met on paper), and the pilot range of 0 to 35 °C air leaves about 5 K of margin for the panel and the backup pack (R12, met on paper). Three requirements are not met: the parts added on 2026-10-01 to make the kiosk buildable (CTW-DDR-003) take the pilot kiosk to $778.00, $28.00 over the $750 budget (R16, an open decision in [CTW-DEC-001](06-design-decisions.md)); the TwinKit backup lasts only 1.63 h with an aged, cold pack (R18), until TwinKit fits a larger pack; and a street kiosk in sun or frost is outside the panel's 0 to 40 °C rating (R20), which is why the pilot is sited in shelter. The general arrangement is drawing [CTW-DWG-001](../cad/drawings/CTW-DWG-001.pdf), and the illustrated build plan is [CTW-BLD-001](05-build-plan.md).
 
 ![Hero render](../media/hero.png)
 
@@ -58,7 +62,7 @@ Table 1. Main components. Numbers match `bom/bom.csv` and Figure 3.
 
 | # | Component | Choice | Notes |
 | --- | --- | --- | --- |
-| 1 | Base plate and anchors | 400 x 400 x 12 mm galvanized plate, four M16 anchors on a 300 mm square | Into a footing or existing slab; 1.97 kN per anchor at the design gust |
+| 1 | Base plate and anchors | 400 x 400 x 12 mm galvanized plate, four M16 anchors on a 300 mm square | Into a footing or existing slab; 1.94 kN per anchor at the design gust |
 | 2 | Post | 100 x 100 x 4 mm square hollow section, 1.75 m | Carries head, hood, cabinet and antenna |
 | 3 | Display head enclosure | Folded 2 mm aluminum, about 460 x 100 x 680 mm | IP54 target, vents underneath |
 | 4 | Front window | 6 mm UV-stabilized polycarbonate, anti-glare | Replaceable if scratched |
@@ -118,11 +122,11 @@ Table 3. System and kiosk numbers (CTW-CAL-001).
 | Head and panel, street | About 79 °C in low sun and 45.1 °C in shade at 45 °C air; 13.5 W to keep an insulated panel bay at 0 °C in -20 °C air | R20 **not met** |
 | Cabinet | 7.96 W inside; air 4.4 K above ambient in shade, 18.7 K in sun, 7.2 K in sun behind the sun shield; pack 5.6 K under its 45 °C charge limit at 35 °C air; with the shield the pack stays under the limit in full sun up to 37.8 °C air | R12 met on paper |
 | Power | 9.2 W from the mains, 81 kWh a year; 12 V peak 26.7 W on a 60 W supply | R15 met on paper |
-| Wind at 35 m/s | 827 N, 848 N·m at the base; 26.9 MPa in the post with a 1.5 factor; 1.97 kN per anchor | R13 met on paper |
-| Mass | 60.1 kg with the sun shield | Two-person lift |
+| Wind at 35 m/s | 821 N, 839 N·m at the base; 26.6 MPa in the post with a 1.5 factor; 1.94 kN per anchor | R13 met on paper |
+| Mass | 63.5 kg with the sun shield | Two-person lift |
 | Backup | 2.40 h new, 1.63 h aged at 0 °C (TwinKit); a pack of at least 1.84 Ah would give 2 h | R18 **not met** in the worst case |
-| Pilot kiosk parts cost | $739.00; $769.00 with the outdoor sun shield | R16 met on paper against $750 |
-| Kiosk and gateway | $1,029.00 | R17 reported |
+| Pilot kiosk parts cost | $778.00; $808.00 with the outdoor sun shield | R16 **not met** against $750 (CTW-DEC-001) |
+| Kiosk and gateway | $1,068.00 | R17 reported |
 
 ## Key design choices
 
@@ -146,7 +150,7 @@ Items D1 to D11 in CTW-DDR-001 and N1 to N6 in CTW-DDR-002 are decided by Amish,
 
 > **Safety:** The TwinKit gateway contains a LiFePO4 backup pack. Use a pack with a built-in BMS and fuse, charge it only through the TwinKit UPS module, and keep it within its temperature limits. CTW-CAL-001 finds the sealed cabinet 18.7 K above the air in full sun: at 45 °C air the pack would be near 64 °C, and in frost it cannot charge. The sun shield cuts the rise to 7.2 K but does not remove the limit above about 38 °C air. The UPS charger's 0 to 45 °C lockout must never be defeated; the pilot site must keep the cabinet out of direct sun, and any outdoor site must fit the sun shield.
 
-> **Safety:** The kiosk is a roughly 60 kg steel post beside a walkway. Install it only with the asset owner's permission and a permit, on a footing designed for local wind and impact loads, with no sharp edges or protruding corners at head height, and keep a clear walkway width around it as local rules require. Lift it with two people or a hoist.
+> **Safety:** The kiosk is a roughly 64 kg steel post beside a walkway. Install it only with the asset owner's permission and a permit, on a footing designed for local wind and impact loads, with no sharp edges or protruding corners at head height, and keep a clear walkway width around it as local rules require. Lift it with two people or a hoist.
 
 > **Safety:** Privacy by design: no images, audio recordings or personal identifiers are taken in, stored or published; only aggregate counts or levels. Check local data protection law, and carry out a privacy impact assessment before any deployment. CityTwin is not a public warning system: do not rely on it for flood or emergency alerts.
 

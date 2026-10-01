@@ -1,5 +1,66 @@
 # Review note: CityTwin
 
+## Session 2026-10-01: design for construction and the prototype build plan
+
+On 2026-09-30 Amish approved the build plan format and asked for it across all repos, with open decisions kept in a separate register, and wrote: "If you are realising that the design cannot be built as per concept - fix the design assumptions to match and be physically feasible as you draw the illustrations." Kit 1.7.0 was installed (`.kit/`, `.claude/commands/`, root `CLAUDE.md`) and `/build-plan` was carried out. Nothing was built or tested; TRL stays 3.
+
+### Design changes made for construction (CTW-DDR-003, Draft, open for Amish's review)
+
+Made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review.
+
+| # | Change |
+| --- | --- |
+| P1 | Eight M8 flush steel rivet nuts in the post; the head tray and the cabinet each held by four M8 screws with 30 mm washers from inside |
+| P2 | Display head is a folded 2 mm tray with a 15 mm return flange, closed by a removable 2 mm front panel on twelve M4 tamper-resistant screws into rivet nuts, with a gasket |
+| P3 | Window bonded inside the front panel with 1 mm glazing tape on its 8 mm lap |
+| P4 | New display carrier (BOM 20) on eight clinch studs and 15 mm spacers presses the e-paper panel onto a 1 mm foam gasket and carries the driver board and controller |
+| P5 | 12 V to 5 V converter, 4-channel LED driver and a pluggable fused terminal block added to BOM item 6 ($42.00 to $55.00) |
+| P6 | Button holes 19.2 mm, bezel outside, nut inside |
+| P7 | Notice plate held by four M4 tamper-resistant screws with nyloc nuts |
+| P8 | Hood is folded 1.5 mm sheet on four M5 screws into rivet nuts in the head top; LED strip on an angle behind the lip; LED cable through a grommet in the front panel |
+| P9 | DIN rails on the cabinet's mounting plate on 10 mm standoffs |
+| P10 | 25 mm grommeted cable holes through post and cabinet (735 mm) and post and head (1,380 mm), replacing a slot that met a solid wall |
+| P11 | 40 mm conduit hole in the base plate and a conduit gland in the cabinet floor |
+| P12 | Anchor holes, washers and nuts; 25 mm vent and drain hole under the post so it can be galvanized |
+| P13 | Antenna bracket is a 60 x 60 x 6 mm plate screwed to the cap |
+| P14 | Sun shield on four 25 mm standoffs through the cabinet sides; separate back panel on four thumb screws |
+| | New BOM line 21 (fixings, tapes and gaskets, $22.00); line 15 repriced to $26.00 |
+
+The model runs 244 constructability checks (`python cad/src/model.py --check`), all passing: no overlaps, 50 contacts, 10 clearances.
+
+### Key results (CTW-CAL-001 v0.3)
+
+- **R16 is now not met:** the pilot kiosk costs $778.00 against `budget_usd` of $750 ($28.00 over); $808.00 with the outdoor sun shield; $1,068.00 with the TwinKit gateway. `budget_usd` was not changed.
+- Mass 63.5 kg with the sun shield (was 60.1 kg). Wind: 821 N, post 26.6 MPa, 1.94 kN per anchor (R13 still met on paper).
+- Requirement status: 3 not met (R16, R18, R20), 1 at risk (R1), 9 met on paper, 7 met by design.
+- Thermal, power, radio, timing and legibility are unchanged.
+
+### What was made
+
+- `cad/src/model.py`: constructable model with `build_components()`, the checks and STEP and STL exports (`cad/step/`, `cad/stl/`, four groups).
+- `cad/src/sheets.py` and `cad/drawings/CTW-DWG-001` at Rev P4.
+- `cad/src/build_plan_media.py`: overview, 11 making sketches (`cad/drawings/CTW-DWG-101` to `111`), 10 joint pictures (six of them true sections to scale), 16 step pictures, post and front panel hole layouts and a wiring diagram, in `docs/05-build-plan/`.
+- `docs/05-build-plan.md` (CTW-BLD-001 v0.1) and `docs/06-design-decisions.md` (CTW-DEC-001 v0.1); `docs/decisions/0003-design-for-construction.md` (CTW-DDR-003 v0.1).
+- Updated: `bom/bom.csv` (21 lines), `bom/bom-notes.md`, `docs/04-calcs/sizing.py`, `results.csv` and CTW-CAL-001 v0.3, CTW-REQ-001 v0.5, CTW-PRC-001 v0.5, CTW-PRB-001 v0.5, `README.md` (links line, components, figures, "Building the prototype"), `project.yaml` (`design_state: constructable`, evidence), concept media in `media/` regenerated from the new model, and the PDFs in `docs/pdf/`.
+
+### Proposed, awaiting Amish (also in CTW-DEC-001)
+
+1. **Budget (A1).** Raise `budget_usd` to $800 (recommended), keep $750 and cut about $28, or accept R16 not met until TRL 4 prices.
+2. **Shield standoff holes (A2).** Drill only kiosks that get the shield (recommended), or every cabinet with sealed blanking screws.
+3. Still open from earlier: first partner city (O1), antenna height (Q1), languages and fault reporting (Q2), street climate panel (R20), PotholeLog and DockHub pull formats, CrossSafe uplink.
+
+### Stale on Amish's Mac
+
+The photoreal renders (`media/render-hero.png`, `media/render-detail.png`), `media/card.png` and `media/social-preview.png` show the concept head, hood and shield; the shield's standoffs and separate back panel, the front panel screws and the thinner hood edge now differ. They were not regenerated here (`media/render-hero.png` is also missing from this copy).
+
+### Safety
+
+No change to the safety case. The plan adds safety stops for lifting the post, mains work (electrician only), first switch-on, the gateway pack fuse, work at the post top, 12 V to the head, and leaving the kiosk unattended. The hood corners at head height are now specified as rounded to at least 10 mm.
+
+### Recommended next step
+
+Amish's review of CTW-DDR-003 and decisions A1 and A2. TRL 4 (building and testing to CTW-BLD-001) remains on hold.
+
 ## Session 2026-09-26: sources strengthened
 
 Amish asked on 2026-09-26 to "Fix the weaker sources." README.md sections Concept rationale, Burning platform, Where it could be used and What sparked the idea were checked; every kept link was fetched and confirmed against its claim.

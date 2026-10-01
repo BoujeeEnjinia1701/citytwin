@@ -1,4 +1,4 @@
-"""CityTwin concept media (TRL 3), built from the parametric model in cad/src/model.py.
+"""CityTwin concept media (TRL 3, constructable design CTW-DDR-003), built from the parametric model in cad/src/model.py.
 
 Run from the repo root:  python cad/src/concept_media.py
 Main dimensions and interfaces only; not for fabrication. Flow values come from CTW-CAL-001.
@@ -38,11 +38,12 @@ STYLE = {
     11: ("Mains protection (RCBO, surge)", "#DC2626", (520, 420, -260)),
     12: ("12 V DIN power supply", "#7C3AED", (260, 420, -330)),
     13: ("TwinKit gateway with backup", "#C2410C", (-60, 440, 180)),
-    14: ("LoRaWAN antenna (TwinKit)", "#111827", (0, 0, 380)),
+    14: ("LoRaWAN antenna and bracket", "#111827", (0, 0, 380)),
     15: ("Conduit and cabling", "#0EA5E9", (0, 330, -200)),
     19: ("Cabinet sun shield (outdoor sites)", "#CBD5E1", (0, 1500, 250)),
+    20: ("Display carrier", "#94A3B8", (-260, -420, 480)),
 }
-parts = [Part(STYLE[n][0], shape, STYLE[n][1], n, STYLE[n][2]) for n, _, shape in build_parts()]
+parts = [Part(STYLE[n][0], shape, STYLE[n][1], n, STYLE[n][2]) for n, _, shape in build_parts() if n in STYLE]   # 21 fixings: no callout
 
 # Street context for the hero render only (grey, no BOM number)
 sidewalk = box(-800, 1700, -1000, 600, -150, 0)
@@ -70,8 +71,8 @@ render_all(
     key_figures=[f"Reference neighborhood: {nodes} LoRaWAN nodes, {sent:,} uplinks a day, 0.61 % lost",
                  "13.3 in color e-paper, 1600 x 1200 px, screen center 1.46 m",
                  "Buttons at 1.12 m; LED ring at once, layer in 19.8 s (R10: 25 s)",
-                 "9.2 W average from the mains with TwinKit; about 60 kg with sun shield",
-                 "Pilot kiosk $739 ($750 budget); $1,029 with TwinKit gateway (indicative)"],
+                 "9.2 W average from the mains with TwinKit; about 63 kg with sun shield",
+                 "Pilot kiosk $765 ($750 budget); $1,055 with TwinKit gateway (indicative)"],
     cut=False, scale_figure=False, context=context,
     flow={"title": f"LoRaWAN data flow, records per day (CTW-CAL-001 estimates, {nodes}-node reference neighborhood)",
           "unit": "records/day",

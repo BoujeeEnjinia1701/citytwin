@@ -1,4 +1,4 @@
-"""CityTwin general arrangement sheet CTW-DWG-001, Rev P3 (TRL 3, cabinet sun shield per CTW-DDR-002).
+"""CityTwin general arrangement sheet CTW-DWG-001, Rev P4 (TRL 3, constructable design per CTW-DDR-003).
 
 Run from the repo root:  python cad/src/sheets.py
 Writes cad/drawings/CTW-DWG-001.svg, .pdf and .png from the parametric model in
@@ -113,12 +113,13 @@ def main():
     asm = assembly()
     views = safe_project_views(asm, work)
     bb = asm.bounding_box()
-    s = Sheet(project="CityTwin", title="General arrangement, public kiosk", dwg_no="CTW-DWG-001", rev="P3",
+    s = Sheet(project="CityTwin", title="General arrangement, public kiosk", dwg_no="CTW-DWG-001", rev="P4",
               author="Amish Chadha", date=DATE, scale=1 / 25, theme="technical",
               material="Steel post and plate, aluminum head; bought-in parts per bom/bom.csv. PRELIMINARY, NOT FOR FABRICATION",
               revisions=[("P1", "Preliminary GA for TRL 3 (from cad/src/model.py)", DATE, "AC"),
                          ("P2", "Cabinet sun shield (19) added; wind figures updated (CTW-DDR-002)", DATE, "AC"),
-                         ("P3", "Layout and labels tidied", "2026-09-30", "AC")])
+                         ("P3", "Layout and labels tidied", "2026-09-30", "AC"),
+                         ("P4", "Constructable design: fixings, front panel, carrier, shield standoffs (CTW-DDR-003)", "2026-10-01", "AC")])
     s.add_ortho(views, dims=False)
     k = s.scale
     c = ortho_cells(s, views)
@@ -187,11 +188,11 @@ def main():
         f"7 three 19 mm buttons at {P['btn_pitch']:.0f} pitch; reach range 380 to 1,220",
         f"Overhang beyond post {D['hood_side_overhang']:.0f} max (305 allowed on posts)",
         f"10 cabinet {P['cab_w']:.0f} x {P['cab_d']:.0f} x {P['cab_h']:.0f}, IP55; two TS35 rails {P['rail_len']:.0f} long",
-        f"19 sun shield (outdoor sites) {D['shield_w']:.0f} wide, {P['shield_t']} mm aluminum, {P['shield_gap']:.0f} gap, open bottom",
+        f"19 sun shield (outdoor sites) {D['shield_w']:.0f} wide, {P['shield_t']} mm aluminum, {P['shield_gap']:.0f} gap, on 4 standoffs",
         f"Upper rail: TwinKit per TWK-DWG-001, {D['twk_rail_used']:.0f} used; lower: RCBO, SPD, 12 V 60 W",
-        "Mains only in the cabinet; 12 V SELV and Ethernet up the post",
+        "Mains only in the cabinet; 12 V SELV and Ethernet up the post, 25 mm grommeted holes",
         "14 coax from TwinKit SMA bulkhead to post-top antenna",
-        "Wind 35 m/s x 1.5: post 26.9 MPa; 1.97 kN per anchor (CTW-CAL-001 v0.2)",
+        "Wind 35 m/s x 1.5: post 26.6 MPa; 1.94 kN per anchor (CTW-CAL-001 v0.3)",
         "Third-angle; front view from -Y (reading side)",
     ], x=276, y=142, width=140)
     out = s.save(ROOT / "cad" / "drawings" / "CTW-DWG-001")
