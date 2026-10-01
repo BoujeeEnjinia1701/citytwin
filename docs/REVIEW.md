@@ -30,9 +30,9 @@ The model runs 244 constructability checks (`python cad/src/model.py --check`), 
 
 ### Key results (CTW-CAL-001 v0.3)
 
-- **R16 is now not met:** the pilot kiosk costs $778.00 against `budget_usd` of $750 ($28.00 over); $808.00 with the outdoor sun shield; $1,068.00 with the TwinKit gateway. `budget_usd` was not changed.
+- **R16 is now over the value-engineering target by $28.00:** the estimated cost of the pilot kiosk is $778.00 against the $750 target (a hypothetical control target); $808.00 with the outdoor sun shield; $1,068.00 with the TwinKit gateway. `budget_usd` was not changed.
 - Mass 63.5 kg with the sun shield (was 60.1 kg). Wind: 821 N, post 26.6 MPa, 1.94 kN per anchor (R13 still met on paper).
-- Requirement status: 3 not met (R16, R18, R20), 1 at risk (R1), 9 met on paper, 7 met by design.
+- Requirement status: 2 not met (R18, R20), 1 over the value-engineering target (R16), 1 at risk (R1), 9 met on paper, 7 met by design.
 - Thermal, power, radio, timing and legibility are unchanged.
 
 ### What was made
@@ -45,9 +45,8 @@ The model runs 244 constructability checks (`python cad/src/model.py --check`), 
 
 ### Proposed, awaiting Amish (also in CTW-DEC-001)
 
-1. **Budget (A1).** Raise `budget_usd` to $800 (recommended), keep $750 and cut about $28, or accept R16 not met until TRL 4 prices.
-2. **Shield standoff holes (A2).** Drill only kiosks that get the shield (recommended), or every cabinet with sealed blanking screws.
-3. Still open from earlier: first partner city (O1), antenna height (Q1), languages and fault reporting (Q2), street climate panel (R20), PotholeLog and DockHub pull formats, CrossSafe uplink.
+1. **Shield standoff holes (A2).** Drill only kiosks that get the shield (recommended), or every cabinet with sealed blanking screws.
+2. Still open from earlier: first partner city (O1), antenna height (Q1), languages and fault reporting (Q2), street climate panel (R20), PotholeLog and DockHub pull formats, CrossSafe uplink.
 
 ### Stale on Amish's Mac
 
@@ -59,7 +58,7 @@ No change to the safety case. The plan adds safety stops for lifting the post, m
 
 ### Recommended next step
 
-Amish's review of CTW-DDR-003 and decisions A1 and A2. TRL 4 (building and testing to CTW-BLD-001) remains on hold.
+Amish's review of CTW-DDR-003 and decision A2; the register's Value engineering section holds the $750 target, the $778.00 estimate and the savings worth trying. TRL 4 (building and testing to CTW-BLD-001) remains on hold.
 
 ## Session 2026-09-26: sources strengthened
 

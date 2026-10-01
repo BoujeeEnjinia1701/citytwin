@@ -3,7 +3,7 @@ doc_id: CTW-CAL-001
 title: CityTwin sizing calculations
 project: CityTwin
 doc_type: Calculation
-version: "0.3"
+version: "0.4"
 status: Draft
 date: '2026-10-01'
 author: Amish Chadha
@@ -21,11 +21,15 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Constructable design (CTW-DDR-003); wind, mass and cost re-run; R16 now not met
+- version: "0.4"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: Budget treated as a value-engineering target
 ---
 
 # CityTwin sizing calculations
 
-On paper, CityTwin meets 16 of its 20 requirements (9 by calculation, 7 by design), has 1 at risk and misses 3. v0.3 re-runs the wind, mass and cost sections for the constructable design of CTW-DDR-003 (rivet nuts, front panel, display carrier, mounting plate, fixings and the parts added to the head); the parts added take the pilot kiosk to $778.00, so **R16 is not met**, $28.00 over `budget_usd` (an open decision, CTW-DEC-001). v0.2 applied Amish's decisions of 2026-09-25 (CTW-DDR-002): `budget_usd` of $750, R10 restated, the pilot range narrowed to 0 to 35 °C air, a ventilated sun shield on the cabinet for outdoor sites, the hood light dimmed to 0.3 W, and a larger TwinKit pack requested. **R18 is not met in the worst case**: TwinKit's backup pack rides through 2.40 h when new but only 1.63 h when aged and at 0 °C, against 2 h; a pack of at least 1.84 Ah would meet it. **R20 is not met**: in a street kiosk the panel would reach about 79 °C in low sun at 45 °C air, 45.1 °C even in shade, and needs about 13.5 W of heat at -20 °C. R1 (ingest of every node type) is at risk. R10 (LED ring in about 30 ms, layer in 19.8 s against 0.5 s and 25 s), and R12 (about 5 K of margin at 35 °C air) are met on paper. The radio and data side has ample margin: the 46-node reference neighborhood sends 5,616 uplinks a day and loses 0.61 % to collisions and downlink blanking. Several TRL 2 figures were corrected, and the v0.2 and v0.3 changes are listed in the last sections. Every number in this note is printed by `docs/04-calcs/sizing.py`; the tag in brackets, for example [A2], is the line of that script's output that carries it.
+On paper, CityTwin meets 16 of its 20 requirements (9 by calculation, 7 by design), has 1 at risk, misses 2 and has 1 over its value-engineering target. v0.3 re-runs the wind, mass and cost sections for the constructable design of CTW-DDR-003 (rivet nuts, front panel, display carrier, mounting plate, fixings and the parts added to the head); the parts added take the pilot kiosk to $778.00, so **R16 is over the value-engineering target by $28.00** (target $750, a hypothetical control target; see CTW-DEC-001). v0.2 applied Amish's decisions of 2026-09-25 (CTW-DDR-002): `budget_usd` of $750, R10 restated, the pilot range narrowed to 0 to 35 °C air, a ventilated sun shield on the cabinet for outdoor sites, the hood light dimmed to 0.3 W, and a larger TwinKit pack requested. **R18 is not met in the worst case**: TwinKit's backup pack rides through 2.40 h when new but only 1.63 h when aged and at 0 °C, against 2 h; a pack of at least 1.84 Ah would meet it. **R20 is not met**: in a street kiosk the panel would reach about 79 °C in low sun at 45 °C air, 45.1 °C even in shade, and needs about 13.5 W of heat at -20 °C. R1 (ingest of every node type) is at risk. R10 (LED ring in about 30 ms, layer in 19.8 s against 0.5 s and 25 s), and R12 (about 5 K of margin at 35 °C air) are met on paper. The radio and data side has ample margin: the 46-node reference neighborhood sends 5,616 uplinks a day and loses 0.61 % to collisions and downlink blanking. Several TRL 2 figures were corrected, and the v0.2 and v0.3 changes are listed in the last sections. Every number in this note is printed by `docs/04-calcs/sizing.py`; the tag in brackets, for example [A2], is the line of that script's output that carries it.
 
 > **Safety:** These are first-principles screening estimates for a paper proof of concept. They do not replace the electrician's check of the mains installation, a structural design of the footing and anchors to the local code, or a privacy impact assessment. See CTW-PRC-001, Safety.
 
@@ -109,7 +113,7 @@ TwinKit's backup runs the gateway for 2.40 h with a new pack and 1.63 h with an 
 
 ## J. Cost (R16, R17)
 
-All 21 BOM lines are priced. The pilot kiosk (items 1 to 12, 14, 15, 20 and 21) costs $778.00; the TwinKit gateway $290.00 from TwinKit's TRL 3 BOM; together $1,068.00. The outdoor sun shield (item 19) adds $30.00, for $808.00 [J1]. Against `budget_usd`, raised from $600 to $750 under CTW-DDR-002 N1, the pilot kiosk is $28.00 over and the outdoor kiosk $58.00 over [J2]. **R16 is not met**: the display carrier (item 20, $8.00), the fixings (item 21, $22.00) and the head's converter, LED driver and terminal block (item 6, up $13.00), less $4.00 moved out of item 15, are needed to build the kiosk (CTW-DDR-003). Whether to raise `budget_usd` is an open decision for Amish (CTW-DEC-001). **R17**, redefined by D1 as a reported figure with the gateway costed in TwinKit, is met on paper.
+All 21 BOM lines are priced. The pilot kiosk (items 1 to 12, 14, 15, 20 and 21) costs $778.00; the TwinKit gateway $290.00 from TwinKit's TRL 3 BOM; together $1,068.00. The outdoor sun shield (item 19) adds $30.00, for $808.00 [J1]. Against the value-engineering target (`budget_usd`, $750 under CTW-DDR-002 N1, a hypothetical control target), the estimated pilot kiosk cost is $28.00 over and the outdoor kiosk $58.00 over [J2]. **R16 is over the value-engineering target by $28.00**: the display carrier (item 20, $8.00), the fixings (item 21, $22.00) and the head's converter, LED driver and terminal block (item 6, up $13.00), less $4.00 moved out of item 15, are needed to build the kiosk (CTW-DDR-003). Savings worth trying are in the Value engineering section of CTW-DEC-001. **R17**, redefined by D1 as a reported figure with the gateway costed in TwinKit, is met on paper.
 
 ## Results
 
@@ -132,13 +136,13 @@ All 21 BOM lines are priced. The pilot kiosk (items 1 to 12, 14, 15, 20 and 21) 
 | R13 | Wind | 26.6 MPa with the 1.5 factor; 1.94 kN per anchor | 35 m/s x 1.5, no yield | Met on paper |
 | R14 | Electrical safety | Mains only in the cabinet; 12 V SELV; peak 26.7 W of 60 W | As stated | Met by design |
 | R15 | Running power | 9.2 W | 15 W | Met on paper |
-| R16 | Pilot kiosk parts cost | $778.00 (outdoor with sun shield $808.00) | $750 (`budget_usd`) | **Not met** ($28.00 over) |
+| R16 | Pilot kiosk parts cost | $778.00 (outdoor with sun shield $808.00) | $750 (value-engineering target, `budget_usd`) | **Over the value-engineering target by $28.00** |
 | R17 | Cost with gateway (redefined, D1) | $1,068.00 | Reported; gateway costed in TwinKit | Met on paper (reported) |
 | R18 | Honest in an outage | 2.40 h new, 1.63 h worst; 1.84 Ah pack needed | 2 h ride-through | **Not met** (worst case) |
 | R19 | Secure by default | Outbound push and pull only | No inbound connections | Met by design |
 | R20 | Street climate (target after the pilot) | Panel about 79 °C in sun and 45.1 °C shaded at 45 °C; pack 52.2 °C behind the sun shield; heater 13.5 W at -20 °C | -20 to +45 °C air | **Not met** |
 
-Summary: 3 not met, 1 at risk, 9 met on paper, 7 met by design [K1]. The script counts R11 and R17 under "met on paper". v0.2: 2 not met, 1 at risk, 10 met on paper, 7 met by design. Before v0.2: 4 not met, 2 at risk, 7 met on paper, 7 met by design.
+Summary: 2 not met, 1 over the value-engineering target (R16), 1 at risk, 9 met on paper, 7 met by design [K1]. The script counts R11 and R17 under "met on paper". v0.2: 2 not met, 1 at risk, 10 met on paper, 7 met by design. Before v0.2: 4 not met, 2 at risk, 7 met on paper, 7 met by design.
 
 ## Changes from the TRL 2 estimates
 
@@ -187,7 +191,7 @@ Summary: 3 not met, 1 at risk, 9 met on paper, 7 met by design [K1]. The script 
 | Head leading edge | 1,040 to 1,734 mm | 1,040 to 1,722 mm | Hood modeled as 1.5 mm sheet, not a 14 mm block |
 | Wind at the base | 827 N, 848 N·m; 26.9 MPa; 1.97 kN per anchor | 821 N, 839 N·m; 26.6 MPa; 1.94 kN per anchor | Same; R13 still met on paper |
 | Mass | 60.1 kg with the sun shield | 63.5 kg with the sun shield | Cabinet mounting plate (2.1 kg), front panel, carrier and fixings modeled |
-| Pilot kiosk cost | $739.00 | $778.00 | Items 20 and 21 added, item 6 and item 15 repriced; R16 met on paper to **not met** |
+| Pilot kiosk cost | $739.00 | $778.00 | Items 20 and 21 added, item 6 and item 15 repriced; R16 met on paper to **over the value-engineering target** |
 | Outdoor kiosk cost | $769.00 | $808.00 | As above |
 | Kiosk and gateway | $1,029.00 | $1,068.00 | As above |
 | Thermal, power, radio, timing, legibility | Unchanged | Unchanged | Window, screen gap, hood, cabinet and shield keep their sizes |

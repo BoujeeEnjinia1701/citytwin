@@ -3,7 +3,7 @@ doc_id: CTW-REQ-001
 title: CityTwin requirements
 project: CityTwin
 doc_type: Requirements
-version: "0.5"
+version: "0.6"
 status: Draft
 date: '2026-10-01'
 author: Amish Chadha
@@ -29,11 +29,15 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: "Constructable design (CTW-DDR-003): R13 figures updated; R16 now not met ($778.00 against $750)"
+- version: "0.6"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: Budget treated as a value-engineering target
 ---
 
 # CityTwin requirements
 
-The decisions in CTW-DDR-001 and CTW-DDR-002 (decided by Amish, 2026-09-25: go with recommendation) set these targets; the constructable design of CTW-DDR-003 (2026-10-01, open for Amish's review) changes no target. R12 covers the pilot on a sheltered site at 0 to 35 °C air (D3, narrowed from 0 to 40 °C by DDR-002), the outdoor range is R20, R17 is a reported figure because the gateway is costed in TwinKit (D1), R10 is restated for the e-paper street kiosk, and R16 is set against the new `budget_usd` of $750. The status column comes from the TRL 3 calculation note CTW-CAL-001 v0.3. Three requirements are **not met**: R16 (the parts added to make the kiosk buildable take it $28.00 over budget; an open decision in CTW-DEC-001), R18 (backup in the worst case, until TwinKit fits a larger pack) and R20 (street climate). R1 is **at risk**.
+The decisions in CTW-DDR-001 and CTW-DDR-002 (decided by Amish, 2026-09-25: go with recommendation) set these targets; the constructable design of CTW-DDR-003 (2026-10-01, open for Amish's review) changes no target. R12 covers the pilot on a sheltered site at 0 to 35 °C air (D3, narrowed from 0 to 40 °C by DDR-002), the outdoor range is R20, R17 is a reported figure because the gateway is costed in TwinKit (D1), R10 is restated for the e-paper street kiosk, and R16 is reported against the $750 value-engineering target (a hypothetical control target, not a limit). The status column comes from the TRL 3 calculation note CTW-CAL-001 v0.3. Two requirements are **not met**: R18 (backup in the worst case, until TwinKit fits a larger pack) and R20 (street climate). R16 is **over the value-engineering target by $28.00** (the parts added to make the kiosk buildable; see the Value engineering section of CTW-DEC-001). R1 is **at risk**.
 
 Table 1. Requirements.
 
@@ -54,7 +58,7 @@ Table 1. Requirements.
 | R13 | Kiosk stands up to wind | 35 m/s gust with a factor of 1.5 without yield of post or anchors | Met on paper: post 26.6 MPa, 1.94 kN per anchor, with the sun shield | Structural design to the local code |
 | R14 | Electrical safety | Mains only inside the locked cabinet, behind a 30 mA RCBO and a surge protector; only 12 V SELV in the head; all metal earthed | Met by design; 12 V peak 26.7 W on a 60 W supply | Inspection by a qualified electrician |
 | R15 | Low running power | 15 W average or less including the TwinKit gateway | Met on paper: 9.2 W (81 kWh a year), with the hood light dimmed to 0.3 W | Energy meter on a bench build |
-| R16 | Kiosk parts cost | Pilot kiosk (items 1 to 12, 14, 15, 20, 21) within `budget_usd` of $750 (raised from $600, CTW-DDR-002); the outdoor sun shield (item 19) is reported separately | **Not met:** $778.00 ($28.00 over) after the parts added for construction (CTW-DDR-003); $808.00 with the outdoor sun shield. Raising `budget_usd` to $800 is proposed, awaiting Amish (CTW-DEC-001) | Priced BOM |
+| R16 | Kiosk parts cost | Pilot kiosk (items 1 to 12, 14, 15, 20, 21) within the value-engineering target of $750 (hypothetical control target, not a limit; set in CTW-DDR-002); the outdoor sun shield (item 19) is reported separately | **Over the value-engineering target by $28.00:** estimated cost $778.00 after the parts added for construction (CTW-DDR-003); $808.00 with the outdoor sun shield. Savings worth trying are in CTW-DEC-001 | Priced BOM |
 | R17 | Cost with gateway (redefined, D1) | Kiosk plus TwinKit gateway reported; the gateway is costed and budgeted in the TwinKit repo | Met on paper (reported): $1,068.00 | Priced BOM |
 | R18 | Honest in an outage | Screen keeps the last image with its timestamp when power fails; gateway rides through 2 h on its backup pack | **Not met in the worst case:** 2.40 h with a new pack, 1.63 h aged at 0 °C (TWK-CAL-001); a pack of at least 1.84 Ah (now 1.5 Ah) would meet 2 h and has been requested from TwinKit (CTW-DDR-002); the e-paper keeps its image by design | Outage test |
 | R19 | Secure by default | No inbound connections from the internet to the gateway; open data pushed and sibling data pulled by outbound connections only; no exposed ports or USB on the kiosk | Met by design | Security review |

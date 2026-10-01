@@ -3,7 +3,7 @@ doc_id: CTW-DDR-003
 title: CityTwin design for construction
 project: CityTwin
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
 date: '2026-10-01'
 author: Amish Chadha
@@ -13,6 +13,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Changes that make the kiosk physically buildable, with the reason for each; made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review
+- version: "0.2"
+  date: '2026-10-01'
+  author: Amish Chadha
+  change: Budget treated as a value-engineering target, with cost question A1 replaced by the register's Value engineering section
 ---
 
 # 0003: Design for construction
@@ -52,7 +56,7 @@ Checking the model with build123d (intersections, volumes and distances between 
 | Item | Change | Reason |
 | --- | --- | --- |
 | BOM | Lines 1 to 4, 6 to 10, 14, 15 and 19 respecified; line 6 repriced to $55.00; line 15 repriced to $26.00 (fixings moved out); new line 20 (display carrier, $8.00) and line 21 (fixings, tapes and gaskets, $22.00). 21 lines. | Parts added for construction. |
-| Cost | Pilot kiosk $739.00 to $778.00 [J1], $28.00 over the $750 `budget_usd` [J2]; outdoor kiosk $808.00; with the TwinKit gateway $1,068.00. R16 changes from met on paper to **not met**. | See Table 3, A1. |
+| Cost | Pilot kiosk $739.00 to $778.00 [J1], $28.00 over the $750 value-engineering target [J2]; outdoor kiosk $808.00; with the TwinKit gateway $1,068.00. R16 changes from met on paper to **over the value-engineering target by $28.00**. | See the Value engineering section of CTW-DEC-001. |
 | Mass | 60.1 to 63.5 kg with the sun shield [H4]. Most of the rise is the cabinet's 2 mm steel mounting plate (2.1 kg), then the front panel and fixings. | Still a two-person or hoist lift. |
 | Wind | The hood is now modeled as sheet, not a 14 mm block: 827 to 821 N, post stress 26.9 to 26.6 MPa, anchor tension 1.97 to 1.94 kN [H1, H2, H5]. R13 still met on paper. | Follows the model. |
 | Thermal, power, radio, legibility | Unchanged. The window, screen gap, hood, cabinet and shield keep their sizes and positions. | |
@@ -63,12 +67,11 @@ Checking the model with build123d (intersections, volumes and distances between 
 
 | # | Question | Options | Recommendation |
 | --- | --- | --- | --- |
-| A1 | The parts added for construction take the pilot kiosk to $778.00, $28.00 over `budget_usd` of $750, so R16 is no longer met. | (a) raise `budget_usd` to $800; (b) keep $750 and cut about $28, for example a lower-cost cabinet or dropping the real-time clock; (c) keep $750 and accept R16 not met at TRL 3, with prices to be checked at TRL 4. | (a): the added parts are needed to build the kiosk at all, and $800 leaves $22 of margin on indicative prices. `budget_usd` is unchanged until Amish decides. |
 | A2 | The sun shield standoff holes breach the cabinet's sides. | (a) drill them only on kiosks that get the shield; (b) drill every cabinet so a pilot kiosk can later move outdoors, with sealed blanking screws until then. | (a), so the sheltered pilot cabinet keeps its unbroken IP55 sides. |
 
 ## Consequences
 
 - `design_state: constructable` in `project.yaml`. The build plan CTW-BLD-001 shows every component and step in pictures generated from the model (`cad/src/build_plan_media.py`); open items are in the design decisions register CTW-DEC-001.
-- Requirement status (CTW-CAL-001 v0.3): 3 not met (R16, R18, R20), 1 at risk (R1), 9 met on paper, 7 met by design. Before: 2 not met, 1 at risk, 10 met on paper, 7 met by design. R16 returns to met on paper if A1 option (a) is chosen.
+- Requirement status (CTW-CAL-001 v0.3): 2 not met (R18, R20), 1 over the value-engineering target (R16), 1 at risk (R1), 9 met on paper, 7 met by design. Before: 2 not met, 1 at risk, 10 met on paper, 7 met by design.
 - The photoreal renders (`media/render-*.png`), `media/card.png` and `media/social-preview.png` are made on Amish's Mac and still show the concept head and shield; they are stale where the shield back panel and standoffs, the hood's sheet edges and the front panel screws show. The concept media in `media/` were regenerated from the new model.
 - The cabinet, its mounting plate, the e-paper panel's outline and cable exit, and the rivet nuts' grip range are bought parts to be confirmed when chosen at TRL 4 (CTW-DEC-001).
