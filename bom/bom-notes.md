@@ -8,5 +8,5 @@ Costs are indicative estimates for a single prototype, in USD, updated for TRL 3
 - **Kiosk with gateway**: $1,068.00, reported under R17.
 - Screws, rivet nuts, tapes and gaskets are now their own line (21); line 15 keeps the conduit, cables, grommets and earth bonds.
 - Items 16 to 18 are software and documents with no parts cost. Hosting for the public open data files is not included.
-- The 60 W supply (item 12) covers the 26.7 W peak, and 40.2 W with the street heater studied in CTW-CAL-001; the panel heater is not in the BOM, because it is fitted only where the partner city has frost (CTW-DDR-002 N4) and that city is not yet chosen.
+- The 60 W supply (item 12) covers the 26.7 W peak, and 40.2 W with the street heater studied in CTW-CAL-001; the panel heater is not in the BOM, because it is fitted only where the partner city has frost (CTW-DDR-002 N4); the pilot is in a sheltered public lobby (decided 2026-10-02), so it is not fitted.
 - Not included: concrete footing, anchor design, mains connection by an electrician, permits and installation labor.

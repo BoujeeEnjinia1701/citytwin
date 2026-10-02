@@ -3,9 +3,9 @@ doc_id: CTW-DDR-002
 title: CityTwin recommendations accepted
 project: CityTwin
 doc_type: Design decision record
-version: "0.1"
+version: "0.2"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,12 +13,16 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Record the recommendations accepted by Amish on 2026-09-25, what changed in the repo and the items still open
+- version: "0.2"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: O1, Q1 and Q2 decided by Amish on 2026-10-02 as recommended
 ---
 
 # 0002: Recommendations accepted
 
 - **Date:** 2026-09-25
-- **Status:** accepted. Every item below that carried a recommendation is decided by Amish, 2026-09-25: go with recommendation. Items with no recommendation stay "Proposed, awaiting Amish".
+- **Status:** accepted. Every item below that carried a recommendation is decided by Amish, 2026-09-25: go with recommendation. Items with no recommendation stayed "Proposed, awaiting Amish"; O1, Q1 and Q2 were decided on 2026-10-02 as recommended in CTW-DEC-001 (Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions.").
 
 ## Context
 
@@ -46,9 +50,9 @@ On 2026-09-25 Amish wrote, in chat: "i accept all your recommendations, go with 
 
 | # | Item | Status |
 | --- | --- | --- |
-| O1 | First partner city or neighborhood for co-design and a pilot site. No recommendation was made. | Proposed, awaiting Amish |
-| Q1 | Antenna height needed for the reference neighborhood with the gateway in the cabinet | Open question, no recommendation made |
-| Q2 | Languages and scripts on the kiosk, and how residents ask questions or report a fault | Open question, no recommendation made; for co-design with the partner city (O1) |
+| O1 | First partner city or neighborhood for co-design and a pilot site. No recommendation was made. | Decided 2026-10-02: a city within easy reach of Irving, Texas, with an active open-data program, the first candidate to approach; sheltered public lobby, no frost heater |
+| Q1 | Antenna height needed for the reference neighborhood with the gateway in the cabinet | Decided 2026-10-02: post-top antenna at 2.38 m for the pilot, coverage walk test at TRL 4, a rooftop gateway rather than a taller mast if nodes fall short |
+| Q2 | Languages and scripts on the kiosk, and how residents ask questions or report a fault | Decided 2026-10-02: English plus the partner city's most widely spoken other language in its own script, with a QR code and a phone or text number on the notice plate; refined in co-design |
 
 ## Consequences
 

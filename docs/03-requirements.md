@@ -3,9 +3,9 @@ doc_id: CTW-REQ-001
 title: CityTwin requirements
 project: CityTwin
 doc_type: Requirements
-version: "0.6"
+version: "0.7"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -33,6 +33,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Budget treated as a value-engineering target
+- version: "0.7"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: R20 kept as a post-pilot target with outdoor sites only in permanent shade, as decided by Amish on 2026-10-02
 ---
 
 # CityTwin requirements
@@ -68,5 +72,5 @@ Table 1. Requirements.
 
 - Node types and reporting rates follow the sibling TRL 3 calculation notes: CurbCount, HeatMap Node, FloodGauge and NoiseMap 96 uplinks a day; AirStreet 288; LoadZone 124 (100 state changes and 24 heartbeats). CrossSafe's hourly activation summary is a CityTwin assumption; CrossSafe has not defined a LoRaWAN uplink.
 - Radio loss is calculated (CTW-CAL-001 section A) rather than assumed; the TRL 2 figure of about 3 % was a placeholder.
-- The pilot kiosk (R12) stands on a sheltered site; the street range (R20) is the target after the pilot. Any outdoor site uses the cabinet sun shield and a shaded screen orientation as site rules (CTW-DDR-002).
+- The pilot kiosk (R12) stands on a sheltered site; the street range (R20) is the target after the pilot. Any outdoor site uses the cabinet sun shield and a shaded screen orientation as site rules (CTW-DDR-002), and is allowed only in permanent shade (decided by Amish, 2026-10-02, CTW-DEC-001); a panel rated above 40 °C is sought at TRL 4.
 - 35 m/s design gust is an estimate for a first check; the local wind code governs any real installation.

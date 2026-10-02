@@ -3,9 +3,9 @@ doc_id: CTW-DDR-001
 title: CityTwin TRL 2 review decisions
 project: CityTwin
 doc_type: Design decision record
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-09-25'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,12 +17,16 @@ revisions:
   date: '2026-09-25'
   author: Amish Chadha
   change: Recommendations accepted by Amish (DDR-002)
+- version: "0.3"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: O1 decided by Amish on 2026-10-02 as recommended (sheltered pilot in a city near Irving, Texas, as first candidate)
 ---
 
 # 0001: TRL 2 review decisions
 
 - **Date:** 2026-09-25
-- **Status:** accepted for D1 to D11. On 2026-09-25 Amish accepted all recommendations ("i accept all your recommendations, go with them across all repos"), so D1 to D11 are decided by Amish, 2026-09-25: go with recommendation. Item O1 had no recommendation and remains "Proposed, awaiting Amish". What changed in the repo is recorded in CTW-DDR-002.
+- **Status:** accepted for D1 to D11. On 2026-09-25 Amish accepted all recommendations ("i accept all your recommendations, go with them across all repos"), so D1 to D11 are decided by Amish, 2026-09-25: go with recommendation. Item O1 had no recommendation and stayed "Proposed, awaiting Amish" until Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions." decided it as recommended in CTW-DEC-001 v0.3. What changed in the repo is recorded in CTW-DDR-002.
 
 ## Context
 
@@ -54,7 +58,7 @@ The options for each item are those listed in `docs/REVIEW.md` (session 2026-09-
 
 | # | Item | Status |
 | --- | --- | --- |
-| O1 | First partner city or neighborhood for co-design and a pilot site. No recommendation was made. | Proposed, awaiting Amish |
+| O1 | First partner city or neighborhood for co-design and a pilot site. No recommendation was made. | Decided by Amish on 2026-10-02 as recommended in CTW-DEC-001: a city within easy reach of Irving, Texas, with an active open-data program, the first candidate to approach; the pilot in a sheltered public lobby such as a library or transit center, with no frost heater |
 
 No reworded pitch or problem line was recommended, so `project.yaml` and `README.md` keep the existing wording.
 

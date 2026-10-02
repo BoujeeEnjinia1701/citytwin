@@ -3,9 +3,9 @@ doc_id: CTW-PRB-001
 title: CityTwin problem statement
 project: CityTwin
 doc_type: Problem statement
-version: "0.5"
+version: "0.6"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -29,6 +29,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Kiosk parts cost updated for the constructable design (CTW-DDR-003)
+- version: "0.6"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: First candidate partner city and sheltered pilot site, as decided by Amish on 2026-10-02
 ---
 
 # CityTwin problem statement
@@ -87,7 +91,7 @@ Table 1. Users and needs.
 
 ## Open questions
 
-- Which city or neighborhood partner hosts the first kiosk? Proposed, awaiting Amish (CTW-DDR-001 O1).
+- Which city or neighborhood partner hosts the first kiosk? Decided by Amish on 2026-10-02: the first candidate to approach is a city within easy reach of Irving, Texas, with an active open-data program, the pilot in a sheltered public lobby such as a library or transit center (CTW-DEC-001).
 - Open data license: CC BY 4.0 (D7), decided by Amish on 2026-09-25.
 - Small-count threshold of 5 per hour and two years of raw data retention (D6), decided by Amish on 2026-09-25.
 - Will PotholeLog's operators and DockHub publish aggregates that CityTwin can pull, and will CrossSafe add a LoRaWAN uplink? To agree with those projects.

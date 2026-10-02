@@ -282,3 +282,44 @@ Amish asked on 2026-09-26 for photoreal renders across the portfolio, starting w
 - Kit 1.5.0 synced: STANDARDS v1.5 (sections 12 to 15: product renders, storefront images and image quality, public release, authorship and signing), `.kit/cards.py`, `.kit/image_qc.py`, `.kit/release_gate.py`, issue templates, and the `/render-product` and `/release` commands. `CLAUDE.md` now matches `.kit/CLAUDE.md`.
 - Every `media/render-*.png` recaptioned from its original render with the new layout: the title, concept label and repository sit in a band above the render and the view note in a band below it, each line wrapped to the image width, so no text overlaps other text or the render or runs off the image. `media/card.png` and `media/social-preview.png` regenerated with the same rules.
 - `python .kit/image_qc.py` and `python .kit/release_gate.py` pass. trl stays 3.
+
+## Session 2026-10-02: open decisions decided
+
+Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions." This approves the recommendation written for each open decision in the design decisions register (CTW-DEC-001 v0.2). trl stays 3; no build or test work was done, and the model, BOM quantities and prices, and pictures are unchanged.
+
+### Decisions recorded
+
+Seven decisions, all moved to Decisions made in CTW-DEC-001, dated 2026-10-02:
+
+1. Sun shield standoff holes: option (a), drilled only in cabinets that get the shield (CTW-DDR-003, A2 accepted).
+2. First partner and pilot site: a city within easy reach of Irving, Texas, with an active open-data program, as the first candidate to approach; the kiosk in a sheltered public lobby such as a library or transit center; no frost heater.
+3. Antenna: post-top at 2.38 m for the pilot, with a coverage walk test at TRL 4; a rooftop gateway rather than a taller mast if nodes fall short.
+4. Languages: English plus the partner city's most widely spoken other language in its own script, with a QR code and a phone or text number on the notice plate; refined in co-design.
+5. Street climate (R20): kept as a post-pilot target; outdoor sites only in permanent shade with the sun shield; a panel rated above 40 °C sought at TRL 4; the heated bay only for a frost city.
+6. Pull paths: daily CSV files on a fixed HTTPS address at each operator, with a published column list and a version field; the same format to be agreed in PotholeLog.
+7. CrossSafe: ask for an hourly LoRaWAN summary uplink from one side of the crossing; no CrossSafe layer until it exists.
+
+### Documents changed
+
+- `docs/06-design-decisions.md` (CTW-DEC-001 v0.3): open decisions moved to Decisions made; the value-engineering line notes the sheltered pilot.
+- `docs/decisions/0003-design-for-construction.md` (CTW-DDR-003 v0.3, status Draft): A2 accepted. The Table 1 changes (P1 to P14) were not an open decision in the register and so stay open for Amish's review.
+- `docs/decisions/0001-trl2-review-decisions.md` (CTW-DDR-001 v0.3): O1 recorded as decided.
+- `docs/decisions/0002-recommendations-accepted.md` (CTW-DDR-002 v0.2): O1, Q1 and Q2 recorded as decided.
+- `docs/02-concept.md` (CTW-PRC-001 v0.7): outdoor site rule (permanent shade) and the open questions answered.
+- `docs/01-problem.md` (CTW-PRB-001 v0.6): partner question answered.
+- `docs/03-requirements.md` (CTW-REQ-001 v0.7): outdoor sites only in permanent shade (R20 status unchanged, not met, target after the pilot).
+- `bom/bom-notes.md`: heater note (sheltered pilot).
+
+### Follow-up actions to carry approved decisions into the design
+
+1. Decision 1 (model and drawings): show the shield standoff holes only on the shielded variant in `cad/src/model.py`, drawing CTW-DWG-001 and the build plan pictures (section 3.3), if they are now shown on every cabinet.
+2. Decision 4 (drawings and pictures): lay out the notice plate with the two languages, the QR code and the phone or text number, and update the build plan picture of the plate.
+3. Decision 5 (calculations): add the permanent-shade site rule to the R20 discussion in CTW-CAL-001 when it is next run.
+4. Decision 6 (docs): publish the CSV column list and version field, and agree it with PotholeLog's open item 6 (cross-repo action).
+5. Decision 7 (docs): raise the hourly LoRaWAN summary uplink as a cross-repo action in CrossSafe.
+
+### Points found in the review
+
+- The register listed CTW-DDR-003 under Decisions made (2026-10-01) while also calling it open for Amish's review, and there was no open item to accept it. It is still not accepted: an item to accept it (recommend accept, as for the other repos) needs Amish's decision.
+- Decision 6 is the same interface as PotholeLog's open item 6; decide both together.
+- `media/render-hero.png` is missing from this copy, and the remaining renders show the concept head, hood and shield.

@@ -3,9 +3,9 @@ doc_id: CTW-PRC-001
 title: CityTwin design precis
 project: CityTwin
 doc_type: Design precis
-version: "0.6"
+version: "0.7"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -33,6 +33,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Budget treated as a value-engineering target
+- version: "0.7"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: 'Decisions of 2026-10-02 (CTW-DEC-001 v0.3): permanent shade for outdoor sites, pull file format, CrossSafe uplink request, R20 kept post-pilot, antenna walk test, languages, sheltered pilot near Irving as first candidate'
 ---
 
 # CityTwin design precis
@@ -138,7 +142,7 @@ Items D1 to D11 in CTW-DDR-001 and N1 to N6 in CTW-DDR-002 are decided by Amish,
 
 - **Color e-paper rather than an LCD (D2).** E-paper is readable in direct sun, draws almost nothing between refreshes and keeps its image in an outage. A 1,000-nit outdoor LCD would respond instantly and allow touch, but costs more, draws tens of watts and needs cooling. A monochrome panel would refresh faster but lose the color layers. Decided: color e-paper for the street kiosk, with an indoor LCD variant for libraries and city hall lobbies (not modeled at TRL 3). R10 is restated for the street kiosk (LED ring within 0.5 s, layer within 25 s) and keeps 5 s for the LCD variant.
 - **Sheltered pilot (D3, N5).** The panel is rated 0 to 40 °C. The pilot kiosk stands where the screen gets no direct sun, in air of 0 to 35 °C, which leaves about 5 K of margin; the heater and shading study for a street kiosk is CTW-CAL-001 section F.
-- **Site rules for any outdoor kiosk (N4).** Fit the cabinet sun shield (item 19); orient the screen so it gets no direct sun (for example north-facing in the northern hemisphere) or shade it; fit the insulated, heated panel bay (13.5 W at -20 °C) only if the partner city has frost. The shield keeps the backup pack under its 45 °C charge limit in full sun up to about 37.8 °C air.
+- **Site rules for any outdoor kiosk (N4).** Fit the cabinet sun shield (item 19); site it only in permanent shade (decided by Amish, 2026-10-02), with the screen oriented so it gets no direct sun (for example north-facing in the northern hemisphere); fit the insulated, heated panel bay (13.5 W at -20 °C) only if the partner city has frost. The shield keeps the backup pack under its 45 °C charge limit in full sun up to about 37.8 °C air.
 - **Buttons, not a touch screen (D8).** Three stainless buttons survive vandalism and weather and suit e-paper's slow refresh; the QR code hands richer use to the visitor's phone.
 - **Gateway inside the kiosk cabinet (D4).** One site, one mains feed and one locked box for a pilot. The TwinKit gateway sits on its own DIN rail exactly as TwinKit lays it out, with a coax lead to the post-top antenna in place of its whip. The cost is a low antenna (tip at 2.38 m), which shortens LoRaWAN range; a rooftop gateway is the choice for a full neighborhood.
 - **Mains power (D5).** Kiosk and gateway need 0.222 kWh a day. A solar head-only variant is kept for sites without power (not modeled at TRL 3).
@@ -160,12 +164,12 @@ Items D1 to D11 in CTW-DDR-001 and N1 to N6 in CTW-DDR-002 are decided by Amish,
 
 ## Open questions
 
-- [ ] Pull paths for PotholeLog segment files and DockHub hourly aggregates (D11): agree formats and hosts with those projects.
-- [ ] A LoRaWAN uplink from CrossSafe, whose radio now runs point to point between the two sides (R1).
+- [ ] Pull paths for PotholeLog segment files and DockHub hourly aggregates (D11): daily CSV files on a fixed HTTPS address at each operator, with a published column list and a version field (decided 2026-10-02); hosts and the PotholeLog side still to agree with those projects.
+- [ ] A LoRaWAN uplink from CrossSafe, whose radio now runs point to point between the two sides (R1). Decided 2026-10-02: CrossSafe is asked for an hourly LoRaWAN summary uplink from one side of the crossing, and CityTwin shows no CrossSafe layer until it exists.
 - [ ] Backup time (R18): TwinKit to confirm a pack of at least 1.84 Ah for cabinet installs (decided, CTW-DDR-002 N3; cross-repo action).
-- [ ] Street climate (R20): the panel still exceeds its rating at 45 °C air even in shade; a wider-range panel, if one exists, remains the only full fix.
-- [ ] Antenna height needed for the reference neighborhood with the gateway in the cabinet.
-- [ ] Which languages and scripts the kiosk shows, and how residents ask questions or report a fault.
-- [ ] First partner city or neighborhood, and co-design sessions with residents on what the kiosk should show (CTW-DDR-001 O1).
+- [ ] Street climate (R20): the panel still exceeds its rating at 45 °C air even in shade; a wider-range panel, if one exists, remains the only full fix. Decided 2026-10-02: R20 stays a post-pilot target, outdoor sites only in permanent shade with the sun shield, a panel rated above 40 °C sought at TRL 4, the heated bay only for a frost city.
+- [ ] Antenna height needed for the reference neighborhood with the gateway in the cabinet. Decided 2026-10-02: keep the post-top antenna at 2.38 m for the pilot and walk-test coverage at TRL 4; a rooftop gateway, not a taller mast, if nodes fall short.
+- [x] Which languages and scripts the kiosk shows, and how residents ask questions or report a fault. Decided 2026-10-02: English plus the partner city's most widely spoken other language in its own script, with a QR code and a phone or text number on the notice plate; refined in co-design.
+- [ ] First partner city or neighborhood, and co-design sessions with residents on what the kiosk should show (CTW-DDR-001 O1). Decided 2026-10-02: first candidate a city within easy reach of Irving, Texas, with an active open-data program, the pilot in a sheltered public lobby such as a library or transit center; co-design sessions still to hold.
 
 Concept media: [blueprint sheet](../media/concept-blueprint.pdf), [interactive 3D model](../media/viewer.html). General arrangement: [CTW-DWG-001](../cad/drawings/CTW-DWG-001.pdf). Calculations: [CTW-CAL-001](04-calcs/01-sizing.md).

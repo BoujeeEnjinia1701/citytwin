@@ -3,9 +3,9 @@ doc_id: CTW-DDR-003
 title: CityTwin design for construction
 project: CityTwin
 doc_type: Design decision record
-version: "0.2"
+version: "0.3"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -17,12 +17,16 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Budget treated as a value-engineering target, with cost question A1 replaced by the register's Value engineering section
+- version: "0.3"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: A2 accepted by Amish on 2026-10-02 as recommended (standoff holes drilled only in cabinets that get the shield); the Table 1 changes stay open for his review
 ---
 
 # 0003: Design for construction
 
 - **Date:** 2026-10-01
-- **Status:** Draft. The changes in Table 1 were made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review. The items in Table 3 are Proposed, awaiting Amish.
+- **Status:** Draft. The changes in Table 1 were made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review. The item in Table 3 (A2) was accepted by Amish as recommended (Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions.") and is recorded in the design decisions register (CTW-DEC-001). The changes in Table 1 remain open for his review.
 
 ## Context
 
@@ -63,11 +67,11 @@ Checking the model with build123d (intersections, volumes and distances between 
 | Drawing | CTW-DWG-001 Rev P4; making sketches CTW-DWG-101 to 111 added. | Follows the model. |
 | Documents | CTW-CAL-001 v0.3, CTW-REQ-001 v0.5, CTW-PRC-001 v0.5 updated for cost, mass and wind. New CTW-BLD-001 and CTW-DEC-001. | Follows the model. |
 
-*Table 3. Proposed, awaiting Amish.*
+*Table 3. Proposed, then accepted by Amish as recommended on 2026-10-02.*
 
 | # | Question | Options | Recommendation |
 | --- | --- | --- | --- |
-| A2 | The sun shield standoff holes breach the cabinet's sides. | (a) drill them only on kiosks that get the shield; (b) drill every cabinet so a pilot kiosk can later move outdoors, with sealed blanking screws until then. | (a), so the sheltered pilot cabinet keeps its unbroken IP55 sides. |
+| A2 | The sun shield standoff holes breach the cabinet's sides. | (a) drill them only on kiosks that get the shield; (b) drill every cabinet so a pilot kiosk can later move outdoors, with sealed blanking screws until then. | (a), so the sheltered pilot cabinet keeps its unbroken IP55 sides. Accepted 2026-10-02. |
 
 ## Consequences
 
