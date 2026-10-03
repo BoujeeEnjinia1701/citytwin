@@ -25,7 +25,7 @@ from model import (PARAMS as P, build_components, derived, box, HEAD_PANEL_SCREW
 
 OUT = ROOT / "docs" / "05-build-plan"
 DWG = ROOT / "cad" / "drawings"
-DATE = "2026-10-01"
+DATE = "2026-10-02"
 D = derived(P)
 C = build_components(P, shield=True)
 P2 = P["post"] / 2
@@ -225,10 +225,12 @@ def sheets(only=None):
                "  5 mm, edges deburred.",
                "Four 4.5 mm holes, 10 mm in from each end, 12 mm in from",
                "  the top and bottom edges (380 mm and 76 mm apart).",
-               "Content by the sign maker: what is measured, who is",
-               "  responsible, how long data is kept, QR code and short URL",
-               "  to the sensor register; icons in the style of DTPR.",
-               "Keep the QR code at least 25 mm square and clear of the holes.",
+               "Printed face in three zones (layout in the build plan): English",
+               "  at left, the partner city's second language in its own script",
+               "  in the middle, and at right a 50 mm QR code to the sensor",
+               "  register over the phone or text number.",
+               "Text: what is measured, who is responsible, how long data is",
+               "  kept; icons in the style of DTPR. Keep the QR code clear of the holes.",
                "Fit: on the front panel, bottom edge 125 mm up, four M4",
                "  tamper-resistant screws with nyloc nuts inside.",
                "Check: the QR code scans from 1 m with a phone."], **base)
@@ -744,6 +746,43 @@ def holes():
     print("holes", OUT / "panel-holes.png")
 
 
+def notice():
+    """Layout of the data notice plate: two languages, a QR code and a phone or text number (CTW-DEC-001, 2026-10-02)."""
+    import matplotlib.patches as mp
+    fig, plt = _fig("Data notice plate: layout of the printed face",
+                    "Seen from the front, full size 400 x 100 mm, aluminum 2 mm. Positions in mm from the left end and the bottom edge; text sizes are for the sign maker",
+                    size=(11, 5.2))
+    ax = fig.add_axes([0.03, 0.08, 0.94, 0.80]); ax.set_aspect("equal"); ax.axis("off")
+    INK, MUT, AC = "#111827", "#4B5563", "#0D9488"
+    ax.add_patch(mp.FancyBboxPatch((0, 0), 400, 100, boxstyle="round,pad=0,rounding_size=5", fc="#F8FAFC", ec=INK, lw=1.2))
+    for x, z in [(10, 12), (390, 12), (10, 88), (390, 88)]:
+        ax.add_patch(mp.Circle((x, z), 2.25, fc="white", ec=INK, lw=0.9))
+    for x0, x1, name in [(22, 160, "English"), (166, 304, "Second language")]:
+        ax.add_patch(mp.Rectangle((x0, 10), x1 - x0, 80, fc="white", ec=AC, lw=0.8))
+        ax.text((x0 + x1) / 2, 82, name, ha="center", va="center", fontsize=8.5, fontweight="bold", color=AC)
+    eng = ["What this measures: counts and levels only,", "no images, sound or faces.", "Who is responsible: the city, contact below.",
+           "How long: hourly counts kept for 12 months.", "Sensor register: scan the code."]
+    for i, t in enumerate(eng):
+        ax.text(25, 71 - i * 11, t, fontsize=6.2, va="center", color=INK)
+    ax.text(235, 50, "The same five lines in the partner city's\nmost widely spoken other language,\nin its own script (checked with the community)",
+            ha="center", va="center", fontsize=6.2, color=MUT)
+    ax.add_patch(mp.Rectangle((312, 40), 50, 50, fc="white", ec=INK, lw=1.0))
+    for (qx, qz) in [(314, 78), (350, 78), (314, 42)]:
+        ax.add_patch(mp.Rectangle((qx, qz), 10, 10, fc="none", ec=INK, lw=1.4))
+        ax.add_patch(mp.Rectangle((qx + 3, qz + 3), 4, 4, fc=INK, ec=INK))
+    ax.text(337, 65, "QR", ha="center", va="center", fontsize=9, fontweight="bold", color=MUT)
+    ax.text(337, 33, "QR code, 50 x 50 (at least 25 x 25)", ha="center", va="center", fontsize=5.8, color=MUT)
+    ax.add_patch(mp.Rectangle((308, 10), 66, 16, fc="white", ec=AC, lw=0.8))
+    ax.text(341, 18, "Phone or text:\nnumber from the city", ha="center", va="center", fontsize=5.8, color=INK)
+    ax.annotate("", xy=(0, -9), xytext=(400, -9), arrowprops=dict(arrowstyle="<->", color=MUT, lw=0.6))
+    ax.text(200, -15, "400", ha="center", va="top", fontsize=7.5, color=MUT)
+    ax.text(-8, 50, "100", rotation=90, ha="right", va="center", fontsize=7.5, color=MUT)
+    ax.text(10, -3, "holes 4.5, 10 in and 12 from the edges", fontsize=6.5, color=MUT, va="top")
+    ax.set_xlim(-14, 414); ax.set_ylim(-26, 104)
+    fig.savefig(OUT / "notice-plate.png", facecolor="white"); plt.close(fig)
+    print("notice", OUT / "notice-plate.png")
+
+
 def wiring():
     import matplotlib.patches as mp
     import matplotlib.patheffects as pe
@@ -804,9 +843,9 @@ def wiring():
 
 if __name__ == "__main__":
     OUT.mkdir(parents=True, exist_ok=True)
-    args = sys.argv[1:] or ["overview", "sheets", "joints", "steps", "holes", "wiring"]
+    args = sys.argv[1:] or ["overview", "sheets", "joints", "steps", "holes", "wiring", "notice"]
     for a in args:
         name, _, sel = a.partition(":")
         only = {int(v) for v in sel.split(",")} if sel else None
         {"overview": lambda: overview(), "sheets": lambda: sheets(only), "joints": lambda: joints(only),
-         "steps": lambda: steps(only), "holes": holes, "wiring": wiring}[name]()
+         "steps": lambda: steps(only), "holes": holes, "wiring": wiring, "notice": notice}[name]()

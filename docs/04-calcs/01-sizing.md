@@ -3,9 +3,9 @@ doc_id: CTW-CAL-001
 title: CityTwin sizing calculations
 project: CityTwin
 doc_type: Calculation
-version: "0.4"
+version: "0.5"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -25,6 +25,10 @@ revisions:
   date: '2026-10-01'
   author: Amish Chadha
   change: Budget treated as a value-engineering target
+- version: "0.5"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Permanent-shade site rule of 2026-10-02 added to the R20 discussion (section F); no number changed"
 ---
 
 # CityTwin sizing calculations
@@ -89,10 +93,10 @@ The buttons sit at 1,120 mm, inside the 380 to 1,220 mm reach range. The head's 
 ## F. Thermal: head, heater study and cabinet (R12, R20)
 
 - **Pilot head (R12).** The head holds 1.12 W of electronics and loses heat from 0.786 m², a rise of 0.14 K in shade. At 35 °C air, the top of the pilot range under CTW-DDR-002 N5, the panel sits at 35.1 °C, 4.9 K under its 40 °C rating; at 40 °C air it would be 40.1 °C, and the limit for air is 39.9 °C [F1].
-- **Street head in sun (R20).** With 600 W/m² of low sun on the face, the head air rises 9.2 K, and the panel, which absorbs 19.6 W through the window, sits 33.6 K above the air outside: about 79 °C at 45 °C air [F2]. Only orientation or shading of the face can fix this, which is why a shaded screen orientation is a site rule (N4); the hood does not shade low sun. Even in shade the panel is at 45.1 °C in 45 °C air.
+- **Street head in sun (R20).** With 600 W/m² of low sun on the face, the head air rises 9.2 K, and the panel, which absorbs 19.6 W through the window, sits 33.6 K above the air outside: about 79 °C at 45 °C air [F2]. Only orientation or shading of the face can fix this, which is why a shaded screen orientation is a site rule (N4); the hood does not shade low sun. Even in shade the panel is at 45.1 °C in 45 °C air. Site rule decided by Amish on 2026-10-02 (CTW-DEC-001): outdoor sites only in permanent shade, with the sun shield; this is the 45.1 °C and 52.2 °C case above, not the 79 °C sun case, and the panel is still over its 40 °C rating at 45 °C air, so a panel rated above 40 °C is sought at TRL 4.
 - **Heater study (R20).** Holding the panel at 0 °C in -20 °C air takes 156 W if the whole head is heated, but only 13.5 W if the panel sits in a bay lined with 20 mm of foam and the heater warms only that bay [F3]. Under N4 the heater is fitted only where the partner city has frost.
 - **Cabinet.** The sealed cabinet holds 7.96 W (TwinKit 6.41 W, supply loss 1.35 W, protection 0.2 W). Its air rises 4.4 K in shade and 18.7 K in sun, when it absorbs 78 W. Behind the ventilated sun shield (item 19, N4) it absorbs about 16 W and rises 7.2 K, so the pack stays under its 45 °C charge limit in full sun up to 37.8 °C air [F4]. In the pilot case (35 °C shaded) the cabinet air is 39.4 °C, the TwinKit processor 68.5 °C against 85 °C, and the pack 5.6 K below its charge limit; at 40 °C in shade the margin is only 0.6 K. Outdoors at 35 °C in sun with the shield the cabinet air is 42.2 °C (2.8 K margin). At 45 °C the pack is over the limit in every case: 49.4 °C shaded, 52.2 °C in sun with the shield and 63.7 °C without it, when the processor reaches 92.8 °C, above its throttle point [F5]. At -20 °C air the cabinet is at -15.6 °C, too cold to charge the pack [F6].
-- **Status.** **R12 is met on paper** with about 5 K of margin for the panel and the pack. **R20 is not met.**
+- **Status.** **R12 is met on paper** with about 5 K of margin for the panel and the pack. **R20 is not met**; it stays a post-pilot target for outdoor sites in permanent shade only (decided 2026-10-02).
 
 ## G. Power (R14, R15)
 

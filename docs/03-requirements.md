@@ -3,7 +3,7 @@ doc_id: CTW-REQ-001
 title: CityTwin requirements
 project: CityTwin
 doc_type: Requirements
-version: "0.7"
+version: "0.8"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -37,11 +37,15 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: R20 kept as a post-pilot target with outdoor sites only in permanent shade, as decided by Amish on 2026-10-02
+- version: "0.8"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "CTW-DDR-003 noted as accepted by Amish on 2026-10-02; no requirement changed"
 ---
 
 # CityTwin requirements
 
-The decisions in CTW-DDR-001 and CTW-DDR-002 (decided by Amish, 2026-09-25: go with recommendation) set these targets; the constructable design of CTW-DDR-003 (2026-10-01, open for Amish's review) changes no target. R12 covers the pilot on a sheltered site at 0 to 35 °C air (D3, narrowed from 0 to 40 °C by DDR-002), the outdoor range is R20, R17 is a reported figure because the gateway is costed in TwinKit (D1), R10 is restated for the e-paper street kiosk, and R16 is reported against the $750 value-engineering target (a hypothetical control target, not a limit). The status column comes from the TRL 3 calculation note CTW-CAL-001 v0.3. Two requirements are **not met**: R18 (backup in the worst case, until TwinKit fits a larger pack) and R20 (street climate). R16 is **over the value-engineering target by $28.00** (the parts added to make the kiosk buildable; see the Value engineering section of CTW-DEC-001). R1 is **at risk**.
+The decisions in CTW-DDR-001 and CTW-DDR-002 (decided by Amish, 2026-09-25: go with recommendation) set these targets; the constructable design of CTW-DDR-003 (2026-10-01, accepted by Amish on 2026-10-02) changes no target. R12 covers the pilot on a sheltered site at 0 to 35 °C air (D3, narrowed from 0 to 40 °C by DDR-002), the outdoor range is R20, R17 is a reported figure because the gateway is costed in TwinKit (D1), R10 is restated for the e-paper street kiosk, and R16 is reported against the $750 value-engineering target (a hypothetical control target, not a limit). The status column comes from the TRL 3 calculation note CTW-CAL-001 v0.3. Two requirements are **not met**: R18 (backup in the worst case, until TwinKit fits a larger pack) and R20 (street climate). R16 is **over the value-engineering target by $28.00** (the parts added to make the kiosk buildable; see the Value engineering section of CTW-DEC-001). R1 is **at risk**.
 
 Table 1. Requirements.
 

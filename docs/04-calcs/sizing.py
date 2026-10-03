@@ -316,7 +316,7 @@ STATUS = [
     ("R17", "Cost with gateway (redefined, D1)", f"${kiosk + cost[13]:,.2f}", "Reported; gateway costed in TwinKit", "Met on paper (reported)"),
     ("R18", "Honest in an outage", f"{T_NEW:.2f} h new, {T_WORST:.2f} h worst; {PACK_AH * T_REQ / T_WORST:.2f} Ah pack needed", "2 h ride-through", "Not met (worst case)"),
     ("R19", "Secure by default", "Outbound push and pull only", "No inbound connections", "Met by design"),
-    ("R20", "Street climate (target after the pilot)", f"Panel {45 + dt_panel:.0f} C in sun, {45 + dt_head_shade:.1f} C shaded at 45 C; pack {45 + dt_cab_sh:.1f} C behind the shield; heater {heater:.1f} W at -20 C", "-20 to +45 C air", "Not met"),
+    ("R20", "Street climate (target after the pilot)", f"Panel {45 + dt_panel:.0f} C in sun, {45 + dt_head_shade:.1f} C shaded at 45 C; pack {45 + dt_cab_sh:.1f} C behind the shield; heater {heater:.1f} W at -20 C", "-20 to +45 C air; outdoor sites only in permanent shade (decided 2026-10-02)", "Not met"),
 ]
 counts = {}
 for r in STATUS:

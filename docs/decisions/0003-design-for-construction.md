@@ -3,7 +3,7 @@ doc_id: CTW-DDR-003
 title: CityTwin design for construction
 project: CityTwin
 doc_type: Design decision record
-version: "0.3"
+version: "0.5"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -21,12 +21,20 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: A2 accepted by Amish on 2026-10-02 as recommended (standoff holes drilled only in cabinets that get the shield); the Table 1 changes stay open for his review
+- version: "0.4"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Table 1 changes (P1 to P14) accepted by Amish on 2026-10-02"
+- version: "0.5"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Consequences: render scene exported from the current model; A2 holes now only on the shielded cabinet in the model"
 ---
 
 # 0003: Design for construction
 
 - **Date:** 2026-10-01
-- **Status:** Draft. The changes in Table 1 were made under Amish's 2026-09-30 instruction to make the design physically buildable; open for his review. The item in Table 3 (A2) was accepted by Amish as recommended (Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions.") and is recorded in the design decisions register (CTW-DEC-001). The changes in Table 1 remain open for his review.
+- **Status:** accepted. Amish, 2026-10-02: "APPROVED: Design-for-construction changes in 10 repos (CityTwin, CoolShade, PalletPilot, Heliolite, PotholeLog, EarthPress, ReadyKit, CellCheck, CargoMule and ThermaCart)". This covers the changes P1 to P14 in Table 1, made under Amish's 2026-09-30 instruction to make the design physically buildable, and is recorded in the design decisions register (CTW-DEC-001). The item in Table 3 (A2) was accepted earlier the same day as recommended (Amish, 2026-10-02: "i approve your recommendations for all 555 open decisions.") and is recorded in the register too.
 
 ## Context
 
@@ -77,5 +85,5 @@ Checking the model with build123d (intersections, volumes and distances between 
 
 - `design_state: constructable` in `project.yaml`. The build plan CTW-BLD-001 shows every component and step in pictures generated from the model (`cad/src/build_plan_media.py`); open items are in the design decisions register CTW-DEC-001.
 - Requirement status (CTW-CAL-001 v0.3): 2 not met (R18, R20), 1 over the value-engineering target (R16), 1 at risk (R1), 9 met on paper, 7 met by design. Before: 2 not met, 1 at risk, 10 met on paper, 7 met by design.
-- The photoreal renders (`media/render-*.png`), `media/card.png` and `media/social-preview.png` are made on Amish's Mac and still show the concept head and shield; they are stale where the shield back panel and standoffs, the hood's sheet edges and the front panel screws show. The concept media in `media/` were regenerated from the new model.
+- The photoreal renders (`media/render-*.png`), `media/card.png` and `media/social-preview.png` are made on Amish's Mac from the scene exported from the current model (`cad/src/concept_media.py`, `.kit/scene_export.py`); they are remade there, so they may differ from the model until then. The concept media in `media/` were regenerated from the new model.
 - The cabinet, its mounting plate, the e-paper panel's outline and cable exit, and the rivet nuts' grip range are bought parts to be confirmed when chosen at TRL 4 (CTW-DEC-001).

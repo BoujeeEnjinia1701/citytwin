@@ -375,9 +375,10 @@ def build_components(p=PARAMS, shield=True):
             cab = cab - ycyl(x, cy_0 - 1, cy_0 + cbt + 1, z, 4.5)
     cab = cab - ycyl(0, cy_0 - 1, cy_0 + cbt + 1, p["cab_cable_z"], p["cable_hole"] / 2)
     cab = cab - zcyl(0, cy_mid, cz0 - 1, cz0 + cbt + 1, 16.25)
-    for xs in (-1, 1):
-        for y, z in SHIELD_STANDOFFS(p):
-            cab = cab - xcyl(xs * cw2 - 3, xs * cw2 + 3, y, z, 3.25)
+    if shield:   # the four 6.5 mm standoff holes are drilled only in cabinets that get the sun shield (CTW-DEC-001, 2026-10-02)
+        for xs in (-1, 1):
+            for y, z in SHIELD_STANDOFFS(p):
+                cab = cab - xcyl(xs * cw2 - 3, xs * cw2 + 3, y, z, 3.25)
     add("cabinet", 10, "Services cabinet", cab)
     mw, mh, mt = p["mplate"]
     my0 = cy_0 + cbt + p["mplate_off"]
@@ -643,6 +644,12 @@ def check(p=PARAMS):
         d = C[a][2].distance_to(C[b][2])
         if d < g:
             fails.append(f"TOO CLOSE {a} / {b} ({why}): {d:.1f} mm < {g} mm")
+    # the sheltered pilot cabinet has no side holes; only the shielded variant is drilled for the standoffs
+    n += 1
+    plain = build_components(p, shield=False)["cabinet"][2]
+    hole_v = plain.volume - C["cabinet"][2].volume
+    if abs(hole_v - 4 * 3.14159 * 3.25 ** 2 * p["cab_t"]) > 20.0:
+        fails.append(f"SHIELD HOLES: drilled volume {hole_v:.0f} mm3, expected four 6.5 mm holes through the side walls")
     for f_ in fails:
         print(f_)
     print(f"{n} constructability checks, {len(fails)} failed")

@@ -7,6 +7,7 @@ Costs are indicative estimates for a single prototype, in USD, updated for TRL 3
 - **TwinKit gateway** (item 13): $290.00, costed in the TwinKit repo. A city that already runs TwinKit only needs the kiosk.
 - **Kiosk with gateway**: $1,068.00, reported under R17.
 - Screws, rivet nuts, tapes and gaskets are now their own line (21); line 15 keeps the conduit, cables, grommets and earth bonds.
+- The notice plate (item 8) now carries two languages, a 50 mm QR code and a phone or text number (CTW-DEC-001, 2026-10-02). Its price stays $15.00: the extra printed content adds sign-maker set-up time, not material, and the figure is an estimate, not a quote.
 - Items 16 to 18 are software and documents with no parts cost. Hosting for the public open data files is not included.
 - The 60 W supply (item 12) covers the 26.7 W peak, and 40.2 W with the street heater studied in CTW-CAL-001; the panel heater is not in the BOM, because it is fitted only where the partner city has frost (CTW-DDR-002 N4); the pilot is in a sheltered public lobby (decided 2026-10-02), so it is not fitted.
 - Not included: concrete footing, anchor design, mains connection by an electrician, permits and installation labor.

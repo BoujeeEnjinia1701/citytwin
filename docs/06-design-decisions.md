@@ -3,7 +3,7 @@ doc_id: CTW-DEC-001
 title: CityTwin design decisions register
 project: CityTwin
 doc_type: Design decisions register
-version: "0.3"
+version: "0.4"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -21,6 +21,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: Amish approved the recommendations for open items 1 to 7 on 2026-10-02 (shield holes only where fitted, sheltered pilot near Irving, antenna walk test, languages, R20 kept as post-pilot target, pull format, CrossSafe uplink request); moved to decisions made
+- version: "0.4"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Design for construction (CTW-DDR-003, P1 to P14) accepted by Amish on 2026-10-02; moved from open for review to decisions made"
 ---
 
 # CityTwin design decisions register
@@ -60,7 +64,7 @@ Value-engineering target: USD 750 (a hypothetical control target, not a limit). 
 | --- | --- | --- | --- |
 | 2026-09-25 | TRL 2 review items D1 to D11: budget covers the kiosk only; color e-paper with an indoor LCD variant; sheltered pilot; gateway in the kiosk cabinet; mains power; 5 per hour small-count threshold and two years of raw data; CC BY 4.0; buttons; 46-node reference neighborhood; one-way publishing; outbound pulls for PotholeLog and DockHub | Amish: "i accept all your recommendations, go with them across all repos." | [CTW-DDR-001](decisions/0001-trl2-review-decisions.md), [CTW-DDR-002](decisions/0002-recommendations-accepted.md) |
 | 2026-09-25 | N1 to N6: `budget_usd` $750; R10 restated (LED ring within 0.5 s, layer within 25 s); larger TwinKit pack requested; cabinet sun shield and shaded screen as outdoor site rules, heater only for a frost city; pilot range 0 to 35 °C air; hood light dimmed to about 0.3 W | Amish, same instruction | [CTW-DDR-002](decisions/0002-recommendations-accepted.md) |
-| 2026-10-01 | Design for construction, P1 to P14: rivet nuts in the post for the head and cabinet; folded head tray with a removable front panel; window bonded with glazing tape; display carrier on studs; 5 V converter, LED driver and terminal block in the head; button, notice plate and hood fixings; mounting plate in the cabinet; grommeted cable holes; conduit hole and gland; vent hole for galvanizing; antenna bracket plate; shield on standoffs with a thumb-screw back panel | Made under Amish's 2026-09-30 instruction to make the design physically buildable ("If you are realising that the design cannot be built as per concept - fix the design assumptions to match and be physically feasible as you draw the illustrations."); open for his review | [CTW-DDR-003](decisions/0003-design-for-construction.md) |
+| 2026-10-01 | Design for construction, P1 to P14: rivet nuts in the post for the head and cabinet; folded head tray with a removable front panel; window bonded with glazing tape; display carrier on studs; 5 V converter, LED driver and terminal block in the head; button, notice plate and hood fixings; mounting plate in the cabinet; grommeted cable holes; conduit hole and gland; vent hole for galvanizing; antenna bracket plate; shield on standoffs with a thumb-screw back panel | Made under Amish's 2026-09-30 instruction to make the design physically buildable ("If you are realising that the design cannot be built as per concept - fix the design assumptions to match and be physically feasible as you draw the illustrations."); the changes themselves were accepted on 2026-10-02 (below) | [CTW-DDR-003](decisions/0003-design-for-construction.md) |
 | 2026-10-02 | Sun shield standoff holes: option (a), drilled only in cabinets that get the shield, so the sheltered pilot cabinet keeps its unbroken IP55 sides | Amish: "i approve your recommendations for all 555 open decisions." | [CTW-DDR-003](decisions/0003-design-for-construction.md), A2 |
 | 2026-10-02 | First partner and pilot site: a city within easy reach of Irving, Texas, with an active open-data program, the kiosk in a sheltered public lobby such as a library or transit center; with a sheltered site the frost heater is not fitted. The city is chosen as the first candidate to approach, not yet agreed | Amish: "i approve your recommendations for all 555 open decisions." | [CTW-DDR-001](decisions/0001-trl2-review-decisions.md), O1; [CTW-DDR-002](decisions/0002-recommendations-accepted.md) |
 | 2026-10-02 | Antenna: keep the post-top antenna at 2.38 m for the pilot and run a coverage walk test from the site at TRL 4; if nodes in the reference neighborhood fall short, move to a rooftop gateway, not a taller mast | Amish: "i approve your recommendations for all 555 open decisions." | [CTW-DDR-002](decisions/0002-recommendations-accepted.md), Q1 |
@@ -68,3 +72,4 @@ Value-engineering target: USD 750 (a hypothetical control target, not a limit). 
 | 2026-10-02 | Street climate (R20): kept as a post-pilot target; outdoor sites only in permanent shade with the sun shield; a panel rated above 40 °C is sought at TRL 4, and the heated bay is fitted only for a frost city | Amish: "i approve your recommendations for all 555 open decisions." | CTW-PRC-001, open questions; CTW-REQ-001, R20 |
 | 2026-10-02 | Pull paths: the outbound pull already decided (D11), with daily CSV files on a fixed HTTPS address at each operator, a published column list and a version field; the same format to be agreed in PotholeLog (its open item 6) | Amish: "i approve your recommendations for all 555 open decisions." | [CTW-DDR-001](decisions/0001-trl2-review-decisions.md), D11 |
 | 2026-10-02 | CrossSafe uplink: ask CrossSafe to add an hourly LoRaWAN summary uplink from one side of the crossing; CityTwin shows no CrossSafe layer until it exists | Amish: "i approve your recommendations for all 555 open decisions." | CTW-REQ-001, R1 |
+| 2026-10-02 | Design for construction accepted: the changes P1 to P14, as made | Amish: "APPROVED: Design-for-construction changes in 10 repos (CityTwin, CoolShade, PalletPilot, Heliolite, PotholeLog, EarthPress, ReadyKit, CellCheck, CargoMule and ThermaCart)" | [CTW-DDR-003](decisions/0003-design-for-construction.md), Table 1 |

@@ -8,7 +8,7 @@ A city dashboard built on TwinKit that brings the smart city nodes together on a
 
 ![CityTwin: public kiosk for the city dashboard, photoreal render](media/render-hero.png)
 
-[Detail render](media/render-detail.png) · [Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement CTW-DWG-001 (PDF)](cad/drawings/CTW-DWG-001.pdf) · [Calculations CTW-CAL-001](docs/04-calcs/01-sizing.md) · [Prototype build plan](docs/05-build-plan.md) · [Review note](docs/REVIEW.md)
+[Interactive 3D model](media/viewer.html) · [Concept blueprint (PDF)](media/concept-blueprint.pdf) · [General arrangement CTW-DWG-001 (PDF)](cad/drawings/CTW-DWG-001.pdf) · [Calculations CTW-CAL-001](docs/04-calcs/01-sizing.md) · [Prototype build plan](docs/05-build-plan.md) · [Review note](docs/REVIEW.md)
 
 ## Concept rationale
 
@@ -92,7 +92,7 @@ The priced bill of materials is in [bom/bom.csv](bom/bom.csv): $778.00 for the p
 
 ![CityTwin prototype kiosk: every component pulled apart and numbered in build order](docs/05-build-plan/overview.png)
 
-The [prototype build plan](docs/05-build-plan.md) (CTW-BLD-001) shows, in pictures, how to make each of the 21 components of the kiosk and put them together in sixteen steps; nothing has been built yet. The made parts are a welded and galvanized steel post and base plate, a folded aluminum head tray with a removable front panel, a display carrier, a hood, a notice plate, an antenna bracket and, for outdoor sites, a sun shield; the bought cabinet is drilled, and the mains wiring is left to a qualified electrician. Writing the plan made the design buildable: the head, cabinet and hood are now fixed to rivet nuts in the post, the head opens at the front, the screen is held by a carrier on studs, and cable routes, a vent hole for galvanizing and fixings were added (CTW-DDR-003, open for Amish's review). Every picture is drawn from the model, and the model checks that each part touches what it should and clears what it should not.
+The [prototype build plan](docs/05-build-plan.md) (CTW-BLD-001) shows, in pictures, how to make each of the 21 components of the kiosk and put them together in sixteen steps; nothing has been built yet. The made parts are a welded and galvanized steel post and base plate, a folded aluminum head tray with a removable front panel, a display carrier, a hood, a notice plate, an antenna bracket and, for outdoor sites, a sun shield; the bought cabinet is drilled, and the mains wiring is left to a qualified electrician. Writing the plan made the design buildable: the head, cabinet and hood are now fixed to rivet nuts in the post, the head opens at the front, the screen is held by a carrier on studs, and cable routes, a vent hole for galvanizing and fixings were added (CTW-DDR-003, accepted by Amish on 2026-10-02). Every picture is drawn from the model, and the model checks that each part touches what it should and clears what it should not.
 
 ## Safety
 

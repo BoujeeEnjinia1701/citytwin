@@ -302,7 +302,7 @@ Seven decisions, all moved to Decisions made in CTW-DEC-001, dated 2026-10-02:
 ### Documents changed
 
 - `docs/06-design-decisions.md` (CTW-DEC-001 v0.3): open decisions moved to Decisions made; the value-engineering line notes the sheltered pilot.
-- `docs/decisions/0003-design-for-construction.md` (CTW-DDR-003 v0.3, status Draft): A2 accepted. The Table 1 changes (P1 to P14) were not an open decision in the register and so stay open for Amish's review.
+- `docs/decisions/0003-design-for-construction.md` (CTW-DDR-003 v0.3, status Draft): A2 accepted. The Table 1 changes (P1 to P14) were not an open decision in the register and so stayed open for Amish's review; he accepted them later on 2026-10-02 (see the next session).
 - `docs/decisions/0001-trl2-review-decisions.md` (CTW-DDR-001 v0.3): O1 recorded as decided.
 - `docs/decisions/0002-recommendations-accepted.md` (CTW-DDR-002 v0.2): O1, Q1 and Q2 recorded as decided.
 - `docs/02-concept.md` (CTW-PRC-001 v0.7): outdoor site rule (permanent shade) and the open questions answered.
@@ -320,6 +320,64 @@ Seven decisions, all moved to Decisions made in CTW-DEC-001, dated 2026-10-02:
 
 ### Points found in the review
 
-- The register listed CTW-DDR-003 under Decisions made (2026-10-01) while also calling it open for Amish's review, and there was no open item to accept it. It is still not accepted: an item to accept it (recommend accept, as for the other repos) needs Amish's decision.
+- The register listed CTW-DDR-003 under Decisions made (2026-10-01) while also calling it open for Amish's review, and there was no open item to accept it. Amish accepted it later on 2026-10-02 (see the next session).
 - Decision 6 is the same interface as PotholeLog's open item 6; decide both together.
 - `media/render-hero.png` is missing from this copy, and the remaining renders show the concept head, hood and shield.
+
+## Session 2026-10-02: design-for-construction changes accepted
+
+Amish, 2026-10-02: "APPROVED: Design-for-construction changes in 10 repos (CityTwin, CoolShade, PalletPilot, Heliolite, PotholeLog, EarthPress, ReadyKit, CellCheck, CargoMule and ThermaCart)". This accepts the design-for-construction changes P1 to P14 in Table 1 of CTW-DDR-003, which were left open for his review when the open decisions were decided earlier the same day. No other item is decided by it. trl stays 3; no build or test work was done, and the model, BOM, calculations and pictures are unchanged.
+
+### Documents changed
+
+- `docs/decisions/0003-design-for-construction.md` (CTW-DDR-003 v0.4, status Draft): status line now "accepted" with Amish's words.
+- `docs/06-design-decisions.md` (CTW-DEC-001 v0.4): Decisions made row added, dated 2026-10-02; the 2026-10-01 row no longer calls the changes open for review.
+- `docs/05-build-plan.md` (CTW-BLD-001 v0.2): section 2 says CTW-DDR-003 is accepted.
+- `docs/03-requirements.md` (CTW-REQ-001 v0.8): CTW-DDR-003 noted as accepted.
+- `README.md` (not a controlled document): build plan paragraph says CTW-DDR-003 is accepted.
+- PDFs regenerated.
+
+### Recommended next step
+
+No change: the follow-up actions of the previous session stand. TRL 4 remains on hold by Amish's instruction.
+
+## Session 2026-10-02: approved follow-ups carried out
+
+Amish approved on 2026-10-02 that every follow-up action from the open-decision sign-off be carried out. trl stays 3; nothing was built or tested.
+
+### Follow-ups
+
+1. Decision 1, model and drawings: done. The shield standoff holes are now cut in the cabinet only when the sun shield is fitted (`cad/src/model.py`, `shield` option); a new check confirms that the pilot cabinet has none. 245 constructability checks pass. General arrangement CTW-DWG-001 is Rev P5 and says the side holes are drilled only on outdoor sites; the build plan text for the cabinet says the sheltered pilot cabinet gets no side holes.
+2. Decision 4, notice plate: done. New layout picture (`docs/05-build-plan/notice-plate.png`, Figure 19a): English, the partner city's second language in its own script, a 50 mm QR code and a phone or text number. Making sketch CTW-DWG-106 and BOM line 8 updated; the price stays $15.00 (sign-maker set-up time only, an estimate).
+3. Decision 5, calculations: done. The permanent-shade rule is in the R20 discussion of CTW-CAL-001 (section F) and in the `sizing.py` R20 row; `results.csv` rerun. No number changed.
+4. Decision 6, CSV column list: done here (version 1 column list and version field in CTW-PRC-001, step 5); the agreement with PotholeLog is a cross-repo action.
+5. Decision 7, CrossSafe uplink: cross-repo action only.
+
+### Requirement status changes
+
+None. R20 stays not met (a post-pilot target for outdoor sites in permanent shade). Cost and mass are unchanged: pilot kiosk USD 778 against the USD 750 target (USD 28 over), 808 with the sun shield.
+
+### Pictures regenerated
+
+General arrangement CTW-DWG-001 (Rev P5), making sketch CTW-DWG-106, new notice plate layout. The model geometry of the shielded kiosk did not change, so the concept media, overview, joints and steps were not redrawn.
+
+### Appearance model and render scene
+
+CityTwin has no `cad/src/product_model.py` and the hero stays a scene render (the 2026-09-26 approach): the scene is built by `cad/src/concept_media.py` from `cad/src/model.py`, so it follows the model. It was exported with `.kit/scene_export.py` to `/home/claude/renders/citytwin/citytwin__hero.npz` and `.json`, with `citytwin__jobs.json`. `.kit/export_views.py` is not used because there is no product model. Photoreal images, `media/card.png` and `media/social-preview.png` are made on Amish's Mac.
+
+### Cross-repo actions
+
+- PotholeLog: agree the version 1 pull-path column list (CTW-PRC-001, step 5) with its open item 6; DockHub to use the same list for its hourly aggregates.
+- CrossSafe: ask for an hourly LoRaWAN summary uplink from one side of the crossing; CityTwin shows no CrossSafe layer until it exists.
+
+### Documents changed
+
+CTW-CAL-001 v0.5, CTW-PRC-001 v0.8, CTW-BLD-001 v0.3, CTW-DDR-003 v0.5, CTW-DWG-001 Rev P5, CTW-DWG-106, `bom/bom.csv`, `bom/bom-notes.md`. PDFs re-rendered.
+
+### Recommended next step
+
+Make the photoreal renders on the Mac. TRL 4 remains on hold by Amish's instruction.
+
+## 2026-10-02: photoreal renders redone on the constructable design
+
+Rendered with Blender Cycles on Amish's Mac from the updated appearance model; captioned with `.kit/photo_caption.py`; `media/card.png` and `media/social-preview.png` regenerated with `.kit/cards.py`. Views: hero. image_qc passes. Appearance deviations are those logged above as proposed, awaiting Amish.

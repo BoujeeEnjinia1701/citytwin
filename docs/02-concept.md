@@ -3,7 +3,7 @@ doc_id: CTW-PRC-001
 title: CityTwin design precis
 project: CityTwin
 doc_type: Design precis
-version: "0.7"
+version: "0.8"
 status: Draft
 date: '2026-10-02'
 author: Amish Chadha
@@ -37,6 +37,10 @@ revisions:
   date: '2026-10-02'
   author: Amish Chadha
   change: 'Decisions of 2026-10-02 (CTW-DEC-001 v0.3): permanent shade for outdoor sites, pull file format, CrossSafe uplink request, R20 kept post-pilot, antenna walk test, languages, sheltered pilot near Irving as first candidate'
+- version: "0.8"
+  date: '2026-10-02'
+  author: Amish Chadha
+  change: "Pull-path CSV column list and version field published for agreement with PotholeLog and DockHub (CTW-DEC-001, D11)"
 ---
 
 # CityTwin design precis
@@ -58,6 +62,8 @@ The TRL 3 calculations (CTW-CAL-001) show that the data side has wide margin: th
 3. **Store.** Records go into the TwinKit time-series database with node ID, location and time. Raw records are kept for two years and hourly aggregates indefinitely (D6); ten years of aggregates and two years of raw data take about 21 GB of the gateway's card.
 4. **Apply the privacy rules.** Before anything is published, people and vehicle counts below 5 per hour (D6) become "fewer than 5", PotholeLog data is published only per road segment and per day, and DockHub data only per dock per hour. No card IDs, vehicle tracks or node-level raw streams leave the gateway.
 5. **Publish.** Every hour the gateway writes CSV and GeoJSON files with a documented schema and pushes them one way to a public host under CC BY 4.0 (D7), about 0.86 MB of CSV a day. An OGC SensorThings API endpoint on the public host remains a suggestion for later work.
+
+   The daily pull files of D11 (decided 2026-10-02) use one fixed, versioned column list, proposed here for agreement with PotholeLog and DockHub. One file per operator, layer and UTC day, at a fixed HTTPS address, named `<operator>_<layer>_<YYYY-MM-DD>_v1.csv`, comma separated, UTF-8, one header line. Version 1 columns: `schema_version` (the integer 1; it changes when a column is added, renamed or removed), `operator_id`, `node_id` (a pseudonymous code, never a serial number or name), `node_type`, `segment_id` (street segment code for PotholeLog files, empty otherwise), `site_cell` (grid cell code, not an address), `period_start_utc` (ISO 8601), `period_hours` (1 for hourly aggregates), `measure` (`count`, `level` or `score`), `value`, `unit`, `quality` (`ok`, `estimated` or `suppressed`) and `suppressed_below` (5 when the value is suppressed, otherwise empty). Counts and levels only, as in R3.
 6. **Show.** The web map has one layer per node type, a time slider, node health and an "as of" timestamp. The kiosk controller pulls a pre-rendered 1600 x 1200 image of the selected layer from the gateway every 10 min, or when a button is pressed, and writes it to the e-paper. Each image carries its timestamp, so a stale screen during an outage says so. Two controller rules follow CTW-DDR-002: a pressed button's LED ring lights within 0.5 s and stays lit until the new image is drawn, and the hood light runs dimmed to about 0.3 W from dusk.
 
 ![Data flow](../media/flow.png)

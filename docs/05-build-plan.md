@@ -3,9 +3,9 @@ doc_id: CTW-BLD-001
 title: CityTwin prototype build plan
 project: CityTwin
 doc_type: Build plan
-version: "0.1"
+version: "0.3"
 status: Draft
-date: '2026-10-01'
+date: '2026-10-02'
 author: Amish Chadha
 license: CERN-OHL-S-2.0
 revisions:
@@ -13,6 +13,14 @@ revisions:
     date: '2026-10-01'
     author: Amish Chadha
     change: First build plan, with pictures by component and step; design made constructable (CTW-DDR-003)
+  - version: "0.2"
+    date: '2026-10-02'
+    author: Amish Chadha
+    change: "Section 2: the changes recorded in CTW-DDR-003 accepted by Amish on 2026-10-02"
+  - version: "0.3"
+    date: '2026-10-02'
+    author: Amish Chadha
+    change: "Notice plate layout picture (two languages, QR code, phone or text number); side holes only in shielded cabinets; document references brought up to date"
 ---
 
 # CityTwin prototype build plan
@@ -31,7 +39,7 @@ The prototype is the physical part of CityTwin: a public kiosk about 2.4 m tall 
 
 ## 2. What changed to make it buildable
 
-The concept showed what the kiosk does; many of its parts touched with nothing holding them, and the head was a sealed box. Each change below keeps what the kiosk does, and all of them are recorded in decision record CTW-DDR-003, open for Amish's review.
+The concept showed what the kiosk does; many of its parts touched with nothing holding them, and the head was a sealed box. Each change below keeps what the kiosk does, and all of them are recorded in decision record CTW-DDR-003, accepted by Amish on 2026-10-02.
 
 *Table 1. Changes from the concept.*
 
@@ -119,7 +127,7 @@ The post is welded square on the plate before galvanizing (section 3.2). The pla
 1. Take out the mounting plate and protect the inside from swarf.
 2. On the wall that goes against the post, with heights from the cabinet's bottom edge: four 9 mm holes 25 mm each side of the center line at 60 and 400 mm up, and a 25 mm cable hole on the center line at 435 mm up, above the mounting plate.
 3. In the floor: a 32.5 mm hole on the center line at mid-depth for the conduit gland.
-4. Outdoor sites only: two 6.5 mm holes in each side wall at mid-depth, 120 and 380 mm up, for the sun shield standoffs.
+4. Outdoor sites only: two 6.5 mm holes in each side wall at mid-depth, 120 and 380 mm up, for the sun shield standoffs. The pilot cabinet, on a sheltered site, gets no side holes.
 5. Deburr and touch up the paint on every cut edge.
 
 **How it fits the parts next to it.**
@@ -261,13 +269,17 @@ The panel closes the tray's open front. The window and screen stack on its back 
 
 **How to make it.**
 
-1. Have the sign maker print or engrave the content: what is measured, who is responsible, how long data is kept, a QR code and a short web address for the sensor register, with icons in the style of the open DTPR standard.
-2. Keep the QR code at least 25 mm square and clear of the holes.
+1. Have the sign maker print or engrave the content in three zones (Figure 19a): English at the left; the same text in the partner city's most widely spoken other language, in its own script, in the middle; and at the right a QR code 50 mm square for the sensor register, over a phone or text number. The text says what is measured, who is responsible and how long data is kept, with icons in the style of the open DTPR standard.
+2. Keep the QR code at least 25 mm square (50 mm as drawn) and clear of the holes.
 3. Round the corners to 5 mm and drill four 4.5 mm holes, 10 mm in from each end and 12 mm in from the top and bottom edges.
+
+![Figure 19a. Layout of the printed face of the notice plate](05-build-plan/notice-plate.png)
+
+*Figure 19a. Layout of the notice plate: English, second language, QR code and phone or text number.*
 
 **How it fits the parts next to it.** The plate lies flat on the front panel with its bottom edge 125 mm up, held by four M4 tamper-resistant screws with nyloc nuts inside the panel (Figure 18).
 
-**Check before moving on.** The QR code scans from 1 m with a phone.
+**Check before moving on.** The QR code scans from 1 m with a phone, and a reader of the second language confirms the text.
 
 ### 3.9 Display carrier, with the window and screen
 
@@ -519,8 +531,8 @@ Stop at each point. Carry on only when everything listed is true.
 
 - Model and constructability checks: `cad/src/model.py` (`python cad/src/model.py --check`); STEP and STL exports in `cad/step/` and `cad/stl/`.
 - Pictures: `cad/src/build_plan_media.py`, using `.kit/build_views.py`; written to `docs/05-build-plan/` and `cad/drawings/CTW-DWG-101` to `CTW-DWG-111`.
-- General arrangement: `cad/drawings/CTW-DWG-001.pdf`, Rev P4.
-- Calculations: `docs/04-calcs/01-sizing.md` (CTW-CAL-001 v0.3) and `docs/04-calcs/sizing.py`; wind and anchors [H1] to [H6], mass [H4], power [G1], timing [C2], cost [J1].
+- General arrangement: `cad/drawings/CTW-DWG-001.pdf`, Rev P5.
+- Calculations: `docs/04-calcs/01-sizing.md` (CTW-CAL-001 v0.5) and `docs/04-calcs/sizing.py`; wind and anchors [H1] to [H6], mass [H4], power [G1], timing [C2], cost [J1].
 - Bill of materials: `bom/bom.csv`.
 - Decisions: `docs/decisions/0003-design-for-construction.md` (CTW-DDR-003), with CTW-DDR-001 and CTW-DDR-002.
-- Requirements: `docs/03-requirements.md` (CTW-REQ-001 v0.5).
+- Requirements: `docs/03-requirements.md` (CTW-REQ-001 v0.8).

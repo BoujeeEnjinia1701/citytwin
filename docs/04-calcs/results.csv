@@ -18,4 +18,4 @@ R16,Pilot kiosk parts cost,$778.00 (outdoor with shield $808.00),$750 (budget_us
 R17,"Cost with gateway (redefined, D1)","$1,068.00",Reported; gateway costed in TwinKit,Met on paper (reported)
 R18,Honest in an outage,"2.40 h new, 1.63 h worst; 1.84 Ah pack needed",2 h ride-through,Not met (worst case)
 R19,Secure by default,Outbound push and pull only,No inbound connections,Met by design
-R20,Street climate (target after the pilot),"Panel 79 C in sun, 45.1 C shaded at 45 C; pack 52.2 C behind the shield; heater 13.5 W at -20 C",-20 to +45 C air,Not met
+R20,Street climate (target after the pilot),"Panel 79 C in sun, 45.1 C shaded at 45 C; pack 52.2 C behind the shield; heater 13.5 W at -20 C",-20 to +45 C air; outdoor sites only in permanent shade (decided 2026-10-02),Not met
